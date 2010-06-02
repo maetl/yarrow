@@ -5,7 +5,7 @@
 #
 require_once 'simpletest/autorun.php';
 
-require_once dirname(__FILE__).'/../Yarrow/Analyzer.php';
+require_once dirname(__FILE__).'/../Yarrow/Doc.php';
 
 /**
  * This is indeed a very amusing piece of machinery.
@@ -17,7 +17,9 @@ class ClassBlockTest extends UnitTestCase {
 		$analyzer = new Analyzer();
 		$analyzer->analyzeFile(__FILE__);
 		
-		$html = $this->dumpHtml($analyzer->classes, $analyzer->docblocks);
+		$writer = new Writer();
+		
+		$html = $writer->dumpHtml($analyzer->classes, $analyzer->docblocks);
 		$this->assertTrue(strstr($html, __CLASS__));
 		$this->assertTrue(strstr($html, "amusing piece"));
 	}
@@ -43,5 +45,4 @@ class ClassBlockTest extends UnitTestCase {
 		}
 		return $str;		
 	}
-	
 }
