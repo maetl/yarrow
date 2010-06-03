@@ -65,7 +65,11 @@ class Analyzer {
 	 * Acceptor to build a function name and link to it's ancestor.
 	 */
 	function shredFunction($t, $i) {
-		$this->functions[] = $t[$i+2][1];
+		$func = array('name' => $t[$i+2][1]);
+		if (isset($t[$i+4]) && is_array($t[$i+4]) && $t[i+4][0] == T_VARIABLE) {
+			$func['args'] = $t[$i+4][1];
+		}
+		$this->functions[] = $func;
 	}
 	
 	/**
