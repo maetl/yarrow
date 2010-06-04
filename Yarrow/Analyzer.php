@@ -66,7 +66,7 @@ class Analyzer {
 	 */
 	function shredFunction($t, $i) {
 		$func = array('name' => $t[$i+2][1]);
-		if (isset($t[$i+4]) && is_array($t[$i+4]) && $t[i+4][0] == T_VARIABLE) {
+		if (isset($t[$i+4]) && is_array($t[$i+4]) && $t[$i+4][0] == T_VARIABLE) {
 			$func['args'] = $t[$i+4][1];
 		}
 		$this->functions[] = $func;
