@@ -22,6 +22,7 @@ class ClassBlockTest extends UnitTestCase {
 		$html = $writer->dumpHtml($analyzer->classes, $analyzer->docblocks);
 		$this->assertTrue(strstr($html, __CLASS__));
 		$this->assertTrue(strstr($html, "amusing piece"));
+		$this->dump($analyzer->functions);
 	}
 	
 	/**
