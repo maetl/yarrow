@@ -28,10 +28,9 @@ class ClassBlockTest extends UnitTestCase {
 	/**
 	 * This wouldn't be documented, as it is protected.
 	 */
-	protected function dumpHtml($classes, $docblocks) {
+	protected function dumpHtml($classes) {
 		foreach($classes as $y=>$classname) {
 			$str = "<h1>$classname</h1>";
-			$str .= "<pre>{$docblocks[$y]}</pre>";
 		}
 		return $str;
 	}
@@ -45,5 +44,12 @@ class ClassBlockTest extends UnitTestCase {
 			$str .= "{$docblocks[$y]}";
 		}
 		return $str;		
+	}
+	
+	/**
+	 * This is the public API, and has three arguments.
+	 */
+	public function dumpAnything($classes, $docblocks, $functions) {
+		return $this->dumpText($classes, $docblocks);
 	}
 }
