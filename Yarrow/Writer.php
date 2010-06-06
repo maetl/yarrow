@@ -3,9 +3,9 @@
 class Writer {
 	
 	function dumpHtml($classes, $docblocks) {
-		foreach($classes as $y=>$classname) {
-			$str = "<h1>$classname</h1>";
-			$str .= "<pre>{$docblocks[$y]}</pre>";
+		foreach($classes as $y=>$class) {
+			$str = "<h1>$class</h1>";
+			$str .= "<pre>{$class->getDoc()}</pre>";
 		}
 		return $str;
 	}	

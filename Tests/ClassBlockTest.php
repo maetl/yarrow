@@ -29,8 +29,8 @@ class ClassBlockTest extends UnitTestCase {
 	 * This wouldn't be documented, as it is protected.
 	 */
 	protected function dumpHtml($classes) {
-		foreach($classes as $y=>$classname) {
-			$str = "<h1>$classname</h1>";
+		foreach($classes as $y=>$class) {
+			$str = "<h1>$class</h1>";
 		}
 		return $str;
 	}

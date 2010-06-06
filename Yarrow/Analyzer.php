@@ -11,7 +11,6 @@ class Analyzer {
 	public function __construct() {
 		$this->docblocks = array();
 		$this->classes = array();
-		$this->ancestors = array();
 		$this->functions = array();
 	}
 
@@ -51,14 +50,18 @@ class Analyzer {
 	 * Acceptor to build a class name and link to it's ancestor.
 	 */
 	function shredClass($t, $i) {
-		$this->classes[] = $t[$i+2][1];
 		if (isset($t[$i+4]) && is_array($t[$i+4]) && $t[$i+4][0] == T_EXTENDS) {
 			$parent = '';
 			while (is_array($t[$i+1]) && $t[$i+1][0] !== T_WHITESPACE) $parent .= $t[++$i][1];
 		} else {
 			$parent = self::PHP_stdClass;
 		}
-		$this->ancestors[$t[$i+2][1]] = $parent;
+		$class = new DocClass($t[$i+2][1], $parent);
+		if ($this->docblockScope) {
+			$class->addDocblock(array_pop($this->docblocks));
+			$this->docblockScope = false;
+		}
+		$this->classes[] = $class;
 	}
 
 	/**
@@ -75,6 +78,10 @@ class Analyzer {
 			$cur++;
 			$tok = $t[$cur];
 		}
+		if ($this->docblockScope) {
+			$func->addDocblock(array_pop($this->docblocks));
+			$this->docblockScope = false;
+		}
 		$this->functions[] = $func;
 	}
 	
@@ -84,5 +91,6 @@ class Analyzer {
 	 */
 	function shredDocBlock($t, $i) {
 		$this->docblocks[] = $t[$i][1];
+		$this->docblockScope = true;
 	}
 }
