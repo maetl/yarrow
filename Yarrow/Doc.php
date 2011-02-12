@@ -1,6 +1,7 @@
 <?php
 require_once 'Analyzer.php';
 require_once 'Writer.php';
+require_once 'FileCollector.php';
 
 class DocClass {
 	private $name;
