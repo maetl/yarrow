@@ -1,15 +1,18 @@
 <?php
-require_once 'simpletest/autorun.php';
-
 require_once dirname(__FILE__).'/../Yarrow/Doc.php';
 
-class ProjectMapTest extends UnitTestCase {
+class ProjectMapTest extends PHPUnit_Framework_TestCase {
 	
-	function testCanBuildSingleFileProject() {
-		$map = new ProjectMap();
-		$map->setName('YarrowTest');
-		$map->addFile('ClassBlockTest.php');
+	function testCanReadSingleFileProject() {
+		
 	}
 	
+	function testCanReadMultiFileProject() {
+		
+	}
+	
+	function testCanReadNestedFolderProject() {
+		
+	}
 	
 }
