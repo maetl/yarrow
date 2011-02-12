@@ -4,3 +4,16 @@ Yarrow
 Finally, a tidy documentation tool for PHP projects.
 
 More info: http://yarrowdoc.org/
+
+Install
+=======
+
+The recommended method of installing Yarrow is through the official PEAR channel:
+
+$> pear channel-discover yarrowdoc.org
+$> pear install Yarrow
+$> yarrow -v
+
+
+
+
