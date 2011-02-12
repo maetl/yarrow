@@ -72,9 +72,15 @@ class Analyzer {
 		$func = new FunctionModel($t[$i+2][1]);
 		$cur = $i+4;
 		$tok = $t[$cur];
+		$hint = '';
 		while($tok != ')') {
-			if ($tok && is_array($tok) && $tok[0] == T_VARIABLE) {
-				$func->addArgument($tok[1]);
+			if ($tok && is_array($tok)) {
+				if ($tok[0] == T_STRING) {
+					$hint = $tok[1];
+				} elseif ($tok[0] == T_VARIABLE) {
+					$func->addArgument($tok[1].':'.$hint);
+					$hint = '';
+				}
 			}
 			$cur++;
 			$tok = $t[$cur];
@@ -83,7 +89,6 @@ class Analyzer {
 			$func->addDocblock(array_pop($this->docblocks));
 			$this->docblockScope = false;
 		}
-		$this->functions[] = $func;
 		$class = end($this->classes);
 		$class->addFunction($func);
 	}
