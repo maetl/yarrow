@@ -1,16 +1,11 @@
 <?php
-#
-# Yarrowdocs yet as experimentation
-# plus am still in Ruby mode writing (!!) oops
-#
-require_once 'simpletest/autorun.php';
 
 require_once dirname(__FILE__).'/../Yarrow/Doc.php';
 
 /**
  * This is indeed a very amusing piece of machinery.
  */
-class ClassBlockTest extends UnitTestCase {
+class ClassBlockTest extends PHPUnit_Framework_TestCase {
 
 	public function testAnalyzeFile() {
 		
@@ -20,9 +15,9 @@ class ClassBlockTest extends UnitTestCase {
 		$writer = new Writer();
 		
 		$html = $writer->dumpHtml($analyzer->classes, $analyzer->docblocks);
-		$this->assertTrue(strstr($html, __CLASS__));
-		$this->assertTrue(strstr($html, "amusing piece"));
-		$this->dump($analyzer->functions);
+		
+		$this->assertContains(__CLASS__, $html);
+		$this->assertContains("amusing piece", $html);
 	}
 	
 	/**
