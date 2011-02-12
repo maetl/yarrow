@@ -11,7 +11,7 @@ class FileCollector {
 		$this->collection = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path), true);
 	}
 	
-	function getProjectMap() {
+	function getManifest() {
 		$map = array();
 		foreach($this->collection as $file) {
 			$map[] = array(
