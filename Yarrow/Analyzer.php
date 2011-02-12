@@ -12,12 +12,13 @@ class Analyzer {
 		$this->docblocks = array();
 		$this->classes = array();
 		$this->functions = array();
+		$this->docblockScope = false;
 	}
 
 	const PHP_stdClass = 'stdClass';
 
 	/**
-	 * Just shreds a PHP token stream for blockblocks in a single namespace.
+	 * Just shreds a PHP token stream for dockblocks in a single namespace.
 	 *
 	 * Attaches a docblock, class and method count.
 	 */
@@ -56,7 +57,7 @@ class Analyzer {
 		} else {
 			$parent = self::PHP_stdClass;
 		}
-		$class = new DocClass($t[$i+2][1], $parent);
+		$class = new ClassModel($t[$i+2][1], $parent);
 		if ($this->docblockScope) {
 			$class->addDocblock(array_pop($this->docblocks));
 			$this->docblockScope = false;
@@ -68,7 +69,7 @@ class Analyzer {
 	 * Acceptor to build a function signature.
 	 */
 	function shredFunction($t, $i) {
-		$func = new DocFunction($t[$i+2][1]);
+		$func = new FunctionModel($t[$i+2][1]);
 		$cur = $i+4;
 		$tok = $t[$cur];
 		while($tok != ')') {
@@ -83,6 +84,8 @@ class Analyzer {
 			$this->docblockScope = false;
 		}
 		$this->functions[] = $func;
+		$class = end($this->classes);
+		$class->addFunction($func);
 	}
 	
 	/**
