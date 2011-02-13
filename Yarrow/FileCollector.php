@@ -1,5 +1,28 @@
 <?php
 
+abstract class FilePatternFilter extends RecursiveRegexIterator {
+	protected $pattern;
+	
+	public function __construct(RecursiveIterator $it, $pattern) {
+		$this->pattern = $pattern;
+		parent::__construct($it, $pattern);
+	}
+}
+
+class FilePatternIncludeFilter extends FilePatternFilter {
+
+	public function accept() {
+		return (!$this->isFile() || preg_match($this->pattern, $this->getFilename()));
+	}
+}
+
+class FilePatternExcludeFilter extends FilePatternFilter {
+	
+	public function accept() {
+		return (!$this->isFile() || !preg_match($this->pattern, $this->getFilename()));
+	}
+}
+
 class FileCollector {
 	private $base_path;
 	private $base_dir;
@@ -8,12 +31,20 @@ class FileCollector {
 	function __construct($path) {
 		$this->base_path = $path;
 		$this->base_dir = basename($path);
-		$this->collection = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path), true);
+		$this->collection = new RecursiveDirectoryIterator($path);
+	}
+	
+	function includeByPattern($pattern) {
+		$this->collection = new FilePatternIncludeFilter($this->collection, $pattern);
+	}
+	
+	function excludeByPattern($pattern) {
+		$this->collection = new FilePatternExcludeFilter($this->collection, $pattern);
 	}
 	
 	function getManifest() {
 		$map = array();
-		foreach($this->collection as $file) {
+		foreach(new RecursiveIteratorIterator($this->collection) as $file) {
 			$map[] = array(
 				"filename" => $file->getFilename(),
 				"relative_path" => $this->base_dir . str_replace($this->base_path, '', $file->getPathname()),
