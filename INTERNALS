@@ -23,3 +23,5 @@ Questions
 
 Should the token analyzer be run as the collector processes a file, or should the files be
 collected then the tokens analyzed separately?
+
+PHP 5.3 compatibility.
