@@ -4,26 +4,33 @@ require_once dirname(__FILE__).'/../Yarrow/Doc.php';
 class FileCollectorTest extends PHPUnit_Framework_TestCase {
 	
 	function testFilterAllFilesByIncludePattern() {
-		$collector = new FileCollector(dirname(__FILE__));
+		$collector = new FileCollector(dirname(__FILE__).'/Samples');
 		$collector->includeByPattern("/\.php$/");
-		$this->assertEquals(4, count($collector->getManifest()));
+		$manifest = $collector->getManifest();
+		
+		$this->assertEquals(3, count($manifest));
+		$this->assertEquals('sample.class.php', $manifest[0]['filename']);
+		$this->assertEquals('sample.php', $manifest[1]['filename']);
+		$this->assertEquals('SampleObject.php', $manifest[2]['filename']);
 	}
 	
 	function testFilterFilesByIncludePattern() {
-		$collector = new FileCollector(dirname(__FILE__));
+		$collector = new FileCollector(dirname(__FILE__).'/Samples');
 		$collector->includeByPattern("/\.class\.php$/");
-		$this->assertEquals(1, count($collector->getManifest()));
+		$manifest = $collector->getManifest();
+		
+		$this->assertEquals(1, count($manifest));
+		$this->assertEquals('sample.class.php', $manifest[0]['filename']);
+		$this->assertEquals('Samples/sample.class.php', $manifest[0]['relative_path']);
 	}
 	
 	function testFilterFilesByExcludePattern() {
-		$collector = new FileCollector(dirname(__FILE__));
+		$collector = new FileCollector(dirname(__FILE__).'/Samples');
 		$collector->excludeByPattern("/\.class\.php$/");
-		$this->assertEquals(3, count($collector->getManifest()));
+		$manifest = $collector->getManifest();
+		
+		$this->assertEquals(2, count($manifest));
+		$this->assertEquals('sample.php', $manifest[0]['filename']);
+		$this->assertEquals('SampleObject.php', $manifest[1]['filename']);		
 	}
-	
-	function testFullGeneratorRun() {
-		//$generator = new Generator();
-		//$generator->run(dirname(__FILE__)."/Samples");
-	}
-	
 }
