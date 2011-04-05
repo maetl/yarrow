@@ -36,6 +36,8 @@ class CodeParser {
 			
 			list($token, $value) = $this->currentSymbol();
 			
+			echo $value;
+			
 			switch ($token) {
 				case T_DOC_COMMENT: {
 					$this->shredDocBlock();
@@ -55,7 +57,7 @@ class CodeParser {
 	}
 	
 	/**
-	 * Return the current symbol 
+	 * Return the symbol at current position in the token stream.
 	 */
 	function currentSymbol() {
 		return $this->tokens[$this->current];
