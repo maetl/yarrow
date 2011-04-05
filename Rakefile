@@ -1,5 +1,7 @@
+# build scripts and essential dittys
 
+desc "Run all PHPUnit tests"
 task :test do
-  sh "php Tests/ClassBlockTest.php"
+  sh "phpunit Tests"
 end
 

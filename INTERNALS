@@ -19,9 +19,13 @@ Processing a PHP library should require roughly the following steps:
 5. Generate HTML template files to output directory
 
 Questions
-=========
+---------
 
 Should the token analyzer be run as the collector processes a file, or should the files be
 collected then the tokens analyzed separately?
 
-PHP 5.3 compatibility.
+PHP 5.3 compatibility
+---------------------
+
+- Add new token signatures
+- Anonymous functions?
