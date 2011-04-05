@@ -8,16 +8,11 @@ require_once dirname(__FILE__).'/../Yarrow/Doc.php';
 class ClassBlockTest extends PHPUnit_Framework_TestCase {
 
 	public function testAnalyzeFile() {
-		
 		$analyzer = new Analyzer();
 		$analyzer->analyzeFile(__FILE__);
 		
-		$writer = new Writer();
-		
-		$html = $writer->dumpHtml($analyzer->classes, $analyzer->docblocks);
-		
-		$this->assertContains(__CLASS__, $html);
-		$this->assertContains("amusing piece", $html);
+		$this->assertEquals(count($analyzer->classes), 1);
+		$this->assertEquals($analyzer->classes[0]->methodCount(), 4);
 	}
 	
 	/**

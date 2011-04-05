@@ -32,6 +32,10 @@ class ClassModel {
 		return $this->docblock;
 	}
 	
+	function methodCount() {
+		return count($this->functions);
+	}
+	
 	function __toString() {
 		return $this->name;
 	}
