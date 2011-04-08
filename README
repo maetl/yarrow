@@ -8,12 +8,10 @@ More info: http://yarrowdoc.org/
 Install
 -------
 
-*Not Yet Sorry!*
-
 The recommended method of installing Yarrow is through the official PEAR channel:
 
-$ pear channel-discover yarrowdoc.org
-$ pear install Yarrow
+$ pear channel-discover yo.yarrowdoc.org
+$ pear install yarrow/Yarrow
 
 (Depending on how PEAR is set up on your local system, you may need to use sudo)
 
