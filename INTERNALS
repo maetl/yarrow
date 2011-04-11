@@ -29,3 +29,33 @@ PHP 5.3 compatibility
 
 - Add new token signatures
 - Anonymous functions?
+
+Doc Comment Styles
+------------------
+
+##
+# Function name
+# - Public
+# - Something else
+#
+function doSomethingElse() {
+}
+
+// This is a comment about something.
+// 
+// This is a comment description that goes on for longer and longer.
+// This is a comment description that goes on for longer and longer.
+// This is a comment description that goes on for longer and longer.
+//
+function doSomething() {
+}
+
+/**
+ * A docblock (we all know what these are)
+ *
+ * @annotation value
+ * @anotherAnnotation value
+ */
+function doSomethingFast() {
+}
+
