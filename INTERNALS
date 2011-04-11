@@ -59,3 +59,48 @@ function doSomething() {
 function doSomethingFast() {
 }
 
+List of all tags supported by phpDocumentor
+-------------------------------------------
+
+@abstract
+@access
+@author
+@category
+@copyright
+@deprecated
+@example
+@final
+@filesource
+@global
+@ignore
+@internal
+@license
+@link
+@method
+@name
+@package
+@param
+@property
+@return
+@see
+@since
+@static
+@staticvar
+@subpackage
+@todo
+@tutorial
+@uses
+@var
+@version
+
+Inline tags
+-----------
+
+inline {@example}
+inline {@id}
+inline {@internal}}
+inline {@inheritdoc}
+inline {@link}
+inline {@source}
+inline {@toc}
+inline {@tutorial}
