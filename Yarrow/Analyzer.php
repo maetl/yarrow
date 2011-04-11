@@ -14,9 +14,7 @@ class Analyzer {
 	}
 
 	/**
-	 * Just shreds a PHP token stream for dockblocks in a single namespace.
-	 *
-	 * Attaches a docblock, class and method count.
+	 * Analyze the structure of a single code file.
 	 */
 	function analyzeFile($filename) {
 		$tokens = token_get_all(file_get_contents($filename));
