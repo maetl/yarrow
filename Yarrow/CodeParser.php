@@ -6,6 +6,11 @@
  */
 class CodeParser {
 	
+	/**
+	 * Base type for all PHP classes
+	 */
+	const PHP_stdClass = 'stdClass';
+	
 	private $tokens;
 	private $current;
 	

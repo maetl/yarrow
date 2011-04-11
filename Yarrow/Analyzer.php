@@ -5,11 +5,6 @@
  */
 class Analyzer {
 
-	/**
-	 * Base type for all PHP classes
-	 */
-	const PHP_stdClass = 'stdClass';
-
 	public function __construct() {
 	}
 
