@@ -4,17 +4,10 @@ require_once dirname(__FILE__).'/../Yarrow/Doc.php';
 
 class CodeParserTest extends PHPUnit_Framework_TestCase {
 	
-	function testTopLevelFunctionDeclaration() {
-		
-		$sample = "<?php
-			/**
-			 * This is a sample function in the top level namespace.
-			 */
-			function sample_func() { return true; }";
-		
-		$tokens = token_get_all($sample);
+	function testTopLevelFunctionDeclaration() {		
+		$tokens = token_get_all(file_get_contents(dirname(__FILE__).'/Samples/sample_function.php'));
 		
 		$parser = new CodeParser($tokens);
-		$parser->parse(); // FIX THIS!!
+		$parser->parse();
 	}
 }

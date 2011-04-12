@@ -18,5 +18,6 @@ class Analyzer {
 		$parser->parse();
 
 		$this->classes = $parser->classes;
+		$this->globals = $parser->globals;
 	}
 }

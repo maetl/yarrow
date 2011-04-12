@@ -26,7 +26,9 @@ class CodeParser {
 		$this->docblocks = array();
 		$this->classes = array();
 		$this->functions = array();
-		$this->docblockScope = false;		
+		$this->globals = array();
+		$this->docblockScope = false; // replace these with a stack
+		$this->classScope = false;	  // that holds nested scope state
 	}
 	
 	/**
@@ -40,8 +42,6 @@ class CodeParser {
 			if ($this->skipSyntax()) continue;
 			
 			list($token, $value) = $this->currentSymbol();
-			
-			echo $value;
 			
 			switch ($token) {
 				case T_DOC_COMMENT: {
@@ -92,6 +92,7 @@ class CodeParser {
 		if ($this->docblockScope) {
 			$class->addDocblock(array_pop($this->docblocks));
 			$this->docblockScope = false;
+			$this->classScope = true;
 		}
 		$this->classes[] = $class;
 	}
@@ -123,8 +124,12 @@ class CodeParser {
 			$func->addDocblock(array_pop($this->docblocks));
 			$this->docblockScope = false;
 		}
-		$class = end($this->classes);
-		$class->addFunction($func);
+		if ($this->classScope) {
+			$class = end($this->classes);
+			$class->addFunction($func);
+		} else {
+			$this->globals[] = $func;
+		}
 	}
 	
 	/**
