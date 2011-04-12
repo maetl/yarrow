@@ -104,3 +104,8 @@ inline {@link}
 inline {@source}
 inline {@toc}
 inline {@tutorial}
+
+References
+----------
+
+Giriprasad Sridhara, Emily Hill, Divya Muppaneni, Lori Pollock, and K. Vijay-Shanker. 2010. Towards automatically generating summary comments for Java methods. In Proceedings of the IEEE/ACM international conference on Automated software engineering (ASE '10). ACM, New York, NY, USA, 43-52. DOI=10.1145/1858996.1859006 http://doi.acm.org/10.1145/1858996.1859006
