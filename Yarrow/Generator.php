@@ -15,6 +15,20 @@ abstract class Generator {
 		$this->ensureDirectoryExists($target);
 		$this->directory = $target;
 		$this->objectModel = $model;
+		
+		$this->validateTemplateMethods();
+	}
+	
+	/**
+	 * Validate the template methods provided by the subclass.
+	 */
+	private function validateTemplateMethods() {
+		$templateIndex = array_keys($this->getTemplateMap());
+		$objectIndex = array_keys($this->getObjectMap());
+		
+		if ($templateIndex != $objectIndex) {
+			throw new ConfigurationError("getTemplateMap and getObjectMap must provide matching keys.");
+		}
 	}
 	
 	private function ensureDirectoryExists($target) {
@@ -55,14 +69,6 @@ abstract class Generator {
 	 * Return a mapping between template types and provided output templates.
 	 */
 	abstract protected function getTemplateMap();
-	
-	/**
-	 * Return the name of a key template mapping
-	 */
-	protected function getTemplateName($key) {
-		$templates = $this->getTemplateMap();
-		return (isset($templates[$key])) ? $templates[$key] : false;	
-	}
 	
 	/**
 	 * Generates documentation from template methods provided by subclass.

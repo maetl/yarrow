@@ -15,6 +15,27 @@ class StubTemplateEngine {
 	
 }
 
+class MismatchingTemplateMethodGenerator extends Generator {
+	
+	protected function getObjectMap() {
+		return array(
+				'index'  => array('index'),
+				'file'   => array('file')
+			   );
+	}
+	
+	protected function getTemplateMap() {
+		return array(
+				'index'  => 'index.tpl'
+			   );
+	}
+	
+	protected function getTemplateEngine() {
+		return false;
+	}
+	
+}
+
 class StubGenerator extends Generator {
 	
 	protected function getObjectMap() {
@@ -64,41 +85,50 @@ class StubObjectModel extends ObjectModel {
 
 class GeneratorTest extends PHPUnit_Framework_TestCase {
 	
+	public function setUp() {
+		$this->target = dirname(__FILE__) . '/StubClassDocs';
+	}
+	
+	public function tearDown() {
+		if (is_dir($this->target)) rmdir($this->target);
+	}
+	
+	/**
+	 * @expectedException ConfigurationError
+	 */
+	public function testMismatchingTemplateMethodGeneratorThrowsException() {
+		$generator = new MismatchingTemplateMethodGenerator($this->target, false);
+	}
+	
 	public function testGeneratorRecognizesSimpleTemplateMap() {
-		$target = dirname(__FILE__).'/StubClassDocs';
 		$model = new StubObjectModel();
 		
-		$generator = new StubGenerator($target, $model);
+		$generator = new StubGenerator($this->target, $model);
 		$generator->makeDocs();
 		
-		$this->assertTrue(file_exists($target.'/index.html'));
-		$this->assertTrue(file_exists($target.'/file-stubclass.html'));
-		$this->assertTrue(file_exists($target.'/class-stubclass.html'));
+		$this->assertTrue(file_exists($this->target.'/index.html'));
+		$this->assertTrue(file_exists($this->target.'/file-stubclass.html'));
+		$this->assertTrue(file_exists($this->target.'/class-stubclass.html'));
 		
-		unlink($target.'/index.html');
-		unlink($target.'/file-stubclass.html');
-		unlink($target.'/class-stubclass.html');
-		rmdir($target);
+		unlink($this->target.'/index.html');
+		unlink($this->target.'/file-stubclass.html');
+		unlink($this->target.'/class-stubclass.html');
 	}
 	
 	public function testCanMakeTargetDirectoryWhenNotExisting() {
-		$target = dirname(__FILE__).'/Docs';
+		$this->target = dirname(__FILE__).'/Docs';
 		$model = new ObjectModel();
 		
-		$generator = new StubGenerator($target, $model);
-		$this->assertTrue(is_dir($target));
-		
-		rmdir($target);
+		$generator = new StubGenerator($this->target, $model);
+		$this->assertTrue(is_dir($this->target));
 	}
 	
 	public function testCanMakeTargetDirectoryWhenAlreadyExisting() {
-		$target = dirname(__FILE__).'/Docs';
+		$this->target = dirname(__FILE__).'/Docs';
 		$model = new ObjectModel();
-		mkdir($target);
+		mkdir($this->target);
 		
-		$generator = new StubGenerator($target, $model);
-		$this->assertTrue(is_dir($target));
-		
-		rmdir($target);
+		$generator = new StubGenerator($this->target, $model);
+		$this->assertTrue(is_dir($this->target));
 	}
 }
