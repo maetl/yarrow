@@ -8,9 +8,7 @@ More info: http://yarrowdoc.org/
 Motivation
 ----------
 
-PhpDocumentor is more or less a defunct project. Maybe some good samaritan will resurrect it on GitHub (or has already), but it will be unlikely that this good soul is able to overcome. Standards of design and expectations within the developer community have changed remarkably since 2004, when PhpDocumentor reached its zenith.
-
-The needs of people writing libraries and utility classes are not the same as those of people working on large applications. In order to be useful, a documentation generator must provide value in both of these use cases.
+The needs of people writing libraries and utility classes are not the same as those of people working on large applications. In order to be useful, a documentation generator must provide value in a wide variety of use cases where concise and readable documentation is required in a format that suits the particular size and shape of a PHP project.
 
 Yarrow takes the approach that documentation output should not be locked to the class-per-file pattern. This provides the flexibility to produce diverse documents – from a single page manual for a small, tightly focused API, to a multi-page documentation system for a large application.
 
