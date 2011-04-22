@@ -55,10 +55,9 @@ abstract class Generator {
 	}
 	
 	/**
-	 * Return an instance of the template engine to convert object mappings
-	 * into an output string.
+	 * Return an instance of the template converter provided by the generator.
 	 */
-	abstract protected function getTemplateEngine();
+	abstract protected function getConverter();
 	
 	/**
 	 * Return a mapping between template types and provided object model
@@ -74,18 +73,18 @@ abstract class Generator {
 	 * Generates documentation from template methods provided by subclass.
 	 */
 	public function makeDocs() {
-		$template = $this->getTemplateEngine();
-		$templateMap = $this->getTemplateMap();
-		$fileMap = $this->getObjectMap();
+		$converter = $this->getConverter();
+		$templates = $this->getTemplateMap();
+		$objectMap = $this->getObjectMap();
 		
-		foreach($fileMap as $index => $objects) {
-			foreach($objects as $object) {
+		foreach ($objectMap as $index => $objects) {
+			foreach ($objects as $object) {
 				$objectKey = ucfirst($index);
 				$variables = array(
 								$objectKey    => $object,
 								'ObjectModel' => $this->objectModel
 							 );
-				$content = $template->render($templateMap[$index], $variables);
+				$content = $converter->render($templates[$index], $variables);
 				$filename = $this->convertToFilename($object);
 				$this->writeFile($filename, $content);
 			}

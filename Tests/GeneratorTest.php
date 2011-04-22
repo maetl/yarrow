@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__).'/../Yarrow/Autoload.php';
 
-class StubTemplateEngine {
+class StubConverter {
 	
 	function render($template, $variables) {
 		$output = "<html><head><title>Doc Test</title></head><body><ul>";
@@ -29,7 +29,7 @@ class PHPTemplateStubGenerator extends Generator {
 			   );
 	}
 	
-	protected function getTemplateEngine() {
+	protected function getConverter() {
 		return new PHPConverter(dirname(__FILE__).'/Templates/PHP');
 	}
 }
@@ -49,7 +49,7 @@ class MismatchingTemplateMethodGenerator extends Generator {
 			   );
 	}
 	
-	protected function getTemplateEngine() {
+	protected function getConverter() {
 		return false;
 	}
 }
@@ -72,8 +72,8 @@ class StubGenerator extends Generator {
 			   );
 	}
 	
-	protected function getTemplateEngine() {
-		return new StubTemplateEngine();
+	protected function getConverter() {
+		return new StubConverter();
 	}
 }
 
