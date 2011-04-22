@@ -18,6 +18,41 @@ Processing a PHP library should require roughly the following steps:
 4. Feed the tree of analyzed objects to the output converter
 5. Generate HTML template files to output directory
 
+Usage Sketch
+------------
+
+Usage:
+
+ $ yarrow <input> <output> [options]
+
+ <input>  - Path to PHP code files or an individual PHP file.
+ <output> - Path to the generated documentation. If the directory does 
+            not exist, it is created. If it does exist, it is 
+            overwritten.
+
+ Options
+
+  Use -o or --option for boolean switches and --option=value or --option:value
+  for options that require an explicit value to be set.
+
+  -h    --help     [switch]   Display this help message
+  -v    --version  [switch]   Display package version
+  -d    --dry      [switch]   Dry run. Parses the code and gives warnings,
+                              but doesn’t build output.
+  -p    --package  [string]   Package structure. Used to determine organization
+                              of the code into packages. Must be one of the
+                              following:
+                                - namespace (use PHP 5.3 namespace convention)
+                                - pear (use PEAR package naming conventions)
+                                - tags (use @package and @subpackage tags)
+                                - folder (treat directories as package names)
+                                - none (do not group code into packages)
+  -t    --template [string]   Output templates to use.
+  -
+
+
+yarrow 
+
 Questions
 ---------
 
