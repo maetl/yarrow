@@ -3,7 +3,7 @@
 /**
  * Converter for classic PHP style templating.
  */
-class PHPTemplateEngine extends TemplateConverter {
+class PHPConverter extends TemplateConverter {
 	
 	/**
 	 * Renders a template, applying passed in variables.

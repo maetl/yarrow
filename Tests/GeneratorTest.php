@@ -30,7 +30,7 @@ class PHPTemplateStubGenerator extends Generator {
 	}
 	
 	protected function getTemplateEngine() {
-		return new PHPTemplateEngine(dirname(__FILE__).'/Templates/PHP');
+		return new PHPConverter(dirname(__FILE__).'/Templates/PHP');
 	}
 }
 
