@@ -1,18 +1,12 @@
 <?php
 
 /**
- * Handler for classic PHP style templating.
+ * Converter for classic PHP style templating.
  */
-class PHPTemplateEngine {
-	
-	private $templatePath;
-	
-	function __construct($path) {
-		$this->templatePath = $path;
-	}
+class PHPTemplateEngine extends TemplateConverter {
 	
 	/**
-	 * Renders a template to the response buffer.
+	 * Renders a template, applying passed in variables.
 	 * 
 	 * @throws Exception
 	 * @param string $template name of template file
@@ -21,14 +15,14 @@ class PHPTemplateEngine {
 	public function render($template, $variables) {
 		ob_start();
 		extract($variables);
-		$templateFile = $this->templatePath . '/' . $template;
+		$templateFile = $this->getTemplatePath() . '/' . $template;
 		if (file_exists($templateFile)) {
 			include $templateFile;
 		} else {
-			throw new Exception("Template $template not found in {$this->templatePath}.");
+			throw new Exception("Template $template not found in {$this->getTemplatePath()}.");
 		}
 		$out = ob_get_contents();
 		ob_clean();
 		return $out;
-	}	
+	}
 }
