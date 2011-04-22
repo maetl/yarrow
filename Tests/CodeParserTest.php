@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__).'/../Yarrow/Doc.php';
+require_once dirname(__FILE__).'/../Yarrow/Autoload.php';
 
 class CodeParserTest extends PHPUnit_Framework_TestCase {
 	

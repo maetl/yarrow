@@ -1,5 +1,6 @@
 <?php
-require_once dirname(__FILE__).'/../Yarrow/Doc.php';
+
+require_once dirname(__FILE__).'/../Yarrow/Autoload.php';
 
 class FileCollectorTest extends PHPUnit_Framework_TestCase {
 	

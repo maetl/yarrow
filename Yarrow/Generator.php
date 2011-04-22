@@ -1,28 +1,23 @@
 <?php
 
-class Generator {
+abstract class Generator {
 	
-	function run($path) {
-		$this->analyzeProject($path);
-		$this->generateDocs();
+	private $directory;
+	
+	private $objectModel;
+	
+	/**
+	 * @param $target string path to target directory
+	 * @param $model object model from analysis
+	 */
+	public function __construct($target, $model) {
+		//$target = full_path_convert($target);
+		$this->ensureDirectoryExists($target);
+		$this->directory = $target;
+		$this->objectModel = $model;
 	}
 	
-	function analyzeProject($path) {
-		
-		$collector = new FileCollector($path);
-		$analyzer = new Analyzer();
-		
-		
-		foreach($collector->getManifest() as $file) {
-			$analyzer->analyzeFile($file['absolute_path']);
-		}
-		
-		print_r($analyzer->classes);
-		
+	private function ensureDirectoryExists($target) {
+		if (!is_dir($target)) mkdir($target);
 	}
-	
-	function generateDocs() {
-		// not implemented
-	}
-	
 }

@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__).'/../Yarrow/Doc.php';
+require_once dirname(__FILE__).'/../Yarrow/Autoload.php';
 
 /**
  * This is indeed a very amusing piece of machinery.
