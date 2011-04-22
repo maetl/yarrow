@@ -85,7 +85,7 @@ abstract class Generator {
 								$objectKey    => $object,
 								'ObjectModel' => $this->objectModel
 							 );
-				$content = $template->render($index, $variables);
+				$content = $template->render($templateMap[$index], $variables);
 				$filename = $this->convertToFilename($object);
 				$this->writeFile($filename, $content);
 			}
