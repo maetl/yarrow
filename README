@@ -5,6 +5,10 @@ Finally, a tidy documentation tool for PHP projects.
 
 More info: http://yarrowdoc.org/
 
+Yarrow shreds your PHP code files and converts their structure into user friendly API documentation.
+
+Yarrow is a fully object oriented library written in idiomatic PHP. You can easily extend it to produce your own custom documentation tools.
+
 Motivation
 ----------
 
@@ -20,7 +24,9 @@ The recommended method of installing Yarrow is through the official PEAR channel
 $ pear channel-discover yo.yarrowdoc.org
 $ pear install yarrow/Yarrow
 
-(Depending on how PEAR is set up on your local system, you may need to use sudo)
+Depending on how PEAR is set up on your local system, you may need to use sudo.
+
+If you download the code manually, you need to place the Yarrow folder somewhere on your PHP include path and add the yarrow.php file to your bin path, changing its permissions so that it is executable.
 
 Usage
 -----
