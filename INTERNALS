@@ -53,18 +53,6 @@ Usage:
 
 yarrow 
 
-Questions
----------
-
-Should the token analyzer be run as the collector processes a file, or should the files be
-collected then the tokens analyzed separately?
-
-PHP 5.3 compatibility
----------------------
-
-- Add new token signatures
-- Anonymous functions?
-
 Doc Comment Styles
 ------------------
 
@@ -93,6 +81,22 @@ function doSomething() {
  */
 function doSomethingFast() {
 }
+
+/*==================================================
+FOUND THIS STYLE USED IN SOME PARTICLETREE.COM CODE
+====================================================*/
+function doSomethingElse() {
+}
+
+Note: make sure docblocks operate independently of whitespace, eg:
+
+/**
+ * A docblock with line breaks in-front of the method declaration
+ */
+
+function doSomethingFast() {
+}
+
 
 List of all tags supported by phpDocumentor
 -------------------------------------------
