@@ -7,21 +7,6 @@
  *
  */
 
-for ($i = 1; $i < $_SERVER["argc"]; $i++) {
+require 'Yarrow/Autoload.php';
 
-    switch($_SERVER["argv"][$i]) {
-
-        case "-v":
-        case "--version":
-            echo  "Yarrow 0.0.1\n";
-            exit;
-        break;
-
-        case "-h":
-        case "--help":
-            echo file_get_contents('README');
-        break;
-
-    }
-
-}
+ConsoleRunner::main();
