@@ -6,7 +6,12 @@ class ClassModel {
 	private $functions;
 	private $docblock;
 	
-	function __construct($name, $ancestor) {
+	/**
+	 * Base type for all PHP classes
+	 */
+	const BASE_TYPE = 'stdClass';
+	
+	function __construct($name, $ancestor=self::BASE_TYPE) {
 		$this->name = $name;
 		$this->ancestor = $ancestor;
 		$this->functions = array();
@@ -29,6 +34,6 @@ class ClassModel {
 	}
 	
 	function __toString() {
-		return $this->name;
+		return 'Class ' . $this->name;
 	}
 }
