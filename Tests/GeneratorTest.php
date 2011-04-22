@@ -17,6 +17,14 @@ class StubTemplateEngine {
 
 class StubGenerator extends Generator {
 	
+	protected function getObjectMap() {
+		return array(
+				'index'  => array('index'),
+				'file'   => $this->objectModel->getFiles(),
+				'class'  => $this->objectModel->getClasses()
+			   );
+	}
+	
 	protected function getTemplateMap() {
 		return array(
 				'index'  =>  'index.tpl',

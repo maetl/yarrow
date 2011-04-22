@@ -27,25 +27,6 @@ abstract class Generator {
 	}
 	
 	/**
-	 * Return an instance of the template engine to convert object mappings
-	 * into an output string.
-	 */
-	abstract protected function getTemplateEngine();
-	
-	/**
-	 * Return a mapping between template types and provided objects.
-	 */
-	abstract protected function getTemplateMap();
-	
-	/**
-	 * Return the name of a key template mapping
-	 */
-	protected function getTemplateName($key) {
-		$templates = $this->getTemplateMap();
-		return (isset($templates[$key])) ? $templates[$key] : false;	
-	}
-	
-	/**
 	 * File extension of generated documentation. Defaults to '.html'.
 	 */
 	protected function getFileExtension() {
@@ -60,43 +41,46 @@ abstract class Generator {
 	}
 	
 	/**
+	 * Return an instance of the template engine to convert object mappings
+	 * into an output string.
+	 */
+	abstract protected function getTemplateEngine();
+	
+	/**
+	 * Return a mapping between template types and provided object model
+	 */
+	abstract protected function getObjectMap();
+	
+	/**
+	 * Return a mapping between template types and provided output templates.
+	 */
+	abstract protected function getTemplateMap();
+	
+	/**
+	 * Return the name of a key template mapping
+	 */
+	protected function getTemplateName($key) {
+		$templates = $this->getTemplateMap();
+		return (isset($templates[$key])) ? $templates[$key] : false;	
+	}
+	
+	/**
 	 * Generates documentation from template methods provided by subclass.
 	 */
 	public function makeDocs() {
 		$template = $this->getTemplateEngine();
-		$templates = $this->getTemplateMap();
+		$templateMap = $this->getTemplateMap();
+		$fileMap = $this->getObjectMap();
 		
-		// todo: better strategy for generating static templates
-		if ($indexTemplate = $this->getTemplateName('index')) {
-			$variables = array('ObjectModel' => $this->objectModel);
-			$content = $template->render($indexTemplate, $variables);
-			$this->writeFile('index', $content);
-		}
-		
-		// todo: remove duplication by modifying getTemplateMap to generate its own
-		//       template bindings from the given list of objects.
-		if ($fileTemplate = $this->getTemplateName('file')) {
-			foreach($this->objectModel->getFiles() as $file) {
+		foreach($fileMap as $index => $objects) {
+			foreach($objects as $object) {
+				$objectKey = ucfirst($index);
 				$variables = array(
-								'File' => $file,
+								$objectKey    => $object,
 								'ObjectModel' => $this->objectModel
 							 );
-				$content = $template->render($fileTemplate, $variables);
-				$filename = $this->convertToFilename($file);
-				$this->writeFile($filename, $content);
-			}
-		}
-		
-		// todo: remove duplication by modifying getTemplateMap to generate its own
-		//       template bindings from the given list of objects.
-		if ($classTemplate = $this->getTemplateName('class')) {
-			foreach($this->objectModel->getClasses() as $class) {
-				$variables = array(
-								'Class' => $class,
-								'ObjectModel' => $this->objectModel
-							 );
-				$content = $template->render($classTemplate, $variables);
-				$filename = $this->convertToFilename($class);
+				$content = $template->render($index, $variables);
+				$filename = $this->convertToFilename($object);
 				$this->writeFile($filename, $content);
 			}
 		}
