@@ -7,51 +7,78 @@
  */
 
 class ConsoleRunner {
+	const APPNAME = "Yarrow";
+	const VERSION = "@@package_version@@";
 	
-	public static function main() {
+	public static function main($arguments) {
 		
-		for ($i = 1; $i < $_SERVER["argc"]; $i++) {
+		self::printVersionHeader();
+		
+		$targets = array();
+		$options = array();
+		$length = count($arguments);
+		
+		for ($i = 1; $i < $length; $i++) {
 			
-		    switch($_SERVER["argv"][$i]) {
+		    switch($arguments[$i]) {
 				
-		        case "-v":
-		        case "--version":
-		            self::printVersion();
-		        break;
+		        case "-v": case "--version":
+					return;
+		        	break;
 				
-		        case "-h":
-		        case "--help":
-		            self::printHelp();
-		        break;
-				
-				case "-d";
-				case "--dry":
-					self::printLine("add option, dry run...");
-				break;
-		    }
+		        case "-h": case "--help":
+					return self::printHelpMessage();
+		        	break;
 		
+				default:
+					if (self::isOption($arguments[$i])) {
+						// parseOption;
+					} else {
+						$targets[] = $arguments[$i];
+					}
+					break;
+				
+			}
+		}
+		
+		if (count($targets) < 2) {
+			return self::printUsageMessage();
 		}
 	}
 	
-	const EOL = "\n";
-	
-	private static function printLine($line) {
-		echo $line . self::EOL;
-	}
-	
-	private static function printVersion() {
-		echo "Yarrow " . file_get_contents('VERSION') . self::EOL . self::EOL;
-	}
-	
-	private static function printHelp() {
-		echo file_get_contents('README') . self::EOL;
-	}
-	
-	public function __construct($args) {
-		
-	}
-	
-	public function isOption($argument) {
+	public static function isOption($argument) {
 		return (substr($argument, 0, 1) == '-');
+	}
+	
+	private static function printUsageMessage() {
+		echo PHP_EOL . PHP_EOL . "No documentation targets." . PHP_EOL;
+	}
+	
+	private static function printVersionHeader() {
+		echo implode(" ", array(self::APPNAME, self::VERSION));
+	}
+	
+	private static function printHelpMessage() {
+		echo <<<HELP
+
+
+Usage:
+
+ $ yarrow <input> <output> [options]
+
+ <input>  - Path to PHP code files or an individual PHP file.
+ <output> - Path to the generated documentation. If the directory does 
+            not exist, it is created. If it does exist, it is overwritten.
+
+ Options
+
+  Use -o or --option for boolean switches and --option=value or --option:value
+  for options that require an explicit value to be set.
+
+  -h    --help     [switch]   Display this help message and exit.
+  -v    --version  [switch]   Display version header and exit.
+
+
+HELP;
 	}
 }

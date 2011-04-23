@@ -9,4 +9,4 @@
 
 require 'Yarrow/Autoload.php';
 
-ConsoleRunner::main();
+ConsoleRunner::main($_SERVER["argv"]);
