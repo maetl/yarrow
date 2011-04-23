@@ -14,7 +14,9 @@ class Analyzer {
 	function analyzeFile($filename) {
 		$tokens = token_get_all(file_get_contents($filename));
 		
-		$parser = new CodeParser($tokens);
+		$listener = new CodeListener();
+		
+		$parser = new CodeParser($tokens, $listener);
 		$parser->parse();
 
 		$this->classes = $parser->classes;

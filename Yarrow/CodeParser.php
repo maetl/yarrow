@@ -12,21 +12,28 @@ class CodeParser {
 	const PHP_stdClass = 'stdClass';
 	
 	private $tokens;
+	private $total;
 	private $current;
+	private $scope;
+	private $file;
 	
 	/**
 	 * @param $tokens array of token identifiers
 	 */
-	function __construct($tokens) {
+	function __construct($tokens, $listener) {
 		$this->tokens = $tokens;
 		$this->total = count($this->tokens);
 		$this->current = 0;
+		
+		$this->scope = new ScopeStack();
+		$this->listener = $listener;
 		
 		// temporary array storage until listener interface is implemented
 		$this->docblocks = array();
 		$this->classes = array();
 		$this->functions = array();
 		$this->globals = array();
+		
 		$this->docblockScope = false; // replace these with a stack
 		$this->classScope = false;	  // that holds nested scope state
 	}
@@ -37,6 +44,7 @@ class CodeParser {
 	 * Attaches a docblock, class and method count.
 	 */
 	function parse() {
+		
 		for ($this->current = 0; $this->current < $this->total; $this->current++) {
 			
 			if ($this->skipSyntax()) continue;
@@ -57,6 +65,7 @@ class CodeParser {
 				case T_FUNCTION: {
 					$this->shredFunction();
 				}
+				break;
 			}
 		}
 	}
@@ -73,6 +82,17 @@ class CodeParser {
 	 */
 	function skipSyntax() {
 		return (is_string($this->currentSymbol()));
+	}
+	
+	/**
+	 * Acceptor to shred a docblock out of the token stream and
+	 * hand it off to a semantic txt parser.
+	 */
+	function shredDocBlock() {
+		$symbol = $this->currentSymbol();
+		$this->docblocks[] = $symbol[1];
+		$this->listener->addDocblock($symbol[1]);
+		$this->docblockScope = true;
 	}
 	
 	/**
@@ -130,16 +150,6 @@ class CodeParser {
 		} else {
 			$this->globals[] = $func;
 		}
-	}
-	
-	/**
-	 * Acceptor to shred a docblock out of the token stream and
-	 * hand it off to a semantic txt parser.
-	 */
-	function shredDocBlock() {
-		$symbol = $this->currentSymbol();
-		$this->docblocks[] = $symbol[1];
-		$this->docblockScope = true;
 	}
 	
 }
