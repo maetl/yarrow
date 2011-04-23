@@ -5,14 +5,8 @@ require_once dirname(__FILE__).'/../Yarrow/Autoload.php';
 class StubConverter {
 	
 	function render($template, $variables) {
-		$output = "<html><head><title>Doc Test</title></head><body><ul>";
-		foreach($variables['ObjectModel']->getClasses() as $class) {
-			$output .= "<li>" . $class . "</li>";
-		}
-		$output .= "</ul></body></html>";
-		return $output;
+		return __METHOD__;
 	}
-	
 }
 
 class PHPTemplateStubGenerator extends Generator {
@@ -98,7 +92,6 @@ class StubObjectModel extends ObjectModel {
 		$file->addClass($this->buildStubClassModel());
 		return array($file);
 	}
-	
 }
 
 class GeneratorTest extends PHPUnit_Framework_TestCase {
