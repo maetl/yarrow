@@ -6,13 +6,20 @@
  *
  */
 
+/**
+ * Provides a command line interface to the Yarrow application.
+ */
 class ConsoleRunner {
 	const APPNAME = "Yarrow";
 	const VERSION = "@@package_version@@";
 	
+	/**
+	 * Main method to run the application.
+	 * @param array $arguments a list of command line arguments
+	 */
 	public static function main($arguments) {
 		
-		self::printVersionHeader();
+		self::printVersion();
 		
 		$targets = array();
 		$options = array();
@@ -22,12 +29,14 @@ class ConsoleRunner {
 			
 		    switch($arguments[$i]) {
 				
-		        case "-v": case "--version":
+		        case "-v":
+				case "--version":
 					return;
 		        	break;
 				
-		        case "-h": case "--help":
-					return self::printHelpMessage();
+		        case "-h":
+				case "--help":
+					return self::printHelp();
 		        	break;
 		
 				default:
@@ -42,26 +51,38 @@ class ConsoleRunner {
 		}
 		
 		if (count($targets) < 2) {
-			return self::printUsageMessage();
+			return self::printMissing();
 		}
 	}
 	
+	/**
+	 * Returns true if the given argument is a configuration option.
+	 * @return boolean
+	 */
 	public static function isOption($argument) {
 		return (substr($argument, 0, 1) == '-');
 	}
 	
-	private static function printUsageMessage() {
-		echo PHP_EOL . PHP_EOL . "No documentation targets." . PHP_EOL;
+	/**
+	 * Show an error message for missing documentation targets when
+	 * input and output paths are incorrectly supplied.
+	 */
+	private static function printMissing() {
+		echo "No documentation targets. You must specify <input> and <output> paths." . PHP_EOL;
 	}
 	
-	private static function printVersionHeader() {
-		echo implode(" ", array(self::APPNAME, self::VERSION));
+	/**
+	 * Show the version header.
+	 */
+	private static function printVersion() {
+		echo implode(" ", array(self::APPNAME, self::VERSION, PHP_EOL, PHP_EOL));
 	}
 	
-	private static function printHelpMessage() {
+	/**
+	 * Show the help information.
+	 */
+	private static function printHelp() {
 		echo <<<HELP
-
-
 Usage:
 
  $ yarrow <input> <output> [options]
