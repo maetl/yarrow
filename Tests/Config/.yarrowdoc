@@ -14,5 +14,6 @@ converter:	Twig
 # More options to test variable conversion
 [options]
 array:		one,two,three
-truthy:		1
-falsy:		false	
+integer:	1
+truthy:		On
+falsy:		Off

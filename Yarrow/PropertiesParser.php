@@ -46,10 +46,25 @@ class PropertiesParser extends Scanner {
 	}
 	
 	private function convertValue($value) {
+		$value = trim($value);
+		
 		if (strstr($value, ',')) {
-			return explode(',', trim($value));
+			return explode(',', $value);
 		}
-		return trim($value);
+		
+		if (is_numeric($value)) {
+			return intval($value);
+		}
+		
+		if (in_array(strtolower($value), array('on','true'))) {
+			return true;
+		}
+		
+		if (in_array(strtolower($value), array('off','false'))) {
+			return false;
+		}
+		
+		return $value;
 	}
 	
 	function load($path) {

@@ -14,7 +14,8 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals("/path/to/templates", $config->output['templates']);
 		$this->assertEquals("Twig", $config->output['converter']);
 		$this->assertEquals(array('one','two','three'), $config->options['array']);
-		$this->assertEquals(1, $config->options['truthy']);
-		$this->assertEquals("false", $config->options['falsy']);
+		$this->assertEquals(1, $config->options['integer']);
+		$this->assertSame(true, $config->options['truthy']);
+		$this->assertSame(false, $config->options['falsy']);
 	}
 }
