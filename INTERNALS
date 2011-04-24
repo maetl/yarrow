@@ -109,6 +109,41 @@ The default generators provided by Yarrow are:
 
 (None of these exist yet!)
 
+Configuration
+-------------
+
+Currently experimenting with a configuration format based on the .ini syntax, but using colons as delimiters rather than the equals symbol. Also supporting conversion to internal types for values. Currently only arrays.
+
+[section]
+property: value
+property2: value
+
+[section2]
+boolean: true
+list: one,two,three
+
+Now the question has to be what actual sections and properties should be supported (so that we can validate).
+
+If a .yarrowdoc file is not provided in the project root, and an alternative configuration is not provided,
+then we should generate a base config from default settings.
+
+ Sections:
+
+ Meta [meta]
+   The meta properties will be passed in the global context to each template.
+
+ Input [input]
+   Specify input and output patterns for file collector?
+   Specify particular docblock syntax and package structure?
+   Specify PHP version and particular settings on code structure (ignore properties/protected methods)
+
+ Output [output]
+   Set selected generator, template converter, and theme
+   
+ Helpers [helpers]
+   Register helper classes and stuff with the include_path? Need to work out a definitive way for this.
+
+
 Usage Sketch
 ------------
 
