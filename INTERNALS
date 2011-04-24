@@ -1,22 +1,113 @@
 Yarrow: Internals
 =================
 
-The intention is to build the documentation generator from the following three main components:
+Roughly, the Yarrow processing pipeline is divided into two main stages:
 
-- Parser/Collector
-- Object Model
-- Output Converter
+  - Input
+  - Output
 
-Processing a PHP library should require roughly the following steps:
+The input stage starts with a path to the PHP code to document, and results in
+a tree of objects representing the analyzed source code.
 
-1. Start at root directory of library
-2. Collect all *.php files within that directory
-3. Analyze the token stream of each PHP file
-   - build an object for each class
-   - build an object for each method in each class
-   - register all docblocks applying to each class and method
-4. Feed the tree of analyzed objects to the output converter
-5. Generate HTML template files to output directory
+This tree of objects is passed to the output stage, where a generator applies
+a map of files to output and supplies this context to a template converter
+which is responsible for actually generating the output content.
+
+In more detail:
+
+  - Input
+     - Map of input source files
+     - Tokenize each source file
+     - Parse an object tree from token stream
+       - Parse docblock syntax for comment tokens
+     - Append object tree for file/class to global object tree
+  - Output
+     - Construct generator with object tree context
+     - Run generator
+       - Run template converter for each output object
+       - Write file to output target for each rendered template
+       - Copy/render static files to output target
+
+The main extension point is at the Generator stage.
+
+The generator contains two template methods: getTemplateMap() and getObjectMap()
+which are used to specify the set of output objects to render.
+
+getObjectMap provides the set of individual objects to render as files, wheras
+getTemplateMap provides a mapping between template files and the object index.
+
+To render output as a single index.html file, implement an array with a single index:
+
+class SingleFileOutputGenerator {
+
+	/**
+	 * Specifies that the 'index.tpl' template should be used to render 
+	 * the 'index' object.
+	 */
+	function getTemplateMap() {
+		return array('index' => 'index.tpl');
+	}
+	
+	/**
+	 * Specifies that the index object consists of a single file
+	 * called 'index'.
+	 */
+	function getObjectMap() {
+		return array('index' => array('index'));
+	}
+}
+
+To render a matching documentation file for every PHP source file in the project:
+
+class CodeFileOutputGenerator {
+
+	/**
+	 * Specifies that the 'file.tpl' template should be used to render 
+	 * 'file' objects.
+	 */
+	function getTemplateMap() {
+		return array('file' => 'file.tpl');
+	}
+	
+	/**
+	 * Sets the index of file objects to the list of files collected from the project.
+	 */
+	function getObjectMap() {
+		return array('file' => $this->objectModel->getFiles());
+	}
+}
+
+Rendering a documentation file for each PHP class in the project is similar:
+
+class ClassFileOutputGenerator {
+
+	/**
+	 * Specifies that the 'file.tpl' template should be used to render 
+	 * 'file' objects.
+	 */
+	function getTemplateMap() {
+		return array('class' => 'class.tpl');
+	}
+	
+	/**
+	 * Sets the index of class objects to the list of classes collected from the project.
+	 */
+	function getObjectMap() {
+		return array('class' => $this->objectModel->getClasses());
+	}
+}
+
+These methods can be mixed and matched to build all kinds of custom documentation structures,
+with the caveat that the arrays returned by getTemplateMap and getObjectMap must contain
+matching indexes.
+
+The default generators provided by Yarrow are:
+
+  - SingleIndexGenerator
+  - ClassFileGenerator
+  - PEARPackageGenerator
+
+(None of these exist yet!)
 
 Usage Sketch
 ------------
@@ -151,7 +242,3 @@ Giriprasad Sridhara, Emily Hill, Divya Muppaneni, Lori Pollock, and K. Vijay-Sha
 
 - Possible Google Summer of Code Project?
 
-Templates On Yarrow Channel
----------------------------
-
-$ pear install yarrow/
