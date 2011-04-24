@@ -44,4 +44,18 @@ class DocblockParserTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals('This is a comment summary spanning multiple lines.', $parser->getSummary());		
 	}
 	
+	function testMultilineNormalizedText() {
+		$parser = new DocblockParser($this->loadDocblock('paragraphs'));
+		$parser->parse();
+		$expected = "This is a comment summary spanning multiple lines.\n\nThis is an additional paragraph spanning multiple lines.\n\nThis is a final paragraph.";
+		$this->assertContains($expected, $parser->getText());
+	}
+	
+	function testMultilinePrefixedNormalizedText() {
+		$parser = new DocblockParser($this->loadDocblock('paragraphsprefixed'));
+		$parser->parse();
+		$expected = "This is a comment summary spanning multiple lines.\n\nThis is an additional paragraph spanning multiple lines.\n\nThis is a final paragraph.";
+		$this->assertContains($expected, $parser->getText());
+	}
+	
 }

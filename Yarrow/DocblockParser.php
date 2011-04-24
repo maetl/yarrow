@@ -53,6 +53,13 @@ class DocblockParser {
 		return (isset($this->paragraphs[0])) ? $this->paragraphs[0] : '';
 	}
 	
+	/**
+	 * Returns a plaintext representation of the full comment text.
+	 */
+	function getText() {
+		return implode("\n\n", $this->paragraphs);
+	}
+	
 	function addParagraph($paragraph) {
 		$this->paragraphs[] = trim($paragraph);
 	}
