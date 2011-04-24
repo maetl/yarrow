@@ -89,7 +89,7 @@ class DocblockParser {
 	}
 	
 	/**
-	 * Parse the docblock and extract text descriptions and tags.
+	 * Extract text and tag structure from the docblock.
 	 */
 	function parse() {
 		if (strstr($this->source, "\n")) {
