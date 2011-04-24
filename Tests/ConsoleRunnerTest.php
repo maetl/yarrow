@@ -12,28 +12,33 @@ class ConsoleRunnerTest extends PHPUnit_Framework_TestCase {
 		ob_end_clean();
 	}
 	
+	function getVersionHeader() {
+		return ConsoleRunner::APPNAME . ' ' . ConsoleRunner::VERSION;
+	}
+	
 	function testEmptyArgumentsMessage() {
 		ConsoleRunner::main(array('yarrow'));
 		$output = ob_get_contents();
-		$this->assertStringStartsWith('Yarrow ' . ConsoleRunner::VERSION, $output);
+		$this->assertStringStartsWith($this->getVersionHeader() , $output);
 		$this->assertContains('No documentation targets.', $output);
 	}
 	
 	function testVersionMessage() {
 		ConsoleRunner::main(array('yarrow', '-v'));
 		$output = ob_get_contents();
-		$this->assertStringStartsWith('Yarrow ' . ConsoleRunner::VERSION, $output);
+		$this->assertStringStartsWith($this->getVersionHeader(), $output);
 	}
 
 	function testVersionMessageLong() {
 		ConsoleRunner::main(array('yarrow', '--version'));
 		$output = ob_get_contents();
-		$this->assertStringStartsWith('Yarrow ' . ConsoleRunner::VERSION, $output);
+		$this->assertStringStartsWith($this->getVersionHeader(), $output);
 	}	
 	
 	function testHelpMessage() {
 		ConsoleRunner::main(array('yarrow', '-h'));
 		$output = ob_get_contents();
+		$this->assertStringStartsWith($this->getVersionHeader(), $output);
 		$this->assertContains('Path to the generated documentation', $output);
 		$this->assertContains('Use -o or --option for boolean switches', $output);
 	}
@@ -41,6 +46,7 @@ class ConsoleRunnerTest extends PHPUnit_Framework_TestCase {
 	function testHelpMessageLong() {
 		ConsoleRunner::main(array('yarrow', '--help'));
 		$output = ob_get_contents();
+		$this->assertStringStartsWith($this->getVersionHeader(), $output);
 		$this->assertContains('Path to the generated documentation', $output);
 		$this->assertContains('Use -o or --option for boolean switches', $output);
 	}
@@ -48,12 +54,14 @@ class ConsoleRunnerTest extends PHPUnit_Framework_TestCase {
 	function testInvalidOptionMessage() {
 		ConsoleRunner::main(array('yarrow', '-j'));
 		$output = ob_get_contents();
+		$this->assertStringStartsWith($this->getVersionHeader(), $output);
 		$this->assertContains('Unrecognized option -j', $output);
 	}
 	
 	function testInvalidOptionMessageLong() {
 		ConsoleRunner::main(array('yarrow', '-jnvalid'));
 		$output = ob_get_contents();
+		$this->assertStringStartsWith($this->getVersionHeader(), $output);
 		$this->assertContains('Unrecognized option -jnvalid', $output);
 	}
 	
