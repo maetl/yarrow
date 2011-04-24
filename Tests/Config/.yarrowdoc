@@ -1,0 +1,13 @@
+[meta]
+title:		Configuration Test
+author:		Mark Rickerby
+
+[package]
+namespace: 	PEAR
+docblock:	phpdoc
+
+[output]
+generator: 	SingleIndex
+converter: 	PHP
+theme: 		MyTemplate
+options: 	one,two,three
