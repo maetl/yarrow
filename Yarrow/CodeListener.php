@@ -1,6 +1,6 @@
 <?php
 /**
- * Yarrow
+ * Yarrow {{version}}
  * Simple Documentation Generator
  * <http://yarrowdoc.org>
  *

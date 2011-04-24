@@ -1,6 +1,6 @@
 <?php
 /**
- * Yarrow
+ * Yarrow {{version}}
  * Simple Documentation Generator
  * <http://yarrowdoc.org>
  *
@@ -15,8 +15,8 @@
  * Provides a command line interface to the Yarrow application.
  */
 class ConsoleRunner {
-	const APPNAME = "Yarrow";
-	const VERSION = "@@package_version@@";
+	const APPNAME = '{{appname}}';
+	const VERSION = '{{version}}';
 	
 	/**
 	 * Main method to run the application.

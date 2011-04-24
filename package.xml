@@ -15,11 +15,11 @@
   <email>me@maetl.net</email>
   <active>yes</active>
  </lead>
- <date>2011-04-23</date>
- <time>20:18:46</time>
+ <date>2011-04-24</date>
+ <time>12:07:43</time>
  <version>
-  <release>0.0.2</release>
-  <api>0.0.2</api>
+  <release>0.0.3</release>
+  <api>0.0.3</api>
  </version>
  <stability>
   <release>alpha</release>
@@ -30,25 +30,64 @@
  <contents>
    <dir name="/">
      <file name="README" role="doc" />
-	 <file baseinstalldir="/" name="yarrow.php" install-as="yarrow" role="script" />
+	 <file name="LICENSE" role="doc" />
+	 <file name="INTERNALS" role="doc" />
+	 <file baseinstalldir="/" name="yarrow.php" install-as="yarrow" role="script">
+		<tasks:replace from="{{version}}" to="version" type="package-info" />	
+	 </file>
 	 <dir name="Yarrow">
-		<file name="Analyzer.php" role="php" />
-		<file name="Autoload.php" role="php" />
-		<file name="ClassModel.php" role="php" />
-		<file name="CodeListener.php" role="php" />
-		<file name="CodeParser.php" role="php" />
-		<file name="ConfigurationError.php" role="php" />
-		<file name="ConsoleRunner.php" role="php" />
-		<file name="DocblockModel.php" role="php" />
-		<file name="DocblockParser.php" role="php" />
-		<file name="FileCollector.php" role="php" />
-		<file name="FileModel.php" role="php" />
-		<file name="FunctionModel.php" role="php" />
-		<file name="Generator.php" role="php" />
-		<file name="ObjectModel.php" role="php" />
-		<file name="PHPConverter.php" role="php" />
-		<file name="ScopeStack.php" role="php" />
-		<file name="TemplateConverter.php" role="php" />
+		<file name="Analyzer.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
+		<file name="Autoload.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
+		<file name="ClassModel.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
+		<file name="CodeListener.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
+		<file name="CodeParser.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
+		<file name="ConfigurationError.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
+		<file name="ConsoleRunner.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+			<tasks:replace from="{{appname}}" to="name" type="package-info" />
+		</file>
+		<file name="DocblockModel.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
+		<file name="DocblockParser.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
+		<file name="FileCollector.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
+		<file name="FileModel.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
+		<file name="FunctionModel.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
+		<file name="Generator.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
+		<file name="ObjectModel.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
+		<file name="PHPConverter.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
+		<file name="ScopeStack.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
+		<file name="TemplateConverter.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
 	 </dir>
    </dir>
  </contents>
