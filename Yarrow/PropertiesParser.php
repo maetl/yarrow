@@ -47,7 +47,7 @@ class PropertiesParser extends Scanner {
 	
 	private function convertValue($value) {
 		if (strstr($value, ',')) {
-			return explode(',', $value);
+			return explode(',', trim($value));
 		}
 		return trim($value);
 	}
@@ -71,32 +71,19 @@ class PropertiesParser extends Scanner {
 	function parseLine() {
 		$char = $this->scanForward();
 		if ($char == ';' || $char == '#') {
-			$this->parseComment();
+			$this->scanUntil("\n");		
 		} elseif ($char == '[') {
-			$this->parseSection();
+			$section = $this->scanUntil("]");
+			$this->addSection($section);
+			$this->scanUntil("\n");		
 		} elseif ($char != "\n") {
-			$this->parseProperty();
+			$this->skipBack();
+			$key = $this->scanUntil(":");
+			$this->skipForward();
+			$value = $this->scanUntil("\n");
+			$this->addProperty($key, $value);
 		}
 	}
-	
-	function parseProperty() {
-		$this->skipBack();
-		$key = $this->scanUntil(":");
-		$this->skipForward();
-		$value = ltrim($this->scanUntil("\n"));
-		$this->addProperty($key, $value);
-	}
-	
-	function parseComment() {
-		$this->scanUntil("\n");
-	}
-	
-	function parseSection() {
-		$section = $this->scanUntil("]");
-		$this->addSection($section);
-		$this->scanUntil("\n");
-	}
-	
 }
 
 ?>
