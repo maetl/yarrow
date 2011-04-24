@@ -1,13 +1,18 @@
+; Meta Options
+; These are passed as variables to the global template context
 [meta]
 title:		Configuration Test
 author:		Mark Rickerby
+website:	http://yarrowdoc.org
 
-[package]
-namespace: 	PEAR
-docblock:	phpdoc
-
+# Output options
+# These are passed to the output generator and converter
 [output]
-generator: 	SingleIndex
-converter: 	PHP
-theme: 		MyTemplate
-options: 	one,two,three
+templates:	/path/to/templates
+converter:	Twig
+
+# More options to test variable conversion
+[options]
+array:		one,two,three
+truthy:		1
+falsy:		false	
