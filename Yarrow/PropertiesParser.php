@@ -64,25 +64,25 @@ class PropertiesParser extends Scanner {
 	
 	function parse() {		
 		do {
-			$this->parseLine();
+			$char = $this->scanForward();
+			if ($char == ';' || $char == '#') {
+				$this->scanUntil("\n");		
+			} elseif ($char == '[') {
+				$section = $this->scanUntil("]");
+				$this->addSection($section);
+				$this->scanUntil("\n");		
+			} elseif ($char != "\n") {
+				$this->skipBack();
+				$key = $this->scanUntil(":");
+				$this->skipForward();
+				$value = $this->scanUntil("\n");
+				$this->addProperty($key, $value);
+			}
 		} while($this->cursor < $this->length);
 	}
 	
 	function parseLine() {
-		$char = $this->scanForward();
-		if ($char == ';' || $char == '#') {
-			$this->scanUntil("\n");		
-		} elseif ($char == '[') {
-			$section = $this->scanUntil("]");
-			$this->addSection($section);
-			$this->scanUntil("\n");		
-		} elseif ($char != "\n") {
-			$this->skipBack();
-			$key = $this->scanUntil(":");
-			$this->skipForward();
-			$value = $this->scanUntil("\n");
-			$this->addProperty($key, $value);
-		}
+
 	}
 }
 
