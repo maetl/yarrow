@@ -25,29 +25,38 @@ class ConsoleRunner {
 		$options = array();
 		$length = count($arguments);
 		
-		for ($i = 1; $i < $length; $i++) {
-			
-		    switch($arguments[$i]) {
-				
-		        case "-v":
-				case "--version":
-					return;
-		        	break;
-				
-		        case "-h":
-				case "--help":
-					return self::printHelp();
-		        	break;
+		try {
 		
-				default:
-					if (self::isOption($arguments[$i])) {
-						// parseOption;
-					} else {
-						$targets[] = $arguments[$i];
-					}
-					break;
-				
-			}
+			for ($i = 1; $i < $length; $i++) {
+				// todo: replace this switch with instance
+				//       method of command object.
+			    switch($arguments[$i]) {
+
+			        case "-v":
+					case "--version":
+						return;
+			        	break;
+
+			        case "-h":
+					case "--help":
+						return self::printHelp();
+			        	break;
+
+					default:
+						if (self::isOption($arguments[$i])) {
+							$options[] = self::registerOption($arguments[$i]);
+						} else {
+							$targets[] = $arguments[$i];
+						}
+						break;
+
+				}
+			
+			}		
+			
+		} catch(ConfigurationError $error) {
+			echo $error->getMessage() . PHP_EOL;
+			return;
 		}
 		
 		if (count($targets) < 2) {
@@ -61,6 +70,31 @@ class ConsoleRunner {
 	 */
 	public static function isOption($argument) {
 		return (substr($argument, 0, 1) == '-');
+	}
+	
+	/**
+	 * Map of enabled configuration options.
+	 */
+	private static $enabledOptions = array(
+		'h' => 'help',
+		'v' => 'version',
+	);
+	
+	/**
+	 * Registers an option passed in to the application.
+	 */
+	public static function registerOption($option) {
+		$optionName = str_replace('-', '', $option);
+		if (substr($option, 0, 2) != '--') {
+			if (isset(self::$enabledOptions[$optionName])) {
+				return self::$enabledOptions[$optionName];
+			}
+		} else {
+			if (in_array($optionName, self::$enabledOptions)) {
+				return $optionName;
+			}
+		}
+		throw new ConfigurationError("Unrecognized option $option.");
 	}
 	
 	/**
