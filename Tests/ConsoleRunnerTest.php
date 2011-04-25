@@ -2,6 +2,18 @@
 
 require_once dirname(__FILE__).'/../Yarrow/Autoload.php';
 
+class ConsoleRunnerStub extends ConsoleRunner {
+	
+	function runInputProcess() {
+		return;
+	}
+	
+	function runOutputProcess() {
+		return;
+	}
+	
+}
+
 class ConsoleRunnerTest extends PHPUnit_Framework_TestCase {
 	
 	function setUp() {
@@ -13,7 +25,7 @@ class ConsoleRunnerTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	function getVersionHeader() {
-		return ConsoleRunner::APPNAME . ' ' . ConsoleRunner::VERSION;
+		return ConsoleRunnerStub::APPNAME . ' ' . ConsoleRunnerStub::VERSION;
 	}
 	
 	function assertExitSuccess($actual) {
@@ -25,21 +37,21 @@ class ConsoleRunnerTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	function testVersionMessage() {
-		$app = new ConsoleRunner(array('yarrow', '-v'));
+		$app = new ConsoleRunnerStub(array('yarrow', '-v'));
 		$this->assertExitSuccess($app->runApplication());
 		$output = ob_get_contents();
 		$this->assertStringStartsWith($this->getVersionHeader(), $output);
 	}
 
 	function testVersionMessageLong() {
-		$app = new ConsoleRunner(array('yarrow', '--version'));
+		$app = new ConsoleRunnerStub(array('yarrow', '--version'));
 		$this->assertExitSuccess($app->runApplication());
 		$output = ob_get_contents();
 		$this->assertStringStartsWith($this->getVersionHeader(), $output);
 	}	
 	
 	function testHelpMessage() {
-		$app = new ConsoleRunner(array('yarrow', '-h'));
+		$app = new ConsoleRunnerStub(array('yarrow', '-h'));
 		$this->assertExitSuccess($app->runApplication());
 		$output = ob_get_contents();
 		$this->assertStringStartsWith($this->getVersionHeader(), $output);
@@ -48,7 +60,7 @@ class ConsoleRunnerTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	function testHelpMessageLong() {
-		$app = new ConsoleRunner(array('yarrow', '--help'));
+		$app = new ConsoleRunnerStub(array('yarrow', '--help'));
 		$this->assertExitSuccess($app->runApplication());
 		$output = ob_get_contents();
 		$this->assertStringStartsWith($this->getVersionHeader(), $output);
@@ -57,7 +69,7 @@ class ConsoleRunnerTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	function testInvalidOptionMessage() {
-		$app = new ConsoleRunner(array('yarrow', '-j'));
+		$app = new ConsoleRunnerStub(array('yarrow', '-j'));
 		$this->assertExitFailure($app->runApplication());
 		$output = ob_get_contents();
 		$this->assertStringStartsWith($this->getVersionHeader(), $output);
@@ -65,7 +77,7 @@ class ConsoleRunnerTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	function testInvalidOptionMessageLong() {
-		$app = new ConsoleRunner(array('yarrow', '--invalid'));
+		$app = new ConsoleRunnerStub(array('yarrow', '--invalid'));
 		$this->assertExitFailure($app->runApplication());		
 		$output = ob_get_contents();
 		$this->assertStringStartsWith($this->getVersionHeader(), $output);
@@ -73,7 +85,7 @@ class ConsoleRunnerTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	function testConfigMessageIfFileNotExists() {
-		$app = new ConsoleRunner(array('yarrow', '-c:missing.conf'));
+		$app = new ConsoleRunnerStub(array('yarrow', '-c:missing.conf'));
 		$this->assertExitFailure($app->runApplication());		
 		$output = ob_get_contents();
 		$this->assertStringStartsWith($this->getVersionHeader(), $output);
@@ -82,7 +94,7 @@ class ConsoleRunnerTest extends PHPUnit_Framework_TestCase {
 	
 	function testConfigLoadsIfFileExists() {
 		$testconfig = dirname(__FILE__).'/Config/.yarrowdoc';
-		$app = new ConsoleRunner(array('yarrow', '--config='.$testconfig));
+		$app = new ConsoleRunnerStub(array('yarrow', '--config='.$testconfig));
 		$this->assertExitSuccess($app->runApplication());		
 		$output = ob_get_contents();
 		$this->assertStringStartsWith($this->getVersionHeader(), $output);
@@ -90,7 +102,7 @@ class ConsoleRunnerTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	function testOutputTargetUpdatedFromArgument() {
-		$app = new ConsoleRunner(array('yarrow', 'MyDocs'));
+		$app = new ConsoleRunnerStub(array('yarrow', 'MyDocs'));
 		$this->assertExitSuccess($app->runApplication());
 		$output = ob_get_contents();
 		$this->assertStringStartsWith($this->getVersionHeader(), $output);
@@ -100,7 +112,7 @@ class ConsoleRunnerTest extends PHPUnit_Framework_TestCase {
 
 	function testInputTargetsUpdatedFromArgument() {
 		$classpath = dirname(__FILE__).'/../Yarrow';
-		$app = new ConsoleRunner(array('yarrow', $classpath, 'MyDocs'));
+		$app = new ConsoleRunnerStub(array('yarrow', $classpath, 'MyDocs'));
 		$this->assertExitSuccess($app->runApplication());		
 		$output = ob_get_contents();
 		$this->assertStringStartsWith($this->getVersionHeader(), $output);
@@ -112,7 +124,7 @@ class ConsoleRunnerTest extends PHPUnit_Framework_TestCase {
 	function testInputTargetsUpdatedFromArguments() {
 		$classpath1 = dirname(__FILE__).'/../Yarrow';
 		$classpath2 = dirname(__FILE__).'/Samples';
-		$app = new ConsoleRunner(array('yarrow', $classpath1, $classpath2, 'MyDocs'));
+		$app = new ConsoleRunnerStub(array('yarrow', $classpath1, $classpath2, 'MyDocs'));
 		$this->assertExitSuccess($app->runApplication());		
 		$output = ob_get_contents();
 		$this->assertStringStartsWith($this->getVersionHeader(), $output);
@@ -125,7 +137,7 @@ class ConsoleRunnerTest extends PHPUnit_Framework_TestCase {
 	
 	function testInputTargetErrorFromBadArguments() {
 		$classpath = dirname(__FILE__).'/../Missing';
-		$app = new ConsoleRunner(array('yarrow', $classpath, 'MyDocs'));
+		$app = new ConsoleRunnerStub(array('yarrow', $classpath, 'MyDocs'));
 		$this->assertExitFailure($app->runApplication());		
 		$output = ob_get_contents();
 		$this->assertStringStartsWith($this->getVersionHeader(), $output);
@@ -133,7 +145,7 @@ class ConsoleRunnerTest extends PHPUnit_Framework_TestCase {
 	}
 
 	function testEmptyArgumentsMessage() {
-		$app = new ConsoleRunner(array('yarrow'));
+		$app = new ConsoleRunnerStub(array('yarrow'));
 		$this->assertExitSuccess($app->runApplication());
 		$output = ob_get_contents();
 		$this->assertStringStartsWith($this->getVersionHeader() , $output);

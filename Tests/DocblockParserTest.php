@@ -10,52 +10,52 @@ class DocblockParserTest extends PHPUnit_Framework_TestCase {
 	
 	function testEmptySummary() {
 		$parser = new DocblockParser($this->loadDocblock('empty'));
-		$parser->parse();
-		$this->assertEquals('', $parser->getSummary());
+		$docblock = $parser->parse();
+		$this->assertEquals('', $docblock->getSummary());
 	}
 	
 	function testSingleLineSummary() {
 		$parser = new DocblockParser($this->loadDocblock('singleline'));
-		$parser->parse();
-		$this->assertEquals('this is a summary', $parser->getSummary());
+		$docblock = $parser->parse();
+		$this->assertEquals('this is a summary', $docblock->getSummary());
 	}
 	
 	function testAsciiBorders1Summary() {
 		$parser = new DocblockParser($this->loadDocblock('asciiborders1'));
-		$parser->parse();
-		$this->assertEquals('This is a comment with ASCII borders.', $parser->getSummary());
+		$docblock = $parser->parse();
+		$this->assertEquals('This is a comment with ASCII borders.', $docblock->getSummary());
 	}
 	
 	function testAsciiBorders2Summary() {	
 		$parser = new DocblockParser($this->loadDocblock('asciiborders2'));
-		$parser->parse();
-		$this->assertEquals('This is a comment with ASCII borders.', $parser->getSummary());
+		$docblock = $parser->parse();
+		$this->assertEquals('This is a comment with ASCII borders.', $docblock->getSummary());
 	}
 	
 	function testMultiLineSummary() {
 		$parser = new DocblockParser($this->loadDocblock('multiline'));
-		$parser->parse();
-		$this->assertEquals('This is a comment summary spanning multiple lines.', $parser->getSummary());
+		$docblock = $parser->parse();
+		$this->assertEquals('This is a comment summary spanning multiple lines.', $docblock->getSummary());
 	}
 	
 	function testMultiLinePrefixedSummary() {
 		$parser = new DocblockParser($this->loadDocblock('multilineprefixed'));
-		$parser->parse();
-		$this->assertEquals('This is a comment summary spanning multiple lines.', $parser->getSummary());		
+		$docblock = $parser->parse();
+		$this->assertEquals('This is a comment summary spanning multiple lines.', $docblock->getSummary());		
 	}
 	
 	function testMultilineNormalizedText() {
 		$parser = new DocblockParser($this->loadDocblock('paragraphs'));
-		$parser->parse();
+		$docblock = $parser->parse();
 		$expected = "This is a comment summary spanning multiple lines.\n\nThis is an additional paragraph spanning multiple lines.\n\nThis is a final paragraph.";
-		$this->assertContains($expected, $parser->getText());
+		$this->assertContains($expected, $docblock->getText());
 	}
 	
 	function testMultilinePrefixedNormalizedText() {
 		$parser = new DocblockParser($this->loadDocblock('paragraphsprefixed'));
-		$parser->parse();
+		$docblock = $parser->parse();
 		$expected = "This is a comment summary spanning multiple lines.\n\nThis is an additional paragraph spanning multiple lines.\n\nThis is a final paragraph.";
-		$this->assertContains($expected, $parser->getText());
+		$this->assertContains($expected, $docblock->getText());
 	}
 	
 }

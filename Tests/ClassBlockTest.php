@@ -9,10 +9,18 @@ class ClassBlockTest extends PHPUnit_Framework_TestCase {
 
 	public function testAnalyzeFile() {
 		$analyzer = new Analyzer();
-		$analyzer->analyzeFile(__FILE__);
+		$analyzer->analyzeFile(array('absolute_path' => __FILE__,
+									 'relative_path' => 'Tests/ClassBlockTest.php'));
 		
-		$this->assertEquals(count($analyzer->classes), 1);
-		$this->assertEquals($analyzer->classes[0]->methodCount(), 4);
+		$model = $analyzer->getModel();
+		$this->assertEquals($model->classCount(), 1);
+		
+		$classes = $model->getClasses();
+		$methods = $classes[0]->getFunctions();
+		
+		$this->assertEquals($classes[0]->methodCount(), 4);
+		$this->assertEquals($methods[2]->getSummary(), "This is the public API, and should be documented.");
+		$this->assertEquals($methods[3]->getSummary(), "This is the public API, and has three arguments.");
 	}
 	
 	/**
