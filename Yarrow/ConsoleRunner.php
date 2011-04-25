@@ -15,9 +15,25 @@
  * Provides a command line interface to the Yarrow application.
  */
 class ConsoleRunner {
+	
+	/**
+	 * Name of the application.
+	 */
 	const APPNAME = '{{appname}}';
+	
+	/**
+	 * Version of the source code.
+	 */
 	const VERSION = '{{version}}';
+	
+	/**
+	 * Cli exit value on success.
+	 */
 	const SUCCESS = 0;
+	
+	/**
+	 * Cli exit value on failure.
+	 */
 	const FAILURE = 1;
 
 	/**
@@ -43,10 +59,10 @@ class ConsoleRunner {
 	 * @param array $arguments list of command line arguments
 	 */
 	public function __construct($arguments) {
+		$this->arguments = $arguments;
 		$this->inputTarget = false;
 		$this->outputTarget = false;
 		$this->options = array();
-		$this->arguments = $arguments;
 	}
 
 	/**
@@ -83,6 +99,27 @@ class ConsoleRunner {
 			return self::FAILURE;
 		}
 	}
+	
+	/**
+	 * Process the command line arguments.
+	 */
+	private function processArguments() {
+		$length = count($this->arguments);
+		for ($i = 1; $i < $length; $i++) {
+			$argument = $this->arguments[$i];
+			if ($this->isOption($argument)) {
+				$this->registerOption($argument);
+			} else {
+				if (!$this->inputTarget) {
+					$this->inputTarget = $argument;
+				} elseif (!$this->outputTarget) {
+					$this->outputTarget = $argument;
+				} else {
+					throw new ConfigurationError("Too many targets: $argument");
+				}
+			}
+		}		
+	}	
 	
 	/**
 	 * Returns true if the given argument is a configuration option.
@@ -134,27 +171,6 @@ class ConsoleRunner {
 	 */
 	private function getOption($option) {
 		return $this->options[$option];
-	}
-	
-	/**
-	 * Process the command line arguments.
-	 */
-	private function processArguments() {
-		$length = count($this->arguments);
-		for ($i = 1; $i < $length; $i++) {
-			$argument = $this->arguments[$i];
-			if ($this->isOption($argument)) {
-				$this->registerOption($argument);
-			} else {
-				if (!$this->inputTarget) {
-					$this->inputTarget = $argument;
-				} elseif (!$this->outputTarget) {
-					$this->outputTarget = $argument;
-				} else {
-					throw new ConfigurationError("Too many targets: $argument");
-				}
-			}
-		}		
 	}
 	
 	/**
