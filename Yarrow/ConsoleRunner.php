@@ -17,6 +17,8 @@
 class ConsoleRunner {
 	const APPNAME = '{{appname}}';
 	const VERSION = '{{version}}';
+	const SUCCESS = 0;
+	const FAILURE = 1;
 
 	/**
 	 * Map of enabled configuration options.
@@ -59,12 +61,12 @@ class ConsoleRunner {
 			$this->processArguments();
 
 			if ($this->hasOption('version')) {
-				return true;
+				return self::SUCCESS;
 			}
 
 			if ($this->hasOption('help')) {
 				self::printHelp();
-				return true;
+				return self::SUCCESS;
 			}
 
 			if ($this->hasOption('config')) {
@@ -74,11 +76,11 @@ class ConsoleRunner {
 				}
 			}
 			
-			return true;
+			return self::SUCCESS;
 
 		} catch(ConfigurationError $error) {
-			echo $error->getMessage() . PHP_EOL;
-			return false;
+			self::printError($error);
+			return self::FAILURE;
 		}
 	}
 	
@@ -153,6 +155,15 @@ class ConsoleRunner {
 				}
 			}
 		}		
+	}
+	
+	/**
+	 * Show error message.
+	 * @param $exception
+	 */
+	private static function printError($exception) {
+		echo preg_replace("/([a-z])([A-Z])/", "$1 $2", get_class($exception)) . PHP_EOL;
+		echo $exception->getMessage(). PHP_EOL;
 	}
 	
 	/**

@@ -16,9 +16,17 @@ class ConsoleRunnerTest extends PHPUnit_Framework_TestCase {
 		return ConsoleRunner::APPNAME . ' ' . ConsoleRunner::VERSION;
 	}
 	
+	function assertExitSuccess($actual) {
+		$this->assertEquals(0, $actual);
+	}
+	
+	function assertExitFailure($actual) {
+		$this->assertEquals(1, $actual);
+	}
+	
 	function testEmptyArgumentsMessage() {
 		$app = new ConsoleRunner(array('yarrow'));
-		$app->runApplication();
+		$this->assertExitSuccess($app->runApplication());
 		$output = ob_get_contents();
 		$this->assertStringStartsWith($this->getVersionHeader() , $output);
 		// inputTarget should equal .
@@ -27,21 +35,21 @@ class ConsoleRunnerTest extends PHPUnit_Framework_TestCase {
 	
 	function testVersionMessage() {
 		$app = new ConsoleRunner(array('yarrow', '-v'));
-		$this->assertTrue($app->runApplication());
+		$this->assertExitSuccess($app->runApplication());
 		$output = ob_get_contents();
 		$this->assertStringStartsWith($this->getVersionHeader(), $output);
 	}
 
 	function testVersionMessageLong() {
 		$app = new ConsoleRunner(array('yarrow', '--version'));
-		$this->assertTrue($app->runApplication());
+		$this->assertExitSuccess($app->runApplication());
 		$output = ob_get_contents();
 		$this->assertStringStartsWith($this->getVersionHeader(), $output);
 	}	
 	
 	function testHelpMessage() {
 		$app = new ConsoleRunner(array('yarrow', '-h'));
-		$this->assertTrue($app->runApplication());
+		$this->assertExitSuccess($app->runApplication());
 		$output = ob_get_contents();
 		$this->assertStringStartsWith($this->getVersionHeader(), $output);
 		$this->assertContains('Path to the generated documentation', $output);
@@ -50,7 +58,7 @@ class ConsoleRunnerTest extends PHPUnit_Framework_TestCase {
 	
 	function testHelpMessageLong() {
 		$app = new ConsoleRunner(array('yarrow', '--help'));
-		$this->assertTrue($app->runApplication());
+		$this->assertExitSuccess($app->runApplication());
 		$output = ob_get_contents();
 		$this->assertStringStartsWith($this->getVersionHeader(), $output);
 		$this->assertContains('Path to the generated documentation', $output);
@@ -59,7 +67,7 @@ class ConsoleRunnerTest extends PHPUnit_Framework_TestCase {
 	
 	function testInvalidOptionMessage() {
 		$app = new ConsoleRunner(array('yarrow', '-j'));
-		$this->assertFalse($app->runApplication());
+		$this->assertExitFailure($app->runApplication());
 		$output = ob_get_contents();
 		$this->assertStringStartsWith($this->getVersionHeader(), $output);
 		$this->assertContains('Unrecognized option: -j', $output);
@@ -67,7 +75,7 @@ class ConsoleRunnerTest extends PHPUnit_Framework_TestCase {
 	
 	function testInvalidOptionMessageLong() {
 		$app = new ConsoleRunner(array('yarrow', '--invalid'));
-		$this->assertFalse($app->runApplication());		
+		$this->assertExitFailure($app->runApplication());		
 		$output = ob_get_contents();
 		$this->assertStringStartsWith($this->getVersionHeader(), $output);
 		$this->assertContains('Unrecognized option: --invalid', $output);
@@ -75,7 +83,7 @@ class ConsoleRunnerTest extends PHPUnit_Framework_TestCase {
 	
 	function testConfigMessageIfFileNotExists() {
 		$app = new ConsoleRunner(array('yarrow', '-c:missing.conf'));
-		$this->assertFalse($app->runApplication());		
+		$this->assertExitFailure($app->runApplication());		
 		$output = ob_get_contents();
 		$this->assertStringStartsWith($this->getVersionHeader(), $output);
 		$this->assertContains('File not found: missing.conf', $output);
@@ -84,7 +92,7 @@ class ConsoleRunnerTest extends PHPUnit_Framework_TestCase {
 	function testConfigLoadsIfFileExists() {
 		$testconfig = dirname(__FILE__).'/Config/.yarrowdoc';
 		$app = new ConsoleRunner(array('yarrow', '--config='.$testconfig));
-		$this->assertTrue($app->runApplication());		
+		$this->assertExitSuccess($app->runApplication());		
 		$output = ob_get_contents();
 		$this->assertStringStartsWith($this->getVersionHeader(), $output);
 		$this->assertNotContains('File not found', $output);
