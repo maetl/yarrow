@@ -1,17 +1,18 @@
 ; Meta Options
 ; These are passed as variables to the global template context
+
 [meta]
 title:		Configuration Test
 author:		Mark Rickerby
 website:	http://yarrowdoc.org
 
-# Output options
+# Output settings
 # These are passed to the output generator and converter
 [output]
 templates:	/path/to/templates
 converter:	Twig
 
-# More options to test variable conversion
+# More settings to test variable conversion
 [options]
 array:		one,two,three
 integer:	1
