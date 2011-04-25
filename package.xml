@@ -5,21 +5,19 @@
     http://pear.php.net/dtd/package-2.0.xsd">
  <name>Yarrow</name>
  <channel>yo.yarrowdoc.org</channel>
- <summary>Simple documentation generator.</summary>
- <description>
-   Winning the battle against entropy.
- </description>
+ <summary>Simple Documentation Generator</summary>
+ <description>Finally, a tidy documentation tool for PHP projects. Yarrow shreds your PHP code files and converts their structure into user friendly API documentation.</description>
  <lead>
   <name>Mark Rickerby</name>
   <user>maetl</user>
   <email>me@maetl.net</email>
   <active>yes</active>
  </lead>
- <date>2011-04-24</date>
- <time>19:52:00</time>
+ <date>2011-04-25</date>
+ <time>23:35:22</time>
  <version>
-  <release>0.0.3</release>
-  <api>0.0.3</api>
+  <release>0.0.4</release>
+  <api>0.0.4</api>
  </version>
  <stability>
   <release>alpha</release>
@@ -51,12 +49,18 @@
 		<file name="CodeParser.php" role="php">
 			<tasks:replace from="{{version}}" to="version" type="package-info" />
 		</file>
+		<file name="Configuration.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
 		<file name="ConfigurationError.php" role="php">
 			<tasks:replace from="{{version}}" to="version" type="package-info" />
 		</file>
 		<file name="ConsoleRunner.php" role="php">
 			<tasks:replace from="{{version}}" to="version" type="package-info" />
 			<tasks:replace from="{{appname}}" to="name" type="package-info" />
+		</file>
+		<file name="DefaultGenerator.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
 		</file>
 		<file name="DocblockModel.php" role="php">
 			<tasks:replace from="{{version}}" to="version" type="package-info" />
@@ -80,6 +84,15 @@
 			<tasks:replace from="{{version}}" to="version" type="package-info" />
 		</file>
 		<file name="PHPConverter.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
+		<file name="PropertiesFile.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
+		<file name="PropertiesParser.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
+		<file name="Scanner.php" role="php">
 			<tasks:replace from="{{version}}" to="version" type="package-info" />
 		</file>
 		<file name="ScopeStack.php" role="php">

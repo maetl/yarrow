@@ -3,32 +3,65 @@ Yarrow
 
 Finally, a tidy documentation tool for PHP projects.
 
-More info: http://yarrowdoc.org/
+Yarrow shreds your PHP code files and converts their structure into user 
+friendly API documentation.
 
-Yarrow shreds your PHP code files and converts their structure into user friendly API documentation.
+Yarrow is a fully object oriented library written in idiomatic PHP. You can 
+easily extend it to produce your own custom documentation tools.
 
-Yarrow is a fully object oriented library written in idiomatic PHP. You can easily extend it to produce your own custom documentation tools.
-
-Motivation
-----------
-
-The needs of people writing libraries and utility classes are not the same as those of people working on large applications. In order to be useful, a documentation generator must provide value in a wide variety of use cases where concise and readable documentation is required in a format that suits the particular size and shape of a PHP project.
-
-Yarrow takes the approach that documentation output should not be locked to the class-per-file pattern. This provides the flexibility to produce diverse documents – from a single page manual for a small, tightly focused API, to a multi-page documentation system for a large application.
+Find out more: http://yarrowdoc.org/
 
 Install
 -------
 
-The recommended method of installing Yarrow is through the official PEAR channel:
+The recommended method of installing Yarrow is through the official PEAR 
+channel:
 
-$ pear channel-discover yo.yarrowdoc.org
-$ pear install yarrow/Yarrow
+  $ pear channel-discover yo.yarrowdoc.org
+  $ pear install yarrow/Yarrow
+
+**Note: before the 0.1.0 release, all Yarrow releases in the PEAR channel are
+considered 'alpha', which in PEAR parlance means 'unstable'. So the above
+command will not work as expected. You'll need to manually specify the entire
+version file in the command, like:**
+
+  $ pear install yarrow/Yarrow-0.0.4.tgz
 
 Depending on how PEAR is set up on your local system, you may need to use sudo.
 
-If you download the code manually, you need to place the Yarrow folder somewhere on your PHP include path and add the yarrow.php file to your bin path, changing its permissions so that it is executable.
+If you download the code manually, you need to place the Yarrow folder 
+somewhere on your PHP include path and add the yarrow.php file to your bin
+path, changing its permissions so that it is executable.
 
 Usage
 -----
 
-$ yarrow -v
+Once Yarrow is installed, run the cli tool with the help flag to get started:
+
+  $ yarrow -h
+
+Feedback and Bug Reports
+------------------------
+
+Is Yarrow useful to you? Found a bug? Missing something essential? The best
+way to provide feedback and contributions is through the GitHub Issue tracker.
+
+At this early stage, we are very much interested in edge-cases and weirdness
+you may encounter with legacy PHP source files. If you have a particular file
+or doc comment that seems to be breaking things, please let us know.
+
+Roadmap
+-------
+
+Yarrow is currently in a very tentative and fragile state, but the core parts
+of the architecture are doing enough to generate .html output from PHP source.
+
+What we have in mind for the first minor release is currently uncertain, but
+it will largely involve development of the CodeParser and ObjectModel
+components, in order to accurately represent a PHP codebase.
+
+The docblock parsing machinery also needs a huge amount of work.
+
+Once these parts are working to a satisfactory standard, we will be well on
+the way to achieving a never-before-seen level of quality for API
+documentation in the PHP community, which is the overall goal of this project.
