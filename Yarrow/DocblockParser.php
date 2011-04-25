@@ -29,8 +29,7 @@ class DocblockParser {
 	 */
 	function __construct($docblock) {
 		$this->source = $this->preProcess($docblock);
-		$this->paragraphs = array();
-		$this->tags = array();
+		$this->model = new DocblockModel();
 	}
 	
 	/**
@@ -45,37 +44,18 @@ class DocblockParser {
 		return $docblock;
 	}
 	
-	/**
-	 * Returns the summary description, which is always the first
-	 * paragraph or text line declared in the docblock.
-	 */
-	function getSummary() {
-		return (isset($this->paragraphs[0])) ? $this->paragraphs[0] : '';
-	}
-	
-	/**
-	 * Returns a plaintext representation of the full comment text.
-	 */
-	function getText() {
-		return implode("\n\n", $this->paragraphs);
-	}
-	
-	function addParagraph($paragraph) {
-		$this->paragraphs[] = trim($paragraph);
-	}
-	
 	function isTag($line) {
 		return substr($line, 0, 1) == '@';
 	}
 	
 	function parseTag($line) {
-		
+		$this->model->addTag($line);
 	}
 	
 	function parseLine($line) {
 		$line = trim(str_replace("*", "", trim($line)));
 		if ($line == "" && $this->buffer != "") {
-			$this->addParagraph($this->buffer);
+			$this->model->addParagraph($this->buffer);
 			$this->buffer = "";
 		} else {
 			if ($line != "") {
@@ -99,7 +79,8 @@ class DocblockParser {
 				$this->parseLine($line);	
 			}
 		} else {
-			$this->addParagraph($this->source);
+			$this->model->addParagraph($this->source);
 		}
+		return $this->model;
 	}
 }

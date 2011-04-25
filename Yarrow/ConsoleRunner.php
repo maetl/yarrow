@@ -100,12 +100,27 @@ class ConsoleRunner {
 				$this->config->merge($properties);
 			}
 			
+			$this->runInputProcess();
+			
+			$this->runOutputProcess();
+			
 			return self::SUCCESS;
 
 		} catch(ConfigurationError $error) {
 			self::printError($error);
 			return self::FAILURE;
 		}
+	}
+	
+	protected function runInputProcess() {
+		$analyzer = new Analyzer();
+		$analyzer->analyzeProject();
+		$this->model = $analyzer->getModel();
+	}
+	
+	protected function runOutputProcess() {
+		$generator = new DefaultGenerator($this->config->outputTarget, $this->model);
+		$generator->makeDocs();
 	}
 	
 	/**

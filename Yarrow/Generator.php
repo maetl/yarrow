@@ -22,11 +22,9 @@ abstract class Generator {
 	 * @param $model object model from analysis
 	 */
 	public function __construct($target, $model) {
-		//$target = full_path_convert($target);
 		$this->ensureDirectoryExists($target);
 		$this->directory = $target;
 		$this->objectModel = $model;
-		
 		$this->validateTemplateMethods();
 	}
 	
@@ -48,6 +46,7 @@ abstract class Generator {
 	
 	private function writeFile($filename, $content) {
 		$fullpath = $this->directory . '/' . $filename . $this->getFileExtension();
+		$this->ensureDirectoryExists(dirname($fullpath));
 		file_put_contents($fullpath, $content);
 	}
 	
@@ -62,7 +61,7 @@ abstract class Generator {
 	 * Convert a model object to a filename.
 	 */
 	protected function convertToFilename($object) {
-		return strtolower(str_replace(' ', '-', str_replace('.php', '', $object)));
+		return strtolower(str_replace(' ', '-', str_replace('.php', '', str_replace('/', '-', $object))));
 	}
 	
 	/**
@@ -87,13 +86,14 @@ abstract class Generator {
 		$converter = $this->getConverter();
 		$templates = $this->getTemplateMap();
 		$objectMap = $this->getObjectMap();
+		$config	   = Configuration::instance();
 		
 		foreach ($objectMap as $index => $objects) {
 			foreach ($objects as $object) {
-				$objectKey = ucfirst($index);
 				$variables = array(
-								$objectKey    => $object,
-								'ObjectModel' => $this->objectModel
+								'meta'		  => $config->meta,
+								$index   	  => $object,
+								'objectModel' => $this->objectModel
 							 );
 				$content = $converter->render($templates[$index], $variables);
 				$filename = $this->convertToFilename($object);

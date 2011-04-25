@@ -22,14 +22,23 @@ class FunctionModel {
 	}
 	
 	function addDocBlock($docblock) {
-		$this->docblock = $docblock;
+		$parser = new DocblockParser($docblock);
+		$this->docblock = $parser->parse();
 	}
 	
 	function addArgument($argvar) {
 		$this->args[] = $argvar;
 	}
 	
+	function getArguments() {
+		return $this->args;
+	}
+	
+	function getSummary() {
+		if ($this->docblock) return $this->docblock->getSummary();
+	}
+	
 	function __toString() {
-		return $this->name;
+		return "Function " . $this->name;
 	}
 }

@@ -36,6 +36,10 @@ class ClassModel {
 		$this->functions[] = $function;
 	}
 	
+	function getFunctions() {
+		return $this->functions;
+	}
+	
 	function getDoc() {
 		return $this->docblock;
 	}

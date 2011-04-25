@@ -15,11 +15,32 @@ class FileModel {
 	private $filename;
 	private $classes;
 	private $functions;
+	private $source;
 
 	function __construct($filename) {
 		$this->filename = $filename;
 		$this->classes = array();
 		$this->functions = array();
+	}
+	
+	function getSource() {
+		return $this->source;
+	}
+	
+	function setSource($code) {
+		$this->source = $code;
+	}
+	
+	function getClasses() {
+		return $this->classes;
+	}
+	
+	function setClasses($classes) {
+		$this->classes = $classes;
+	}
+	
+	function setFunctions($functions) {
+		$this->functions = $functions;
 	}
 	
 	function addClass($class) {

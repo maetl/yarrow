@@ -12,10 +12,34 @@
  */
 
 class DocblockModel {
-	private $source;
+	private $paragraphs;
+	private $tags;
 	
-	function __construct($docblock) {
-		$this->source = $docblock;
+	function __construct() {
+		$this->paragraphs = array();
+		$this->tags = array();		
 	}
 	
+	/**
+	 * Returns the summary description, which is always the first
+	 * paragraph or text line declared in the docblock.
+	 */
+	function getSummary() {
+		return (isset($this->paragraphs[0])) ? $this->paragraphs[0] : '';
+	}
+	
+	/**
+	 * Returns a plaintext representation of the full comment text.
+	 */
+	function getText() {
+		return implode("\n\n", $this->paragraphs);
+	}
+	
+	function addParagraph($paragraph) {
+		$this->paragraphs[] = trim($paragraph);
+	}
+	
+	function addTag($tagline) {
+		$this->tags[] = $tagline;
+	}
 }

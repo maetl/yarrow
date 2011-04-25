@@ -15,22 +15,61 @@
  * Intends to analyze a file, yes.
  */
 class Analyzer {
+	
+	function __construct() {
+		$this->objectModel = new ObjectModel();
+		$this->config = Configuration::instance();
+	}
 
-	public function __construct() {
+	function analyzeProject() {
+		$manifest = array();
+		
+		foreach($this->config->inputTargets as $target) {
+			$collector = new FileCollector($target);
+			$collector->includeByPattern("/\.php$/");
+			$manifest = array_merge($manifest, $collector->getManifest());
+		}
+		
+		foreach($manifest as $file) {
+			$this->analyzeFile($file);
+		}
 	}
 
 	/**
 	 * Analyze the structure of a single code file.
+	 *
+	 * @param array manifest list
 	 */
-	function analyzeFile($filename) {
-		$tokens = token_get_all(file_get_contents($filename));
+	function analyzeFile($file) {
+		$source = file_get_contents($file['absolute_path']);
+		$tokens = token_get_all($source);
+		
+		// hackety hack to get working end to end
+		// this code is currently a mess, but is just
+		// used for testing and experimenting with
+		// different ways of building a code model
 		
 		$listener = new CodeListener();
 		
 		$parser = new CodeParser($tokens, $listener);
 		$parser->parse();
-
-		$this->classes = $parser->classes;
-		$this->globals = $parser->globals;
+		
+		$file = new FileModel($file['relative_path']);
+		$file->setSource($source);
+		$file->setClasses($parser->classes);
+		$file->setFunctions($parser->globals);
+		
+		foreach($parser->classes as $class) {
+			$this->objectModel->addClass($class);
+		}
+		foreach($parser->globals as $func) {
+			$this->objectModel->addFunction($func);
+		}
+		
+		$this->objectModel->addFile($file);
+	}
+	
+	function getModel() {
+		return $this->objectModel;
 	}
 }

@@ -36,6 +36,10 @@ class ObjectModel {
 		return $this->name . " " . $this->filename;
 	}
 	
+	function classCount() {
+		return count($this->classes);
+	}
+	
 	/**
 	 * A list of all the classes collected in the project
 	 */
