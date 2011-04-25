@@ -17,55 +17,53 @@
 class ConsoleRunner {
 	const APPNAME = '{{appname}}';
 	const VERSION = '{{version}}';
+
+	/**
+	 * Map of enabled configuration options.
+	 */
+	private static $enabledOptions = array(
+		'h' => 'help',
+		'v' => 'version',
+		'c' => 'config'
+	);
 	
 	/**
 	 * Main method to run the application.
-	 * @param array $arguments a list of command line arguments
+	 * @param array $arguments list of command line arguments
 	 */
 	public static function main($arguments) {
-		
+		$yarrow = new ConsoleRunner($arguments);
+		$yarrow->runApplication();
+	}
+
+	/**
+	 * @param array $arguments list of command line arguments
+	 */
+	private function __construct($arguments) {
+		$this->inputTarget = false;
+		$this->outputTarget = false;
+		$this->options = array();
+		$this->arguments = $arguments;
+	}
+
+	/**
+	 * Runs the application and applies selected commands.
+	 */
+	private function runApplication() {
 		self::printVersion();
 		
-		$targets = array();
-		$options = array();
-		$length = count($arguments);
+		$this->processArguments();
 		
-		try {
-		
-			for ($i = 1; $i < $length; $i++) {
-				// todo: replace this switch with instance
-				//       method of command object.
-			    switch($arguments[$i]) {
-
-			        case "-v":
-					case "--version":
-						return;
-			        	break;
-
-			        case "-h":
-					case "--help":
-						return self::printHelp();
-			        	break;
-
-					default:
-						if (self::isOption($arguments[$i])) {
-							$options[] = self::registerOption($arguments[$i]);
-						} else {
-							$targets[] = $arguments[$i];
-						}
-						break;
-
-				}
-			
-			}		
-			
-		} catch(ConfigurationError $error) {
-			echo $error->getMessage() . PHP_EOL;
+		if ($this->hasOption('version')) {
 			return;
 		}
 		
-		if (count($targets) < 2) {
-			return self::printMissing();
+		if ($this->hasOption('help')) {
+			return self::printHelp();
+		}
+		
+		if ($this->hasOption('config')) {
+			$config = $this->getOption('config');
 		}
 	}
 	
@@ -73,41 +71,78 @@ class ConsoleRunner {
 	 * Returns true if the given argument is a configuration option.
 	 * @return boolean
 	 */
-	public static function isOption($argument) {
+	public function isOption($argument) {
 		return (substr($argument, 0, 1) == '-');
 	}
 	
 	/**
-	 * Map of enabled configuration options.
-	 */
-	private static $enabledOptions = array(
-		'h' => 'help',
-		'v' => 'version',
-	);
-	
-	/**
 	 * Registers an option passed in to the application.
 	 */
-	public static function registerOption($option) {
+	private function registerOption($option) {
+		$option = str_replace('=', ':', $option);
+		if (strstr(':', $option)) {
+			$optionParts = explode(':', $option);
+			$option = $optionParts[0];
+			$optionValue = $optionParts[1];
+		} else {
+			$optionValue = true;
+		}
+		
 		$optionName = str_replace('-', '', $option);
+		
 		if (substr($option, 0, 2) != '--') {
 			if (isset(self::$enabledOptions[$optionName])) {
-				return self::$enabledOptions[$optionName];
+				$optionKey = self::$enabledOptions[$optionName];
+				return $this->options[$optionKey] = $optionValue;
 			}
 		} else {
 			if (in_array($optionName, self::$enabledOptions)) {
-				return $optionName;
+				return $this->options[$optionName] = $optionValue;
 			}
 		}
-		throw new ConfigurationError("Unrecognized option $option.");
+		throw new ConfigurationError("Unrecognized option: $option");
 	}
 	
 	/**
-	 * Show an error message for missing documentation targets when
-	 * input and output paths are incorrectly supplied.
+	 * @param string $option key
+	 * @return boolean
 	 */
-	private static function printMissing() {
-		echo "No documentation targets. You must specify <input> and <output> paths." . PHP_EOL;
+	private function hasOption($option) {
+		return (isset($this->options[$option]));
+	}
+	
+	/**
+	 * @param string $option key
+	 * @return mixed
+	 */
+	private function getOption($option) {
+		return $this->options[$option];
+	}
+	
+	/**
+	 * Process the command line arguments.
+	 */
+	private function processArguments() {
+		try {
+			$length = count($this->arguments);
+			for ($i = 1; $i < $length; $i++) {
+				$argument = $this->arguments[$i];
+				if ($this->isOption($argument)) {
+					$this->registerOption($argument);
+				} else {
+					if (!$this->inputTarget) {
+						$this->inputTarget = $argument;
+					} elseif (!$this->outputTarget) {
+						$this->outputTarget = $argument;
+					} else {
+						throw new ConfigurationError("Too many targets: $argument");
+					}
+				}
+			}
+		} catch(ConfigurationError $error) {
+			echo $error->getMessage() . PHP_EOL;
+			return;
+		}		
 	}
 	
 	/**
@@ -122,21 +157,32 @@ class ConsoleRunner {
 	 */
 	private static function printHelp() {
 		echo <<<HELP
+See http://yarrowdoc.org for more information.
+
 Usage:
 
- $ yarrow <input> <output> [options]
+ $ yarrow [options]
+ $ yarrow [options] <input>
+ $ yarrow [options] <input> <output>
 
- <input>  - Path to PHP code files or an individual PHP file.
- <output> - Path to the generated documentation. If the directory does 
-            not exist, it is created. If it does exist, it is overwritten.
+ Arguments
+
+ <input>  -  Path to PHP code files or an individual PHP file. If not supplied
+             defaults to the current working directory.
+
+ <output> -  Path to the generated documentation. If not supplied, defaults to
+             /docs in the current working directory. If it does not exist, it
+             is created. If it does exist it remains in place, but existing
+             files are overwritten by new files with the same name.
 
  Options
 
-  Use -o or --option for boolean switches and --option=value or --option:value
-  for options that require an explicit value to be set.
+ Use -o or --option for boolean switches and --option=value or --option:value
+ for options that require an explicit value to be set.
 
-  -h    --help     [switch]   Display this help message and exit.
-  -v    --version  [switch]   Display version header and exit.
+  -h    --help      [switch]    Display this help message and exit.
+  -v    --version   [switch]    Display version header and exit.
+  -c    --config    [string]    Path to a config properties file.
 
 
 HELP;

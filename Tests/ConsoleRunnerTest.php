@@ -20,7 +20,8 @@ class ConsoleRunnerTest extends PHPUnit_Framework_TestCase {
 		ConsoleRunner::main(array('yarrow'));
 		$output = ob_get_contents();
 		$this->assertStringStartsWith($this->getVersionHeader() , $output);
-		$this->assertContains('No documentation targets.', $output);
+		// inputTarget should equal .
+		// outputTarget should equal /docs
 	}
 	
 	function testVersionMessage() {
@@ -55,14 +56,14 @@ class ConsoleRunnerTest extends PHPUnit_Framework_TestCase {
 		ConsoleRunner::main(array('yarrow', '-j'));
 		$output = ob_get_contents();
 		$this->assertStringStartsWith($this->getVersionHeader(), $output);
-		$this->assertContains('Unrecognized option -j', $output);
+		$this->assertContains('Unrecognized option: -j', $output);
 	}
 	
 	function testInvalidOptionMessageLong() {
 		ConsoleRunner::main(array('yarrow', '-jnvalid'));
 		$output = ob_get_contents();
 		$this->assertStringStartsWith($this->getVersionHeader(), $output);
-		$this->assertContains('Unrecognized option -jnvalid', $output);
+		$this->assertContains('Unrecognized option: -jnvalid', $output);
 	}
 	
 }
