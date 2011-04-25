@@ -33,13 +33,14 @@ class ConsoleRunner {
 	 */
 	public static function main($arguments) {
 		$yarrow = new ConsoleRunner($arguments);
-		$yarrow->runApplication();
+		$exitValue = $yarrow->runApplication();
+		exit($exitValue);
 	}
 
 	/**
 	 * @param array $arguments list of command line arguments
 	 */
-	private function __construct($arguments) {
+	public function __construct($arguments) {
 		$this->inputTarget = false;
 		$this->outputTarget = false;
 		$this->options = array();
@@ -48,8 +49,9 @@ class ConsoleRunner {
 
 	/**
 	 * Runs the application and applies selected commands.
+	 * @return boolean exit value
 	 */
-	private function runApplication() {
+	public function runApplication() {
 		self::printVersion();
 		
 		try {
@@ -57,11 +59,12 @@ class ConsoleRunner {
 			$this->processArguments();
 
 			if ($this->hasOption('version')) {
-				return;
+				return true;
 			}
 
 			if ($this->hasOption('help')) {
-				return self::printHelp();
+				self::printHelp();
+				return true;
 			}
 
 			if ($this->hasOption('config')) {
@@ -70,10 +73,12 @@ class ConsoleRunner {
 					throw new ConfigurationError("File not found: $config");
 				}
 			}
+			
+			return true;
 
 		} catch(ConfigurationError $error) {
 			echo $error->getMessage() . PHP_EOL;
-			return;
+			return false;
 		}
 	}
 	
