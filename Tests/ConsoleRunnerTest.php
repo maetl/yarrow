@@ -24,15 +24,6 @@ class ConsoleRunnerTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(1, $actual);
 	}
 	
-	function testEmptyArgumentsMessage() {
-		$app = new ConsoleRunner(array('yarrow'));
-		$this->assertExitSuccess($app->runApplication());
-		$output = ob_get_contents();
-		$this->assertStringStartsWith($this->getVersionHeader() , $output);
-		// inputTarget should equal .
-		// outputTarget should equal /docs
-	}
-	
 	function testVersionMessage() {
 		$app = new ConsoleRunner(array('yarrow', '-v'));
 		$this->assertExitSuccess($app->runApplication());
@@ -98,4 +89,56 @@ class ConsoleRunnerTest extends PHPUnit_Framework_TestCase {
 		$this->assertNotContains('File not found', $output);
 	}
 	
+	function testOutputTargetUpdatedFromArgument() {
+		$app = new ConsoleRunner(array('yarrow', 'MyDocs'));
+		$this->assertExitSuccess($app->runApplication());
+		$output = ob_get_contents();
+		$this->assertStringStartsWith($this->getVersionHeader(), $output);
+		$config = Configuration::instance();
+		$this->assertEquals('MyDocs', $config->outputTarget);	
+	}
+
+	function testInputTargetsUpdatedFromArgument() {
+		$classpath = dirname(__FILE__).'/../Yarrow';
+		$app = new ConsoleRunner(array('yarrow', $classpath, 'MyDocs'));
+		$this->assertExitSuccess($app->runApplication());		
+		$output = ob_get_contents();
+		$this->assertStringStartsWith($this->getVersionHeader(), $output);
+		$config = Configuration::instance();
+		$this->assertContains($classpath, $config->inputTargets);
+		$this->assertEquals('MyDocs', $config->outputTarget);		
+	}
+	
+	function testInputTargetsUpdatedFromArguments() {
+		$classpath1 = dirname(__FILE__).'/../Yarrow';
+		$classpath2 = dirname(__FILE__).'/Samples';
+		$app = new ConsoleRunner(array('yarrow', $classpath1, $classpath2, 'MyDocs'));
+		$this->assertExitSuccess($app->runApplication());		
+		$output = ob_get_contents();
+		$this->assertStringStartsWith($this->getVersionHeader(), $output);
+		$config = Configuration::instance();
+		$this->assertEquals(2, count($config->inputTargets));
+		$this->assertContains($classpath1, $config->inputTargets);
+		$this->assertContains($classpath2, $config->inputTargets);
+		$this->assertEquals('MyDocs', $config->outputTarget);		
+	}
+	
+	function testInputTargetErrorFromBadArguments() {
+		$classpath = dirname(__FILE__).'/../Missing';
+		$app = new ConsoleRunner(array('yarrow', $classpath, 'MyDocs'));
+		$this->assertExitFailure($app->runApplication());		
+		$output = ob_get_contents();
+		$this->assertStringStartsWith($this->getVersionHeader(), $output);
+		$this->assertContains('File not found', $output);
+	}
+
+	function testEmptyArgumentsMessage() {
+		$app = new ConsoleRunner(array('yarrow'));
+		$this->assertExitSuccess($app->runApplication());
+		$output = ob_get_contents();
+		$this->assertStringStartsWith($this->getVersionHeader() , $output);
+		$config = Configuration::instance();
+		$this->assertContains($_ENV['PWD'], $config->inputTargets);
+		$this->assertEquals($_ENV['PWD'].'/docs', $config->outputTarget);
+	}
 }

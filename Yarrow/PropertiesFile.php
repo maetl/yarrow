@@ -26,6 +26,8 @@ class PropertiesFile {
 		if (is_file($file)) {
 			$input = file_get_contents($file);
 			return self::decode($input);
+		} else {
+			throw new ConfigurationError("File not found: $file");
 		}
 	}
 	

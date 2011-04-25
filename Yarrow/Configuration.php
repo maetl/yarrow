@@ -20,10 +20,20 @@ class Configuration {
 	 * Defaults for all required settings.
 	 */
 	private $settings = array(
-		'meta' => array(
+		'meta'   => array(
 			'title' => 'Sample Documentation'
 		)
 	);
+	
+	/**
+	 * List of input paths to search for code files.
+	 */
+	public $inputTargets = array();
+	
+	/**
+	 * Output path where documentation is generated.
+	 */
+	public $outputTarget = false;
 	
 	/**
 	 * Holder for singleton instance of Configuration.
@@ -81,5 +91,5 @@ class Configuration {
 		if (isset($this->settings[$key])) {
 			return $this->settings[$key];
 		}
-	}	
+	}
 }

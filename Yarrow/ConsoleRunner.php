@@ -27,12 +27,12 @@ class ConsoleRunner {
 	const VERSION = '{{version}}';
 	
 	/**
-	 * Cli exit value on success.
+	 * Exit value on success.
 	 */
 	const SUCCESS = 0;
 	
 	/**
-	 * Cli exit value on failure.
+	 * Exit value on failure.
 	 */
 	const FAILURE = 1;
 
@@ -43,6 +43,16 @@ class ConsoleRunner {
 		'h' => 'help',
 		'v' => 'version',
 		'c' => 'config'
+	);
+	
+	/**
+	 * List of allowed configuration filenames.
+	 */
+	private $allowedConfigFiles = array(
+		'.yarrowdoc',
+		'Yarrowdoc',
+		'yarrow.conf',
+		'doc.conf'
 	);
 	
 	/**
@@ -60,9 +70,8 @@ class ConsoleRunner {
 	 */
 	public function __construct($arguments) {
 		$this->arguments = $arguments;
-		$this->inputTarget = false;
-		$this->outputTarget = false;
 		$this->options = array();
+		$this->config = Configuration::instance();
 	}
 
 	/**
@@ -86,10 +95,9 @@ class ConsoleRunner {
 			}
 
 			if ($this->hasOption('config')) {
-				$config = $this->getOption('config');
-				if (!file_exists($config)) {
-					throw new ConfigurationError("File not found: $config");
-				}
+				$path = $this->getOption('config');
+				$properties = PropertiesFile::load($path);
+				$this->config->merge($properties);
 			}
 			
 			return self::SUCCESS;
@@ -105,20 +113,18 @@ class ConsoleRunner {
 	 */
 	private function processArguments() {
 		$length = count($this->arguments);
+		$targets = array();
+		
 		for ($i = 1; $i < $length; $i++) {
 			$argument = $this->arguments[$i];
 			if ($this->isOption($argument)) {
 				$this->registerOption($argument);
 			} else {
-				if (!$this->inputTarget) {
-					$this->inputTarget = $argument;
-				} elseif (!$this->outputTarget) {
-					$this->outputTarget = $argument;
-				} else {
-					throw new ConfigurationError("Too many targets: $argument");
-				}
+				$targets[] = $argument;
 			}
-		}		
+		}
+		
+		$this->registerTargets($targets);
 	}	
 	
 	/**
@@ -129,6 +135,22 @@ class ConsoleRunner {
 		return (substr($argument, 0, 1) == '-');
 	}
 	
+	/**
+	 * @param string $option key
+	 * @return boolean
+	 */
+	private function hasOption($option) {
+		return (isset($this->options[$option]));
+	}
+	
+	/**
+	 * @param string $option key
+	 * @return mixed
+	 */
+	private function getOption($option) {
+		return $this->options[$option];
+	}
+
 	/**
 	 * Registers an option passed in to the application.
 	 */
@@ -158,20 +180,20 @@ class ConsoleRunner {
 	}
 	
 	/**
-	 * @param string $option key
-	 * @return boolean
+	 * Update configuration with target paths passed in as command line arguments.
 	 */
-	private function hasOption($option) {
-		return (isset($this->options[$option]));
-	}
-	
-	/**
-	 * @param string $option key
-	 * @return mixed
-	 */
-	private function getOption($option) {
-		return $this->options[$option];
-	}
+	private function registerTargets($targets) {
+		$this->config->outputTarget = (empty($targets)) ? $_ENV['PWD'].'/docs' : array_pop($targets);
+		
+		if (empty($targets)) {
+			$this->config->inputTargets[] = $_ENV['PWD'];
+		} else {
+			foreach($targets as $input) {
+				if (!file_exists($input)) throw new ConfigurationError("File not found: $input");
+			}
+			$this->config->inputTargets = $targets;
+		}
+ 	}
 	
 	/**
 	 * Show error message.
@@ -199,18 +221,19 @@ See http://yarrowdoc.org for more information.
 Usage:
 
  $ yarrow [options]
- $ yarrow [options] <input>
- $ yarrow [options] <input> <output>
+ $ yarrow [options] <output>
+ $ yarrow [options] <input input> <output>
 
  Arguments
 
- <input>  -  Path to PHP code files or an individual PHP file. If not supplied
-             defaults to the current working directory.
-
  <output> -  Path to the generated documentation. If not supplied, defaults to
-             /docs in the current working directory. If it does not exist, it
+             ./docs in the current working directory. If it does not exist, it
              is created. If it does exist it remains in place, but existing
              files are overwritten by new files with the same name.
+
+ <input>  -  Path to PHP code files or an individual PHP file. If not supplied
+             defaults to the current working directory. Multiple directories
+             can be specified by repeating arguments, separated by whitespace.
 
  Options
 
