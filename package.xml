@@ -24,12 +24,29 @@
   <api>alpha</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/mit-license.php">MIT</license>
- <notes>-</notes>
+ <notes>removing docs that are duplicated in gh-pages
+bumping alpha version to 0.0.4
+a default theme with PHP templates
+nudges to get the entire process working end to end
+nudges to get the entire process working end to end
+getting input and output targets working with console script
+adding basic configuration map
+refactoring and formatting docblocks
+console script returns proper exit values
+adding exit values to the cli script
+support for --config option
+refactoring console runner to use instance rather than static methods
+refactoring properties parser
+adding boolean properties support (fixes #1)
+better code formatting
+all parsing pushed inside the do/while loop
+folding up methods into single line parse method
+refactoring properties parser to use abstract scanner
+adding YARD tag notes</notes>
  <contents>
    <dir name="/">
      <file name="README" role="doc" />
 	 <file name="LICENSE" role="doc" />
-	 <file name="INTERNALS" role="doc" />
 	 <file baseinstalldir="/" name="yarrow.php" install-as="yarrow" role="script">
 		<tasks:replace from="{{version}}" to="version" type="package-info" />	
 	 </file>
