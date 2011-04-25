@@ -15,18 +15,20 @@
  * Parses a subset of the Java style .properties format, similar to .ini files.
  */
 class PropertiesParser extends Scanner {
+	private $properties;
+	private $section;
 
-	function __construct($filename) {
+	function __construct($input) {
 		$this->properties = array();
 		$this->section = false;
-		parent::__construct($this->load($filename));
+		$input = $this->normalizeLineEndings($input);
+		parent::__construct($input);
 	}
 	
-	function __get($key) {
-		if (!isset($this->properties[$key])) {
-			throw new Exception("Config section [$key] does not exist.");
-		}
-		return $this->properties[$key];
+	function normalizeLineEndings($input) {
+		$input = str_replace("\r\n", "\n", $input);
+		$input = str_replace("\r", "\n", $input);
+		return $input;
 	}
 	
 	function addSection($section) {
@@ -67,36 +69,38 @@ class PropertiesParser extends Scanner {
 		return $value;
 	}
 	
-	function load($path) {
-		if (!file_exists($path)) {
-			throw new Exception("Properties file $path not found.");
-		}
-		$contents = file_get_contents($path);
-		$contents = str_replace("\r\n", "\n", $contents);
-		$contents = str_replace("\r", "\n", $contents);
-		return $contents;
-	}
+	const EOL = "\n";
 	
 	function parse() {		
 		do {
 			$char = $this->scanForward();
 			
-			if ($char == ';' || $char == '#') {
-				$this->scanUntil("\n");
-			
-			} elseif ($char == '[') {
-				$section = $this->scanUntil("]");
-				$this->addSection($section);
-				$this->scanUntil("\n");
-			
-			} elseif ($char != "\n") {
-				$this->skipBack();
-				$key = $this->scanUntil(":");
-				$this->skipForward();
-				$value = $this->scanUntil("\n");
-				$this->addProperty($key, $value);
+			switch($char) {
+				
+				case ';':
+				case '#':
+					$this->scanUntil(self::EOL);
+					break;
+				
+				case '[':
+					$section = $this->scanUntil("]");
+					$this->addSection($section);
+					$this->scanUntil(self::EOL);
+					break;
+					
+				default:
+					if ($char != self::EOL) {
+						$this->skipBack();
+						$key = $this->scanUntil(":");
+						$this->skipForward();
+						$value = $this->scanUntil(self::EOL);
+						$this->addProperty($key, $value);						
+					}
+					break;
 			}
 		
 		} while($this->cursor < $this->length);
+		
+		return $this->properties;
 	}
 }
