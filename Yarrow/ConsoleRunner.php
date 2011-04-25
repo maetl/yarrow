@@ -52,18 +52,28 @@ class ConsoleRunner {
 	private function runApplication() {
 		self::printVersion();
 		
-		$this->processArguments();
-		
-		if ($this->hasOption('version')) {
+		try {
+
+			$this->processArguments();
+
+			if ($this->hasOption('version')) {
+				return;
+			}
+
+			if ($this->hasOption('help')) {
+				return self::printHelp();
+			}
+
+			if ($this->hasOption('config')) {
+				$config = $this->getOption('config');
+				if (!file_exists($config)) {
+					throw new ConfigurationError("File not found: $config");
+				}
+			}
+
+		} catch(ConfigurationError $error) {
+			echo $error->getMessage() . PHP_EOL;
 			return;
-		}
-		
-		if ($this->hasOption('help')) {
-			return self::printHelp();
-		}
-		
-		if ($this->hasOption('config')) {
-			$config = $this->getOption('config');
 		}
 	}
 	
@@ -80,7 +90,7 @@ class ConsoleRunner {
 	 */
 	private function registerOption($option) {
 		$option = str_replace('=', ':', $option);
-		if (strstr(':', $option)) {
+		if (strstr($option, ':')) {
 			$optionParts = explode(':', $option);
 			$option = $optionParts[0];
 			$optionValue = $optionParts[1];
@@ -123,25 +133,20 @@ class ConsoleRunner {
 	 * Process the command line arguments.
 	 */
 	private function processArguments() {
-		try {
-			$length = count($this->arguments);
-			for ($i = 1; $i < $length; $i++) {
-				$argument = $this->arguments[$i];
-				if ($this->isOption($argument)) {
-					$this->registerOption($argument);
+		$length = count($this->arguments);
+		for ($i = 1; $i < $length; $i++) {
+			$argument = $this->arguments[$i];
+			if ($this->isOption($argument)) {
+				$this->registerOption($argument);
+			} else {
+				if (!$this->inputTarget) {
+					$this->inputTarget = $argument;
+				} elseif (!$this->outputTarget) {
+					$this->outputTarget = $argument;
 				} else {
-					if (!$this->inputTarget) {
-						$this->inputTarget = $argument;
-					} elseif (!$this->outputTarget) {
-						$this->outputTarget = $argument;
-					} else {
-						throw new ConfigurationError("Too many targets: $argument");
-					}
+					throw new ConfigurationError("Too many targets: $argument");
 				}
 			}
-		} catch(ConfigurationError $error) {
-			echo $error->getMessage() . PHP_EOL;
-			return;
 		}		
 	}
 	

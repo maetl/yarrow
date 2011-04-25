@@ -66,4 +66,19 @@ class ConsoleRunnerTest extends PHPUnit_Framework_TestCase {
 		$this->assertContains('Unrecognized option: -jnvalid', $output);
 	}
 	
+	function testConfigMessageIfFileNotExists() {
+		ConsoleRunner::main(array('yarrow', '-c:missing.conf'));
+		$output = ob_get_contents();
+		$this->assertStringStartsWith($this->getVersionHeader(), $output);
+		$this->assertContains('File not found: missing.conf', $output);
+	}
+	
+	function testConfigLoadsIfFileExists() {
+		$testconfig = dirname(__FILE__).'/Config/.yarrowdoc';
+		ConsoleRunner::main(array('yarrow', '--config='.$testconfig));
+		$output = ob_get_contents();
+		$this->assertStringStartsWith($this->getVersionHeader(), $output);
+		$this->assertNotContains('File not found', $output);
+	}
+	
 }
