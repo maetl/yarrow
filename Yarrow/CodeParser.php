@@ -104,6 +104,7 @@ class CodeParser {
 				break;
 
 				case T_CLASS:
+				case T_INTERFACE:
 					$this->shredClass();
 				break;
 				
