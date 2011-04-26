@@ -37,6 +37,6 @@ class DefaultGenerator extends Generator {
 	}
 	
 	protected function getConverter() {
-		return new PHPConverter('Yarrow/Themes/Default');
-	}	
+		return new PHPConverter(dirname(__FILE__).'/Themes/Default');
+	}
 }
