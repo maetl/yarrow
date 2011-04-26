@@ -13,11 +13,11 @@
   <email>me@maetl.net</email>
   <active>yes</active>
  </lead>
- <date>2011-04-25</date>
- <time>23:35:22</time>
+ <date>2011-04-26</date>
+ <time>14:41:39</time>
  <version>
-  <release>0.0.4</release>
-  <api>0.0.4</api>
+  <release>0.0.5</release>
+  <api>0.0.5</api>
  </version>
  <stability>
   <release>alpha</release>
@@ -100,6 +100,13 @@
 		<file name="TemplateConverter.php" role="php">
 			<tasks:replace from="{{version}}" to="version" type="package-info" />
 		</file>
+		<dir name="Themes">
+			<dir name="Default">
+				<file name="index.tpl.php" role="php" />
+				<file name="class.tpl.php" role="php" />
+				<file name="file.tpl.php" role="php" />
+			</dir>
+	 	</dir>		
 	 </dir>
    </dir>
  </contents>
