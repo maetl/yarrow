@@ -196,17 +196,24 @@ class ConsoleRunner {
 	
 	/**
 	 * Update configuration with target paths passed in as command line arguments.
+	 * @todo merge targets with configuration settings
 	 */
-	private function registerTargets($targets) {
-		$this->config->outputTarget = (empty($targets)) ? $_ENV['PWD'].'/docs' : array_pop($targets);
-		
+	private function registerTargets($targets) {	
 		if (empty($targets)) {
+			$this->config->outputTarget = $_ENV['PWD'].'/docs';
 			$this->config->inputTargets[] = $_ENV['PWD'];
 		} else {
-			foreach($targets as $input) {
-				if (!file_exists($input)) throw new ConfigurationError("File not found: $input");
+			$target = array_pop($targets);
+			if (empty($targets)) {
+				$this->config->outputTarget = $_ENV['PWD'].'/docs';
+				$this->config->inputTargets[] = $target;
+			} else {
+				foreach($targets as $input) {
+					if (!file_exists($input)) throw new ConfigurationError("File not found: $input");
+				}
+				$this->config->outputTarget = $target;
+				$this->config->inputTargets = $targets;				
 			}
-			$this->config->inputTargets = $targets;
 		}
  	}
 	
@@ -236,19 +243,19 @@ See http://yarrowdoc.org for more information.
 Usage:
 
  $ yarrow [options]
- $ yarrow [options] <output>
+ $ yarrow [options] <input>
  $ yarrow [options] <input input> <output>
 
  Arguments
+
+ <input>  -  Path to PHP code files or an individual PHP file. If not supplied
+             defaults to the current working directory. Multiple directories
+             can be specified by repeating arguments, separated by whitespace.
 
  <output> -  Path to the generated documentation. If not supplied, defaults to
              ./docs in the current working directory. If it does not exist, it
              is created. If it does exist it remains in place, but existing
              files are overwritten by new files with the same name.
-
- <input>  -  Path to PHP code files or an individual PHP file. If not supplied
-             defaults to the current working directory. Multiple directories
-             can be specified by repeating arguments, separated by whitespace.
 
  Options
 
