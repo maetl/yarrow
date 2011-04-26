@@ -41,7 +41,7 @@ abstract class Generator {
 	}
 	
 	private function ensureDirectoryExists($target) {
-		if (!is_dir($target)) mkdir($target);
+		if (!is_dir($target)) mkdir($target, 0777, true);
 	}
 	
 	private function writeFile($filename, $content) {
