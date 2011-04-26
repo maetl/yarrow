@@ -9,12 +9,13 @@ class FileCollectorTest extends PHPUnit_Framework_TestCase {
 		$collector->includeByPattern("/\.php$/");
 		$manifest = $collector->getManifest();
 		
-		$this->assertEquals(4, count($manifest));
+		$this->assertEquals(6, count($manifest));
 		$this->assertEquals('sample.class.php', $manifest[0]['filename']);
 		$this->assertEquals('sample.php', $manifest[1]['filename']);
 		$this->assertEquals('sample_function.php', $manifest[2]['filename']);
-		$this->assertEquals('SampleObject.php', $manifest[3]['filename']);
-		
+		$this->assertEquals('SampleInterface.php', $manifest[3]['filename']);
+		$this->assertEquals('SampleObject.php', $manifest[4]['filename']);
+		$this->assertEquals('samples.php', $manifest[5]['filename']);	
 	}
 	
 	function testFilterFilesByIncludePattern() {
@@ -32,10 +33,12 @@ class FileCollectorTest extends PHPUnit_Framework_TestCase {
 		$collector->excludeByPattern("/\.class\.php$/");
 		$manifest = $collector->getManifest();
 		
-		$this->assertEquals(3, count($manifest));
+		$this->assertEquals(5, count($manifest));
 		$this->assertEquals('sample.php', $manifest[0]['filename']);
-		$this->assertEquals('sample_function.php', $manifest[1]['filename']);	
-		$this->assertEquals('SampleObject.php', $manifest[2]['filename']);	
+		$this->assertEquals('sample_function.php', $manifest[1]['filename']);
+		$this->assertEquals('SampleInterface.php', $manifest[2]['filename']);
+		$this->assertEquals('SampleObject.php', $manifest[3]['filename']);
+		$this->assertEquals('samples.php', $manifest[4]['filename']);	
 	}
 	
 	function testFilterFilesByMultipleExcludePatterns() {
@@ -44,8 +47,10 @@ class FileCollectorTest extends PHPUnit_Framework_TestCase {
 		$collector->excludeByPattern("/\_function\.php$/");
 		$manifest = $collector->getManifest();
 		
-		$this->assertEquals(2, count($manifest));
+		$this->assertEquals(4, count($manifest));
 		$this->assertEquals('sample.php', $manifest[0]['filename']);
-		$this->assertEquals('SampleObject.php', $manifest[1]['filename']);		
+		$this->assertEquals('SampleInterface.php', $manifest[1]['filename']);
+		$this->assertEquals('SampleObject.php', $manifest[2]['filename']);
+		$this->assertEquals('samples.php', $manifest[3]['filename']);		
 	}
 }
