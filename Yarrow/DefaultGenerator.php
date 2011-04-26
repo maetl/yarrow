@@ -15,6 +15,10 @@
  * Experimental default for testing.
  */
 class DefaultGenerator extends Generator {
+
+	protected function convertToFilename($object) {
+		return strtolower(str_replace(' ', '/', str_replace('.php', '', $object)));
+	}
 	
 	protected function getObjectMap() {
 		return array(

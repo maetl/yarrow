@@ -10,4 +10,4 @@
 
 <h2>Source</h2>
 
-<pre><?php echo htmlentities($file->getSource()); ?></pre>
+<?php echo highlight_string($file->getSource(), true); ?>
