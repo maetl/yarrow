@@ -23,9 +23,10 @@ channel:
 **Note: before the 0.1.0 release, all Yarrow releases in the PEAR channel are
 considered 'alpha', which in PEAR parlance means 'unstable'. So the above
 command will not work as expected. You'll need to manually specify the entire
-version file in the command, like:**
+version file in the command, or the stability identifier like:**
 
-  $ pear install yarrow/Yarrow-0.0.4.tgz
+  $ pear install yarrow/Yarrow-0.0.5
+  $ pear install yarrow/Yarrow-alpha
 
 Depending on how PEAR is set up on your local system, you may need to use sudo.
 
