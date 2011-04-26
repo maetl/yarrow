@@ -13,11 +13,15 @@
 
 class Yarrow_Autoload {
 	
+	public static function getClassPath() {
+		return dirname(__FILE__) . DIRECTORY_SEPARATOR;
+	}
+	
 	public static function loadClassFile($class) {
 		$file = $class . '.php';
 		//$file = str_replace('_', '/', $class) . '.php';
-		if (file_exists('Yarrow/'. $file)) {
-			require_once $file;
+		if (file_exists(self::getClassPath() . $file)) {
+			require_once self::getClassPath() . $file;
 		}
 	}
 }
