@@ -32,11 +32,21 @@ class ClassModel {
 		$this->docblock = $docblock;
 	}
 	
-	function addFunction($function) {
+	function addMethod($function) {
 		$this->functions[] = $function;
 	}
 	
-	function getFunctions() {
+	/** @deprecated */
+	function addFunction($method) {
+		$this->addMethod($method);
+	}
+	
+	/** @deprecated */
+	function getFunctions($method) {
+		$this->getMethods();
+	}
+	
+	function getMethods() {
 		return $this->functions;
 	}
 	

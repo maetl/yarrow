@@ -49,20 +49,20 @@ class Analyzer {
 		// used for testing and experimenting with
 		// different ways of building a code model
 		
-		$listener = new CodeListener();
+		$reader = new CodeReader();
 		
-		$parser = new CodeParser($tokens, $listener);
+		$parser = new CodeParser($tokens, $reader);
 		$parser->parse();
 		
 		$file = new FileModel($file['relative_path']);
 		$file->setSource($source);
-		$file->setClasses($parser->classes);
-		$file->setFunctions($parser->globals);
+		$file->setClasses($reader->getClasses());
+		$file->setFunctions($reader->getFunctions());
 		
-		foreach($parser->classes as $class) {
+		foreach($reader->getClasses() as $class) {
 			$this->objectModel->addClass($class);
 		}
-		foreach($parser->globals as $func) {
+		foreach($reader->getFunctions() as $func) {
 			$this->objectModel->addFunction($func);
 		}
 		

@@ -13,8 +13,8 @@
 
 class FunctionModel {
 	private $name;
-	private $args;
 	private $docblock;
+	private $parameters;
 	
 	function __construct($name) {
 		$this->name = $name;
@@ -24,6 +24,10 @@ class FunctionModel {
 	function addDocBlock($docblock) {
 		$parser = new DocblockParser($docblock);
 		$this->docblock = $parser->parse();
+	}
+	
+	function addParameters($arguments) {
+		
 	}
 	
 	function addArgument($argvar) {

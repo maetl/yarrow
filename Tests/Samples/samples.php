@@ -52,14 +52,14 @@ class SampleThree {
 	/**
 	 * Plain function, three args, one optional
 	 */
-	function sampleFunctionThree($arg1, $arg2, $arg3="three") {
+	public function sampleFunctionThree($arg1, $arg2, $arg3="three") {
 		return true;
 	}
 	
 	/**
 	 * Plain function, one arg with type hint
 	 */
-	function sampleFunctionHint(string $arghint) {
+	private function sampleFunctionHint(string $arghint) {
 		return true;
 	}
 	

@@ -12,31 +12,37 @@ class CodeParserTest extends PHPUnit_Framework_TestCase {
 	function testTopLevelFunctionDeclaration() {		
 		$tokens = $this->tokenizeSampleFile('sample_function.php');
 		
-		$listener = new CodeListener();
-		$listener->addFile('Samples/sample_function.php');
+		$reader = $this->getMock('CodeReader', array('onFunction'), array('sample_function.php'));
+		$reader->expects($this->once())
+									->method('onFunction')
+									->with('sample_function',
+											array('$arg'=>null, // refactor to add default arg values
+											));
 		
-		$parser = new CodeParser($tokens, $listener);
+		$parser = new CodeParser($tokens, $reader);
 		$parser->parse();
 	}
 	
 	function testCanParseSampleClassFile() {
 		$tokens = $this->tokenizeSampleFile('sample.php');
 		
-		$file = $this->getMock('FileModel', array('addClass'), array('sample.class.php'));
-		$file->expects($this->once())->method('addClass')->with($this->isInstanceOf('ClassModel'));
+		$reader = $this->getMock('CodeReader', array('onClass'), array('sample.class.php'));
+		$reader->expects($this->once())->method('onClass')->with('Sample');
 		
-		$parser = new CodeParser($tokens, $file);
+		$parser = new CodeParser($tokens, $reader);
 		$parser->parse();
 	}
 	
 	function testCanParseSamplesClassFile() {
 		$tokens = $this->tokenizeSampleFile('samples.php');
 		
-		$file = $this->getMock('FileModel', array('addClass'), array('sample.class.php'));
-		$file->expects($this->exactly(3))->method('addClass')->with($this->isInstanceOf('ClassModel'));
+		$reader = $this->getMock('CodeReader', array('onClass'), array('sample.class.php'));
+		$reader->expects($this->exactly(3))->method('onClass');
+		$reader->expects($this->at(0))->method('onClass')->with('SampleOne');
+		$reader->expects($this->at(1))->method('onClass')->with('SampleTwo');
+		$reader->expects($this->at(2))->method('onClass')->with('SampleThree');
 		
-		$parser = new CodeParser($tokens, $file);
+		$parser = new CodeParser($tokens, $reader);
 		$parser->parse();
 	}
-	
 }
