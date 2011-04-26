@@ -65,11 +65,6 @@ class CodeParser {
 		$this->scope = new ScopeStack();
 		$this->reader = $reader;
 		$this->keywords = array();
-		
-		//----------------------------------------------------------------
-
-		$this->docblockScope = false; // replace these with a stack
-		$this->classScope = false;	  // that holds nested scope state
 	}
 	
 	/**
