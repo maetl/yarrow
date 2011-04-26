@@ -16,12 +16,6 @@
  * object oriented structure.
  */
 class CodeParser {
-	
-	/**
-	 * Base type for all PHP classes
-	 */
-	const PHP_stdClass = 'stdClass';
-	
 	private $tokens;
 	private $total;
 	private $current;
@@ -30,6 +24,7 @@ class CodeParser {
 	
 	/**
 	 * @param $tokens array of token identifiers
+	 * @param $listener code model to append structure, probably a FileModel
 	 */
 	function __construct($tokens, $listener) {
 		$this->tokens = $tokens;
@@ -102,7 +97,6 @@ class CodeParser {
 	function shredDocBlock() {
 		$symbol = $this->currentSymbol();
 		$this->docblocks[] = $symbol[1];
-		$this->listener->addDocblock($symbol[1]);
 		$this->docblockScope = true;
 	}
 	
@@ -117,7 +111,7 @@ class CodeParser {
 			$parent = '';
 			while (is_array($t[$i+1]) && $t[$i+1][0] !== T_WHITESPACE) $parent .= $t[++$i][1];
 		} else {
-			$parent = self::PHP_stdClass;
+			$parent = ClassModel::BASE_TYPE;
 		}
 		$class = new ClassModel($t[$i+2][1], $parent);
 		if ($this->docblockScope) {
@@ -126,6 +120,7 @@ class CodeParser {
 			$this->classScope = true;
 		}
 		$this->classes[] = $class;
+		$this->listener->addClass($class);
 	}
 
 	/**
