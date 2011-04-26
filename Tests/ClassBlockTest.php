@@ -16,7 +16,7 @@ class ClassBlockTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($model->classCount(), 1);
 		
 		$classes = $model->getClasses();
-		$methods = $classes[0]->getFunctions();
+		$methods = $classes[0]->getMethods();
 		
 		$this->assertEquals($classes[0]->methodCount(), 4);
 		$this->assertEquals($methods[2]->getSummary(), "This is the public API, and should be documented.");
@@ -39,7 +39,6 @@ class ClassBlockTest extends PHPUnit_Framework_TestCase {
 	public function dumpText($classes, $docblocks) {
 		foreach($classes as $y=>$classname) {
 			$str = "=$classname\n\n";
-			$str .= "{$docblocks[$y]}";
 		}
 		return $str;		
 	}

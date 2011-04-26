@@ -39,9 +39,9 @@ class CodeParser {
 		'?' => T_TERNARY_IF
 	);
 	
-	const GLOBAL_SCOPE 	 = 0;
-	const CLASS_SCOPE  	 = 1;
-	const FUNCTION_SCOPE = 2;
+	const GLOBAL_SCOPE 	 = 1;
+	const CLASS_SCOPE  	 = 2;
+	const FUNCTION_SCOPE = 3;
 	
 	/**
 	 * @param $tokens array of token identifiers
@@ -95,6 +95,10 @@ class CodeParser {
 			
 			switch ($this->symbol) {
 				
+				case T_OPEN_TAG:
+					$this->scope->push($this->state);
+				break;
+				
 				case T_DOC_COMMENT:
 					$this->shredDocBlock();
 				break;
@@ -109,21 +113,11 @@ class CodeParser {
 				break;
 				
 				case T_SCOPE_START:
-					$this->scope->push($this->state);
+					$this->startNestingScope();
 				break;
 				
 				case T_SCOPE_END:
-					$previous = $this->scope->pop();
-					$this->state = $this->scope->peek();
-					if ($previous == self::FUNCTION_SCOPE) {
-						if ($this->state == self::CLASS_SCOPE) {
-							$this->reader->onMethodEnd();
-						} else {
-							$this->reader->onFunctionEnd();
-						}
-					} elseif ($previous == self::CLASS_SCOPE) {
-						$this->reader->onClassEnd();
-					}
+					$this->endNestingScope();
 				break;
 				
 				case T_PRIVATE:
@@ -170,8 +164,7 @@ class CodeParser {
 	 */
 	function shredDocBlock() {
 		$symbol = $this->currentToken();
-		$this->docblocks[] = $symbol[1];
-		$this->docblockScope = true;
+		$this->reader->onDocComment($symbol[1]);
 	}
 	
 	/**
@@ -205,7 +198,7 @@ class CodeParser {
 		
 		if ($this->state == self::CLASS_SCOPE) {
 			
-			$visibility = (!isset($visibility)) ? $visibility : 'public';
+			$visibility = (isset($visibility)) ? $visibility : 'public';
 			$final = isset($final);
 			
 			if (isset($static)) {
@@ -273,5 +266,25 @@ class CodeParser {
 		
 		$this->current = $pos;
 		return $arguments;
+	}
+	
+	function startNestingScope() {
+		$this->scope->push($this->state);
+	}
+	
+	function endNestingScope() {
+		$previous = $this->scope->pop();
+		$this->state = $this->scope->peek();
+
+		if ($this->state == self::CLASS_SCOPE) {
+			$this->reader->onMethodEnd();
+
+		} elseif ($this->state == self::GLOBAL_SCOPE) {
+			if ($previous == self::FUNCTION_SCOPE) {
+				$this->reader->onFunctionEnd();
+			} else {
+				$this->reader->onClassEnd();
+			}
+		}		
 	}
 }

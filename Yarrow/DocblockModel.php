@@ -42,4 +42,8 @@ class DocblockModel {
 	function addTag($tagline) {
 		$this->tags[] = $tagline;
 	}
+	
+	function __toString() {
+		return $this->getSummary();
+	}
 }

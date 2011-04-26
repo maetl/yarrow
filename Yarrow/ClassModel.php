@@ -42,7 +42,7 @@ class ClassModel {
 	}
 	
 	/** @deprecated */
-	function getFunctions($method) {
+	function getFunctions() {
 		$this->getMethods();
 	}
 	

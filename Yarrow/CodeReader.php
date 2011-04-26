@@ -30,8 +30,15 @@ class CodeReader {
 		return $this->functions;
 	}
 	
+	function onDocComment($comment) {
+		$docblock = new DocblockParser($comment);
+		$this->docblocks[] = $docblock->parse();
+	}
+	
 	function onClass($name, $parent=false, $implements=false, $final=false) {
 		$this->currentClass = new ClassModel($name, $parent);
+		$docblock = array_pop($this->docblocks);
+		if ($docblock) $this->currentClass->addDocblock($docblock);
 	}
 	
 	function onAbstractClass($name, $parent, $implements) {
@@ -47,12 +54,16 @@ class CodeReader {
 		$this->currentClass = false;
 	}
 	
-	function onFunction($function, $arguments) {
-		$this->currentFunction = new FunctionModel($function, $arguments);		
+	function onFunction($name, $arguments) {
+		$this->currentFunction = new FunctionModel($name, $arguments);
+		$docblock = array_pop($this->docblocks);
+		if ($docblock) $this->currentFunction->addDocblock($docblock);
 	}
 	
 	function onStaticFunction($name, $arguments) {
-		$this->currentFunction = new FunctionModel($function, $arguments);
+		$this->currentFunction = new FunctionModel($name, $arguments);
+		$docblock = array_pop($this->docblocks);
+		if ($docblock) $this->currentFunction->addDocblock($docblock);		
 	}
 
 	function onFunctionEnd() {
@@ -61,12 +72,16 @@ class CodeReader {
 		$this->currentFunction = false;
 	}
 	
-	function onMethod($function, $arguments, $visibility='public', $final=false) {
-		$this->currentFunction = new FunctionModel($function, $arguments);
+	function onMethod($name, $arguments, $visibility='public', $final=false) {
+		$this->currentFunction = new FunctionModel($name, $arguments);
+		$docblock = array_pop($this->docblocks);
+		if ($docblock) $this->currentFunction->addDocblock($docblock);		
 	}
 	
-	function onStaticMethod($function, $arguments, $visibility='public', $final=false) {
-		$this->currentFunction = new FunctionModel($function, $arguments);
+	function onStaticMethod($name, $arguments, $visibility='public', $final=false) {
+		$this->currentFunction = new FunctionModel($name, $arguments);
+		$docblock = array_pop($this->docblocks);
+		if ($docblock) $this->currentFunction->addDocblock($docblock);		
 	}
 
 	function onMethodEnd() {
