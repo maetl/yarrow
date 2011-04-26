@@ -1,3 +1,4 @@
+---
 layout: default
 title: Yarrow - Simple Documentation Generator for PHP
 ---
