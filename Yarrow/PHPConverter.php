@@ -17,15 +17,15 @@
 class PHPConverter extends TemplateConverter {
 	
 	/**
-	 * Renders a template, applying passed in variables.
+	 * Renders a template, applying context variables.
 	 * 
 	 * @throws Exception
 	 * @param string $template name of template file
-	 * @param array $variables list of variables provided to template
+	 * @param array $context list of variables provided to template
 	 */
-	public function render($template, $variables) {
+	public function render($template, $context) {
 		ob_start();
-		extract($variables);
+		extract($context);
 		$templateFile = $this->getTemplatePath() . '/' . $template;
 		if (file_exists($templateFile)) {
 			include $templateFile;

@@ -36,12 +36,12 @@ abstract class TemplateConverter {
 	}
 	
 	/**
-	 * Renders a template, applying passed in variables.
+	 * Renders a template, applying context variables.
 	 * 
 	 * @throws Exception
 	 * @param string $template name of template file
-	 * @param array $variables list of variables provided to template
+	 * @param array $context list of variables provided to template
 	 */
-	abstract public function render($template, $variables);
+	abstract public function render($template, $context);
 	
 }
