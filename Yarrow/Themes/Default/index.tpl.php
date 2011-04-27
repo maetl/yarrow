@@ -1,7 +1,18 @@
-<h1><?php echo $meta['title']; ?></h1>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+  <head>
+    <title><?php echo $meta['title']; ?></title>
+  </head>
+  <body>
 
-<?php foreach($objectModel->getClasses() as $class): ?>
+	<h1><?php echo $meta['title']; ?></h1>
 
-	<h2><?php echo $class; ?></h2>
+	<ul>
+	<?php foreach($objectModel->getClasses() as $class): ?>
+		<li><a href="<?php echo $class->relativeLink; ?>.html"><?php echo $class; ?></li>
+	<?php endforeach ?>
+	</ul>
 
-<?php endforeach ?>
+  </body>
+</html>
+

@@ -14,11 +14,12 @@
 class FunctionModel {
 	private $name;
 	private $docblock;
-	private $parameters;
+	private $arguments;
+	private $file;
 	
-	function __construct($name) {
+	function __construct($name, $arguments=array()) {
 		$this->name = $name;
-		$this->args = array();
+		$this->arguments = $arguments;
 	}
 	
 	function addDocBlock($docblock) {
@@ -26,8 +27,12 @@ class FunctionModel {
 		$this->docblock = $parser->parse();
 	}
 	
-	function addParameters($arguments) {
-		
+	function setFile($file) {
+		$this->file = $file;
+	}
+	
+	function getName() {
+		return $this->name;
 	}
 	
 	function addArgument($argvar) {
@@ -38,9 +43,17 @@ class FunctionModel {
 		return $this->args;
 	}
 	
+	function getText() {
+		if ($this->docblock) return $this->docblock->getText();
+	}
+	
 	function getSummary() {
 		if ($this->docblock) return $this->docblock->getSummary();
 	}
+	
+	function getRelativeLink() {
+		return strtolower(str_replace(' ', '/', str_replace('.php', '.html', (string)$this)));
+	}	
 	
 	function __toString() {
 		return "Function " . $this->name;

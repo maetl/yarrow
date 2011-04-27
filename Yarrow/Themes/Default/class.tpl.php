@@ -1,9 +1,28 @@
-<h1><?php echo $class; ?></h1>
-
-<?php foreach($class->getMethods() as $func): ?>
-
-	<h2><?php echo $func; ?></h2>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+  <head>
+    <title><?php echo $meta['title']; ?></title>
+  </head>
+  <body>
 	
-	<p><?php echo $func->getSummary(); ?></p>
+	
+	<div><a href="../index.html">Index</a></div>
+	
+	<h1><?php echo $class; ?></h1>
 
-<?php endforeach ?>
+	<p><?php echo $class->summary; ?></p>
+	
+	<p>In File: <a href="../<?php echo $class->file->getRelativeLink(); ?>"><?php echo $class->file->getName(); ?></a></p>
+
+	<?php foreach($class->methods as $method): ?>
+
+		<h2><?php echo $method; ?></h2>
+		<p><?php echo $method->getSummary(); ?></p>
+
+
+	<?php endforeach ?>
+	
+	
+  </body>
+</html>
+

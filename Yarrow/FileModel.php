@@ -1,4 +1,4 @@
-<?php
+ <?php
 /**
  * Yarrow {{version}}
  * Simple Documentation Generator
@@ -23,6 +23,19 @@ class FileModel {
 		$this->functions = array();
 	}
 	
+	function getName() {
+		return $this->filename;
+	}
+	
+	function getBaseLinkPrefix() {
+		$relativeLink = $this->getRelativeLink();
+		return str_repeat('../', substr_count($relativeLink, '/'));
+	}
+	
+	function getRelativeLink() {
+		return strtolower(str_replace(' ', '/', str_replace('.php', '.html', (string)$this)));
+	}
+	
 	function getSource() {
 		return $this->source;
 	}
@@ -35,12 +48,22 @@ class FileModel {
 		return $this->classes;
 	}
 	
+	function getFunctions() {
+		return $this->functions;
+	}
+	
 	function setClasses($classes) {
 		$this->classes = $classes;
+		foreach($this->classes as $class) {
+			if ($class) $class->setFile($this);
+		}
 	}
 	
 	function setFunctions($functions) {
 		$this->functions = $functions;
+		foreach($this->functions as $func) {
+			if ($func) $func->setFile($this);
+		}
 	}
 	
 	function addClass($class) {

@@ -40,6 +40,17 @@ class ObjectModel {
 		return count($this->classes);
 	}
 	
+	function functionCount() {
+		return count($this->functions);
+	}
+
+	/**
+	 * A list of all the global functions collected in the project
+	 */
+	function getFunctions() {
+		return $this->functions;
+	}
+	
 	/**
 	 * A list of all the classes collected in the project
 	 */

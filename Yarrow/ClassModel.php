@@ -16,6 +16,7 @@ class ClassModel {
 	private $ancestor;
 	private $functions;
 	private $docblock;
+	private $file;
 	
 	/**
 	 * Base type for all PHP classes
@@ -35,6 +36,14 @@ class ClassModel {
 	function addMethod($function) {
 		$this->functions[] = $function;
 	}
+
+	function setFile($file) {
+		$this->file = $file;
+	}
+	
+	function getFile() {
+		return $this->file;
+	}
 	
 	/** @deprecated */
 	function addFunction($method) {
@@ -44,6 +53,14 @@ class ClassModel {
 	/** @deprecated */
 	function getFunctions() {
 		$this->getMethods();
+	}
+	
+	function getText() {
+		if ($this->docblock) return $this->docblock->getText();
+	}
+	
+	function getSummary() {
+		if ($this->docblock) return $this->docblock->getSummary();
 	}
 	
 	function getMethods() {
@@ -58,7 +75,22 @@ class ClassModel {
 		return count($this->functions);
 	}
 	
+	function getName() {
+		return $this->name;
+	}
+	
 	function __toString() {
 		return 'Class ' . $this->name;
+	}
+	
+	function getRelativeLink() {
+		return strtolower(str_replace(' ', '/', str_replace('.php', '.html', (string)$this)));
+	}
+	
+	function __get($key) {
+		$accessor = 'get' . ucfirst($key);
+		if (method_exists($this, $accessor)) {
+			return $this->$accessor();
+		}
 	}
 }
