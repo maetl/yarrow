@@ -37,6 +37,6 @@ class DefaultGenerator extends Generator {
 	}
 	
 	protected function getConverter() {
-		return new PHPConverter(dirname(__FILE__).'/Themes/Default');
+		return new PhpConverter(dirname(__FILE__).'/Themes/Default');
 	}
 }

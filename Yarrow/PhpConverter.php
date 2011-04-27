@@ -14,7 +14,7 @@
 /**
  * Converter for classic PHP style templating.
  */
-class PHPConverter extends TemplateConverter {
+class PhpConverter extends TemplateConverter {
 	
 	/**
 	 * Renders a template, applying context variables.
