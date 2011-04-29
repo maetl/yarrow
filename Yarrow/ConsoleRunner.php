@@ -198,14 +198,15 @@ class ConsoleRunner {
 	 * Update configuration with target paths passed in as command line arguments.
 	 * @todo merge targets with configuration settings
 	 */
-	private function registerTargets($targets) {	
+	private function registerTargets($targets) {
+		$workingDirectory = (isset($_ENV['PWD'])) ? $_ENV['PWD'] : $_SERVER['PWD'];
 		if (empty($targets)) {
-			$this->config->outputTarget = $_ENV['PWD'].'/docs';
-			$this->config->inputTargets[] = $_ENV['PWD'];
+			$this->config->outputTarget = $workingDirectory.'/docs';
+			$this->config->inputTargets[] = $workingDirectory;
 		} else {
 			$target = array_pop($targets);
 			if (empty($targets)) {
-				$this->config->outputTarget = $_ENV['PWD'].'/docs';
+				$this->config->outputTarget = $workingDirectory.'/docs';
 				$this->config->inputTargets[] = $target;
 			} else {
 				foreach($targets as $input) {
