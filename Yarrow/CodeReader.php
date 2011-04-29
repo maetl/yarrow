@@ -73,13 +73,13 @@ class CodeReader {
 	}
 	
 	function onMethod($name, $arguments, $visibility='public', $final=false) {
-		$this->currentFunction = new FunctionModel($name, $arguments);
+		$this->currentFunction = new MethodModel($name, $arguments, $visibility, $final);
 		$docblock = array_pop($this->docblocks);
 		if ($docblock) $this->currentFunction->addDocblock($docblock);		
 	}
 	
 	function onStaticMethod($name, $arguments, $visibility='public', $final=false) {
-		$this->currentFunction = new FunctionModel($name, $arguments);
+		$this->currentFunction = new MethodModel($name, $arguments, $visibility, $final);
 		$docblock = array_pop($this->docblocks);
 		if ($docblock) $this->currentFunction->addDocblock($docblock);		
 	}

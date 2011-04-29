@@ -19,6 +19,8 @@ class ClassBlockTest extends PHPUnit_Framework_TestCase {
 		$methods = $classes[0]->getMethods();
 		
 		$this->assertEquals($classes[0]->methodCount(), 4);
+		$this->assertFalse($methods[1]->isPublic());
+		$this->assertTrue($methods[2]->isPublic());
 		$this->assertEquals($methods[2]->getSummary(), "This is the public API, and should be documented.");
 		$this->assertEquals($methods[3]->getSummary(), "This is the public API, and has three arguments.");
 	}
