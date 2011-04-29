@@ -5,12 +5,12 @@ require_once dirname(__FILE__).'/../Yarrow/Autoload.php';
 class CodeParserTest extends PHPUnit_Framework_TestCase {
 	
 	function tokenizeSampleFile($filename) {
-		$path = dirname(__FILE__).'/Samples/'.$filename;
+		$path = dirname(__FILE__).'/'.$filename;
 		return token_get_all(file_get_contents($path));
 	}
 	
 	function testTopLevelFunctionDeclaration() {		
-		$tokens = $this->tokenizeSampleFile('sample_function.php');
+		$tokens = $this->tokenizeSampleFile('Samples/sample_function.php');
 		
 		$reader = $this->getMock('CodeReader', array('onFunction'), array('sample_function.php'));
 		$reader->expects($this->once())
@@ -24,7 +24,7 @@ class CodeParserTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	function testCanParseSampleClassFile() {
-		$tokens = $this->tokenizeSampleFile('sample.php');
+		$tokens = $this->tokenizeSampleFile('Samples/sample.php');
 		
 		$methods = array('onClass', 'onMethod', 'onMethodEnd');
 		$reader = $this->getMock('CodeReader', $methods, array('sample.php'));
@@ -37,7 +37,7 @@ class CodeParserTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	function testCanParseSamplesClassFile() {
-		$tokens = $this->tokenizeSampleFile('samples.php');
+		$tokens = $this->tokenizeSampleFile('Samples/samples.php');
 		
 		$methods = array('onClass', 'onMethod', 'onMethodEnd', 'onClassEnd');
 		$reader = $this->getMock('CodeReader', $methods, array('sample.php'));
@@ -59,6 +59,18 @@ class CodeParserTest extends PHPUnit_Framework_TestCase {
 		$reader->expects($this->at(15))->method('onClassEnd');
 		
 		
+		$parser = new CodeParser($tokens, $reader);
+		$parser->parse();
+	}
+	
+	function testCanParseDeprecatedReferenceOperator() {
+		$tokens = $this->tokenizeSampleFile('Corpus/ampersand.php');
+		
+		$methods = array('onClass', 'onMethod', 'onMethodEnd', 'onClassEnd');
+		$reader = $this->getMock('CodeReader', $methods, array('sample.php'));
+		$reader->expects($this->at(1))->method('onMethod')->with('hasReferenceSymbol');
+		$reader->expects($this->at(3))->method('onMethod')->with('annoyingWhitespace', array('$argument'=>null));
+	
 		$parser = new CodeParser($tokens, $reader);
 		$parser->parse();
 	}

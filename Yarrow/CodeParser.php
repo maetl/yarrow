@@ -16,6 +16,7 @@ define('T_SCOPE_END', 909);
 define('T_BRACE_OPEN', 911);
 define('T_BRACE_CLOSE', 919);
 define('T_TERNARY_IF', 977);
+define('T_AMPERSAND', 988);
 define('T_UNKNOWN', 999);
 
 /**
@@ -36,7 +37,8 @@ class CodeParser {
 		'}' => T_SCOPE_END,
 		'(' => T_BRACE_OPEN,
 		')' => T_BRACE_CLOSE,
-		'?' => T_TERNARY_IF
+		'?' => T_TERNARY_IF,
+		'&' => T_AMPERSAND
 	);
 	
 	const GLOBAL_SCOPE 	 = 1;
@@ -185,12 +187,19 @@ class CodeParser {
 	 * Acceptor to build a function signature.
 	 */
 	function shredFunction() {
-		$t = $this->tokens;
-		$i = $this->current;
-		$name = $t[$i+2][1];
+		
+		while ($this->tokens[$this->current][0] != T_BRACE_OPEN) {
+			
+			if ($this->tokens[$this->current][0] == T_STRING) {
+				$name = $this->tokens[$this->current][1];
+			}
+			
+			$this->current++;
+		}
+		
 		extract($this->keywords);
 		
-		$arguments = $this->shredArguments($i+4);
+		$arguments = $this->shredArguments($this->current+1);
 		
 		if ($this->state == self::CLASS_SCOPE) {
 			
