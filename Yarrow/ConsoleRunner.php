@@ -56,6 +56,11 @@ class ConsoleRunner {
 	);
 	
 	/**
+	 * Marker for timing the duration of the script.
+	 */
+	private static $startTime;
+	
+	/**
 	 * Main method to run the application.
 	 * @param array $arguments list of command line arguments
 	 */
@@ -79,7 +84,7 @@ class ConsoleRunner {
 	 * @return boolean exit value
 	 */
 	public function runApplication() {
-		self::printVersion();
+		$this->printHeader();
 		
 		try {
 
@@ -94,15 +99,13 @@ class ConsoleRunner {
 				return self::SUCCESS;
 			}
 
-			if ($this->hasOption('config')) {
-				$path = $this->getOption('config');
-				$properties = PropertiesFile::load($path);
-				$this->config->merge($properties);
-			}
+			$this->processConfiguration();
 			
 			$this->runInputProcess();
 			
 			$this->runOutputProcess();
+			
+			$this->printFooter();
 			
 			return self::SUCCESS;
 
@@ -140,7 +143,20 @@ class ConsoleRunner {
 		}
 		
 		$this->registerTargets($targets);
-	}	
+	}
+	
+	/**
+	 * Loads configuration from targets.
+	 */
+	private function processConfiguration() {
+		// todo: collect configuration based on target directories
+		
+		if ($this->hasOption('config')) {
+			$path = $this->getOption('config');
+			$properties = PropertiesFile::load($path);
+			$this->config->merge($properties);
+		}		
+	}
 	
 	/**
 	 * Returns true if the given argument is a configuration option.
@@ -230,8 +246,19 @@ class ConsoleRunner {
 	/**
 	 * Show the version header.
 	 */
-	private static function printVersion() {
-		echo implode(" ", array(self::APPNAME, self::VERSION, PHP_EOL, PHP_EOL));
+	private function printHeader() {
+		self::$startTime = mktime();
+		echo self::APPNAME . " " .self::VERSION . "\n\n";
+	}
+	
+	/**
+	 * Show the results footer.
+	 */
+	private function printFooter() {
+		$time = (mktime() - self::$startTime);
+		$mb = memory_get_peak_usage() / (1024 * 1024);
+		echo "Time: $time seconds. Memory: " . round($mb, 1) . "MB.\n\n";
+		echo "Documentation generated at {$this->config->outputTarget}/\n";
 	}
 	
 	/**
