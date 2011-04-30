@@ -106,9 +106,6 @@ class Configuration {
 		if (isset($this->settings[$key])) {
 			return $this->settings[$key];
 		}
-		if (isset($this->settings['options'][$key])) {
-			return $this->settings['options'][$key];
-		}
 	}
 	
 	/**

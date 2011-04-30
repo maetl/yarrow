@@ -161,10 +161,11 @@ class ConsoleRunner {
 			$this->config->merge(PropertiesFile::load($path));
 		}
 		
-		$this->config->merge($this->options);
+		$this->config->merge(array('options'=>$this->options));
 		$this->normalizeThemePath();
 		
-		$this->config->append($this->loadConfiguration($this->config->theme));
+		$theme = $this->config->options['theme'];
+		$this->config->append($this->loadConfiguration($theme));
 	}
 	
 	/**
@@ -188,8 +189,9 @@ class ConsoleRunner {
 	 * existing configuration setting does not point to a directory.
 	 */
 	private function normalizeThemePath() {
-		if (!is_dir($this->config->theme)) {
-			$themePath = dirname(__FILE__) . '/Themes/'. $this->config->theme;
+		$theme = $this->config->options['theme'];
+		if (!is_dir($theme)) {
+			$themePath = dirname(__FILE__) . '/Themes/'. $theme;
 			$this->config->merge(array('options' => array('theme' => $themePath)));
 		}
 	}
