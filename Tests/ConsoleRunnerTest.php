@@ -150,6 +150,8 @@ class ConsoleRunnerTest extends PHPUnit_Framework_TestCase {
 		$this->assertStringStartsWith($this->getVersionHeader(), $output);
 		$config = Configuration::instance();
 		$this->assertEquals('Tertiary Title', $config->meta['title']);
+		$this->assertEquals('Erika Mustermann', $config->meta['author']);
+		$this->assertEquals('http://yo.yarrowdoc.org', $config->meta['website']);
 	}
 	
 	function testInputTargetErrorFromBadArguments() {

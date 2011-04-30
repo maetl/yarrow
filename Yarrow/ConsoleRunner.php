@@ -145,13 +145,12 @@ class ConsoleRunner {
 	
 	/**
 	 * Loads configuration from targets.
+	 * @todo add template/theme directory to config precedence
 	 */
 	private function processConfiguration() {
 		$workingDirectory = $this->getWorkingDirectory();
 		
 		$this->collectConfigFile($workingDirectory);
-		
-		$this->collectConfigFile($this->config->outputTarget);
 		
 		foreach($this->config->inputTargets as $inputPath) {
 			$this->collectConfigFile($inputPath);

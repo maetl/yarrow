@@ -17,12 +17,26 @@ class ConfigTest extends PHPUnit_Framework_TestCase {
 	
 	function testConfigurationMerge() {
 		$config = Configuration::instance();
+		$config->clear();
 		$config->merge(array(
 			'meta' => array(
 				'title' => 'Should Be Overwritten'
 			)
 		));
 		$this->assertEquals('Should Be Overwritten', $config->meta['title']);
+		$this->assertEquals('Yarrow', $config->meta['generator']);
 	}
 	
+	function testConfigurationAppend() {
+		$config = Configuration::instance();
+		$config->clear();
+		$config->append(array(
+			'meta' => array(
+				'title' => 'Should Be Overwritten',
+				'author' => 'Erika Mustermann'
+			)
+		));
+		$this->assertEquals('Sample Documentation', $config->meta['title']);
+		$this->assertEquals('Erika Mustermann', $config->meta['author']);
+	}
 }

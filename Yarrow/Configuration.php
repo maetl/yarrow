@@ -17,11 +17,17 @@
 class Configuration {
 
 	/**
+	 * Index of configuration settings.
+	 */
+	private $settings = array();
+
+	/**
 	 * Defaults for all required settings.
 	 */
-	private $settings = array(
+	private $defaults = array(
 		'meta'   => array(
-			'title' => 'Sample Documentation'
+			'title' => 'Sample Documentation',
+			'generator' => 'Yarrow'
 		)
 	);
 	
@@ -54,7 +60,9 @@ class Configuration {
 	/**
 	 * Private constructor to ensure instance integrity.
 	 */
-	private function __construct() {}
+	private function __construct() {
+		$this->settings = $this->defaults;
+	}
 	
 	/**
 	 * Merge given properties with existing settings.
@@ -66,10 +74,20 @@ class Configuration {
 	}
 	
 	/**
+	 * Append given properties to existing settings. If the new key already exists
+	 * it is ignored.
+	 *
+	 * @param array $properties new properties to merge
+	 */
+	public function append($properties) {
+		$this->settings = $this->mergeReplace($properties, $this->settings);
+	}
+	
+	/**
 	 * Recursive callback to actually do the merge, replacing existing keys
 	 * with new values, and appending any new values that don't exist.
 	 *
-	 * @param array $array1 existing values to merge against
+	 * @param array $array1 values to merge against
 	 * @param array $array2 new values to apply
 	 * @return array merged result
 	 */
@@ -91,5 +109,13 @@ class Configuration {
 		if (isset($this->settings[$key])) {
 			return $this->settings[$key];
 		}
+	}
+	
+	/**
+	 * Clear all existing configuration.
+	 * Generally, this is only used for testing.
+	 */
+	public function clear() {
+		$this->settings = $this->defaults;
 	}
 }
