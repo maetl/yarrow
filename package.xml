@@ -14,7 +14,7 @@
   <active>yes</active>
  </lead>
  <date>2011-05-01</date>
- <time>03:24:28</time>
+ <time>03:32:59</time>
  <version>
   <release>0.0.7</release>
   <api>0.0.7</api>
@@ -54,6 +54,9 @@
 		<file name="CodeReader.php" role="php">
 			<tasks:replace from="{{version}}" to="version" type="package-info" />
 		</file>
+		<file name="CodeRegistry.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
 		<file name="Configuration.php" role="php">
 			<tasks:replace from="{{version}}" to="version" type="package-info" />
 		</file>
@@ -86,6 +89,9 @@
 			<tasks:replace from="{{version}}" to="version" type="package-info" />
 		</file>
 		<file name="Generator.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
+		<file name="MethodModel.php" role="php">
 			<tasks:replace from="{{version}}" to="version" type="package-info" />
 		</file>
 		<file name="ObjectModel.php" role="php">
