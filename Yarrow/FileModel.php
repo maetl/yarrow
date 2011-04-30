@@ -1,4 +1,4 @@
- <?php
+<?php
 /**
  * Yarrow {{version}}
  * Simple Documentation Generator
@@ -77,5 +77,4 @@ class FileModel {
 	function __toString() {
 		return "File " . $this->filename;
 	}
-	
 }
