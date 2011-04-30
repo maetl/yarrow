@@ -143,6 +143,15 @@ class ConsoleRunnerTest extends PHPUnit_Framework_TestCase {
 		$this->assertStringStartsWith($this->getVersionHeader(), $output);
 		$this->assertContains('File not found', $output);
 	}
+	
+	function testSingleFileInputTargetArguments() {
+		$classpath = dirname(__FILE__).'/Samples/SampleObject.php';
+		$app = new ConsoleRunnerStub(array('yarrow', $classpath, 'MyDocs'));
+		$this->assertExitSuccess($app->runApplication());		
+		$output = ob_get_contents();
+		$this->assertStringStartsWith($this->getVersionHeader(), $output);
+		$this->assertNotContains('File not found', $output);
+	}
 
 	function testEmptyArgumentsMessage() {
 		$app = new ConsoleRunnerStub(array('yarrow'));
