@@ -13,11 +13,11 @@
   <email>me@maetl.net</email>
   <active>yes</active>
  </lead>
- <date>2011-04-28</date>
- <time>01:46:26</time>
+ <date>2011-05-01</date>
+ <time>03:24:28</time>
  <version>
-  <release>0.0.6</release>
-  <api>0.0.6</api>
+  <release>0.0.7</release>
+  <api>0.0.7</api>
  </version>
  <stability>
   <release>alpha</release>
@@ -33,6 +33,9 @@
 		<tasks:replace from="{{version}}" to="version" type="package-info" />	
 	 </file>
 	 <dir name="Yarrow">
+		<file name="Yarrowdoc" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
 		<file name="Analyzer.php" role="php">
 			<tasks:replace from="{{version}}" to="version" type="package-info" />
 		</file>
@@ -40,6 +43,9 @@
 			<tasks:replace from="{{version}}" to="version" type="package-info" />
 		</file>
 		<file name="ClassModel.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
+		<file name="CodeModel.php" role="php">
 			<tasks:replace from="{{version}}" to="version" type="package-info" />
 		</file>
 		<file name="CodeParser.php" role="php">
@@ -52,6 +58,9 @@
 			<tasks:replace from="{{version}}" to="version" type="package-info" />
 		</file>
 		<file name="ConfigurationError.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
+		<file name="ConflictedClassModel.php" role="php">
 			<tasks:replace from="{{version}}" to="version" type="package-info" />
 		</file>
 		<file name="ConsoleRunner.php" role="php">
@@ -102,6 +111,13 @@
 		</file>
 		<dir name="Themes">
 			<dir name="Default">
+				<file name="Yarrowdoc" role="php" />
+				<file name="index.tpl.php" role="php" />
+				<file name="class.tpl.php" role="php" />
+				<file name="file.tpl.php" role="php" />
+			</dir>
+			<dir name="Plain">
+				<file name="Yarrowdoc" role="php" />
 				<file name="index.tpl.php" role="php" />
 				<file name="class.tpl.php" role="php" />
 				<file name="file.tpl.php" role="php" />
