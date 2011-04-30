@@ -11,7 +11,7 @@
 
 	<h2>Classes</h2>
 
-	<ul><?php foreach($file->getClasses() as $class): ?>
+	<ul><?php foreach($file->classes as $class): ?>
 
 		<li><a href="<?php echo $file->getBaseLinkPrefix(), $class->getRelativeLink(); ?>.html"><?php echo $class->name; ?></a></li>
 
@@ -19,7 +19,7 @@
 
 	<h2>Source</h2>
 
-	<?php echo highlight_string($file->getSource(), true); ?>
+	<?php echo highlight_string($file->source, true); ?>
 	
 	
   </body>

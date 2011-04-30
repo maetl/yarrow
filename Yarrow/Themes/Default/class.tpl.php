@@ -12,12 +12,12 @@
 
 	<p><?php echo $class->summary; ?></p>
 	
-	<p>In File: <a href="../<?php echo $class->file->getRelativeLink(); ?>"><?php echo $class->file->getName(); ?></a></p>
+	<p>In File: <a href="../<?php echo $class->file->getRelativeLink(); ?>"><?php echo $class->file->name; ?></a></p>
 
 	<?php foreach($class->methods as $method): ?>
 
 		<h2><?php echo $method; ?></h2>
-		<p><?php echo $method->getSummary(); ?></p>
+		<p><?php echo $method->summary; ?></p>
 
 
 	<?php endforeach ?>

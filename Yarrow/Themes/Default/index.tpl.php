@@ -8,7 +8,7 @@
 	<h1><?php echo $meta['title']; ?></h1>
 
 	<ul>
-	<?php foreach($objectModel->getClasses() as $class): ?>
+	<?php foreach($objectModel->classes as $class): ?>
 		<li><a href="<?php echo $class->relativeLink; ?>.html"><?php echo $class; ?></li>
 	<?php endforeach ?>
 	</ul>
