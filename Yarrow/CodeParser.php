@@ -11,8 +11,8 @@
  * with this source code for details about modification and redistribution.
  */
 
-define('T_SCOPE_START', 900);
-define('T_SCOPE_END', 909);
+define('T_SCOPE_OPEN', 900);
+define('T_SCOPE_CLOSE', 909);
 define('T_BRACE_OPEN', 911);
 define('T_BRACE_CLOSE', 919);
 define('T_TERNARY_IF', 977);
@@ -33,8 +33,8 @@ class CodeParser {
 	private $class;
 	private $function;
 	private $tokenMap = array(
-		'{' => T_SCOPE_START,
-		'}' => T_SCOPE_END,
+		'{' => T_SCOPE_OPEN,
+		'}' => T_SCOPE_CLOSE,
 		'(' => T_BRACE_OPEN,
 		')' => T_BRACE_CLOSE,
 		'?' => T_TERNARY_IF,
@@ -109,11 +109,11 @@ class CodeParser {
 					$this->shredFunction();
 				break;
 				
-				case T_SCOPE_START:
+				case T_SCOPE_OPEN:
 					$this->startNestingScope();
 				break;
 				
-				case T_SCOPE_END:
+				case T_SCOPE_CLOSE:
 					$this->endNestingScope();
 				break;
 				
@@ -168,14 +168,16 @@ class CodeParser {
 	 * Acceptor to build a class name and link to it's ancestor.
 	 */
 	function shredClass() {
-		$t = $this->tokens;
-		$i = $this->current;
-		$class = $t[$i+2][1];
-		$parent = false;
+		$id = $this->current+2;
+		$class = $this->tokens[$id][1];
+		$parent = ClassModel::BASE_TYPE;
 		
-		if (isset($t[$i+4]) && is_array($t[$i+4]) && $t[$i+4][0] == T_EXTENDS) {
-			$parent = '';
-			while (is_array($t[$i+1]) && $t[$i+1][0] !== T_WHITESPACE) $parent .= $t[++$i][1];
+		if ($this->tokens[$id+2][0] == T_EXTENDS) {
+			$id += 4;
+			$parent = $this->tokens[$id][1];
+			while($this->tokens[$id+1][0] != T_WHITESPACE) {
+				$parent .= $this->tokens[++$id][1];
+			}
 		}
 		
 		$this->reader->onClass($class, $parent);
