@@ -11,13 +11,17 @@
  * with this source code for details about modification and redistribution.
  */
 
-class ObjectModel {
+class ObjectModel extends CodeModel {
 	
 	function __construct($name='Default') {
 		$this->name = $name;
 		$this->classes = array();
 		$this->functions = array();
 		$this->files = array();
+	}
+	
+	public function getName() {
+		return $this->name;
 	}
 	
 	function addFile($file) {

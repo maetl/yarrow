@@ -11,7 +11,7 @@
  * with this source code for details about modification and redistribution.
  */
 
-class FunctionModel {
+class FunctionModel extends CodeModel {
 	private $name;
 	private $docblock;
 	private $arguments;
@@ -31,7 +31,7 @@ class FunctionModel {
 		$this->file = $file;
 	}
 	
-	function getName() {
+	public function getName() {
 		return $this->name;
 	}
 	

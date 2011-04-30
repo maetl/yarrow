@@ -11,7 +11,7 @@
  * with this source code for details about modification and redistribution.
  */
 
-class FileModel {
+class FileModel extends CodeModel {
 	private $filename;
 	private $classes;
 	private $functions;
@@ -23,7 +23,7 @@ class FileModel {
 		$this->functions = array();
 	}
 	
-	function getName() {
+	public function getName() {
 		return $this->filename;
 	}
 	

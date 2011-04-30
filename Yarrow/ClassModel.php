@@ -11,7 +11,7 @@
  * with this source code for details about modification and redistribution.
  */
 
-class ClassModel {
+class ClassModel extends CodeModel {
 	private $name;
 	private $ancestor;
 	private $functions;
@@ -75,7 +75,7 @@ class ClassModel {
 		return count($this->functions);
 	}
 	
-	function getName() {
+	public function getName() {
 		return $this->name;
 	}
 	
@@ -85,12 +85,5 @@ class ClassModel {
 	
 	function getRelativeLink() {
 		return strtolower(str_replace(' ', '/', str_replace('.php', '.html', (string)$this)));
-	}
-	
-	function __get($key) {
-		$accessor = 'get' . ucfirst($key);
-		if (method_exists($this, $accessor)) {
-			return $this->$accessor();
-		}
 	}
 }
