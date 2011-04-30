@@ -149,13 +149,34 @@ class ConsoleRunner {
 	 * Loads configuration from targets.
 	 */
 	private function processConfiguration() {
-		// todo: collect configuration based on target directories
+		$workingDirectory = $this->getWorkingDirectory();
+		
+		$this->collectConfigFile($workingDirectory);
+		
+		$this->collectConfigFile($this->config->outputTarget);
+		
+		foreach($this->config->inputTargets as $inputPath) {
+			$this->collectConfigFile($inputPath);
+		}
 		
 		if ($this->hasOption('config')) {
 			$path = $this->getOption('config');
 			$properties = PropertiesFile::load($path);
 			$this->config->merge($properties);
 		}		
+	}
+	
+	/**
+	 * Load a configuration file if it exists in the given path.
+	 */
+	private function collectConfigFile($path) {
+		foreach($this->allowedConfigFiles as $filename) {
+			$configPath = $path . DIRECTORY_SEPARATOR . $filename;
+			if (file_exists($configPath)) {
+				$properties = PropertiesFile::load($configPath);
+				return $this->config->merge($properties);
+			}
+		}
 	}
 	
 	/**
@@ -211,11 +232,17 @@ class ConsoleRunner {
 	}
 	
 	/**
+	 * Returns the directory where the current script is executing.
+	 */
+	private function getWorkingDirectory() {
+		return (isset($_ENV['PWD'])) ? $_ENV['PWD'] : $_SERVER['PWD'];
+	}
+	
+	/**
 	 * Update configuration with target paths passed in as command line arguments.
-	 * @todo merge targets with configuration settings
 	 */
 	private function registerTargets($targets) {
-		$workingDirectory = (isset($_ENV['PWD'])) ? $_ENV['PWD'] : $_SERVER['PWD'];
+		$workingDirectory = $this->getWorkingDirectory();
 		if (empty($targets)) {
 			$this->config->outputTarget = $workingDirectory.'/docs';
 			$this->config->inputTargets[] = $workingDirectory;
