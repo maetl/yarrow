@@ -17,19 +17,14 @@
 class Configuration {
 
 	/**
-	 * Index of configuration settings.
+	 * Active configuration settings.
 	 */
-	private $settings = array();
-
+	private $settings;
+	
 	/**
-	 * Defaults for all required settings.
+	 * Cache of default settings.
 	 */
-	private $defaults = array(
-		'meta'   => array(
-			'title' => 'Sample Documentation',
-			'generator' => 'Yarrow'
-		)
-	);
+	private $defaults;
 	
 	/**
 	 * List of input paths to search for code files.
@@ -58,9 +53,10 @@ class Configuration {
 	}
 	
 	/**
-	 * Private constructor to ensure instance integrity.
+	 * Loads default configuration from settings file.
 	 */
 	private function __construct() {
+		$this->defaults = PropertiesFile::load(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Yarrowdoc');
 		$this->settings = $this->defaults;
 	}
 	
@@ -103,11 +99,15 @@ class Configuration {
 	}
 	
 	/**
-	 * Accessor for section keys.
+	 * Accessor for configuration settings. If the setting is not found
+	 * under a section key the options section is checked.
 	 */
 	public function __get($key) {
 		if (isset($this->settings[$key])) {
 			return $this->settings[$key];
+		}
+		if (isset($this->settings['options'][$key])) {
+			return $this->settings['options'][$key];
 		}
 	}
 	

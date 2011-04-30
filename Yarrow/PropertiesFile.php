@@ -13,6 +13,9 @@
 
 /**
  * Parses a subset of the Java style .properties format, similar to .ini files.
+ *
+ * @todo rename to Settings (.settings)
+ * @todo document file format
  */
 class PropertiesFile {
 	

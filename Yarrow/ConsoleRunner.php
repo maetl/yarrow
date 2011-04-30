@@ -42,7 +42,8 @@ class ConsoleRunner {
 	private static $enabledOptions = array(
 		'h' => 'help',
 		'v' => 'version',
-		'c' => 'config'
+		'c' => 'config',
+		't' => 'theme'
 	);
 	
 	/**
@@ -145,35 +146,51 @@ class ConsoleRunner {
 	
 	/**
 	 * Loads configuration from targets.
-	 * @todo add template/theme directory to config precedence
+	 * @todo document precedence rules
 	 */
 	private function processConfiguration() {
 		$workingDirectory = $this->getWorkingDirectory();
-		
-		$this->collectConfigFile($workingDirectory);
+		$this->config->merge($this->loadConfiguration($workingDirectory));
 		
 		foreach($this->config->inputTargets as $inputPath) {
-			$this->collectConfigFile($inputPath);
+			$this->config->merge($this->loadConfiguration($inputPath));
 		}
 		
 		if ($this->hasOption('config')) {
 			$path = $this->getOption('config');
-			$properties = PropertiesFile::load($path);
-			$this->config->merge($properties);
-		}		
+			$this->config->merge(PropertiesFile::load($path));
+		}
+		
+		$this->config->merge($this->options);
+		$this->normalizeThemePath();
+		
+		$this->config->append($this->loadConfiguration($this->config->theme));
 	}
 	
 	/**
-	 * Load a configuration file if it exists in the given path.
+	 * Load settings from a configuration file when it exists in the given path.
+	 *
+	 * @param string $path path to search for configuration files
+	 * @return array nested array of settings or an empty array if none found
 	 */
-	private function collectConfigFile($path) {
+	private function loadConfiguration($path) {
 		foreach($this->allowedConfigFiles as $filename) {
-			echo $filename;
-			$configPath = $path . DIRECTORY_SEPARATOR . $filename;
+			$configPath = $path . '/' . $filename;
 			if (file_exists($configPath)) {
-				$properties = PropertiesFile::load($configPath);
-				return $this->config->merge($properties);
+				return PropertiesFile::load($configPath);
 			}
+		}
+		return array();
+	}
+	
+	/**
+	 * Converts the theme path to an absolute directory reference if the
+	 * existing configuration setting does not point to a directory.
+	 */
+	private function normalizeThemePath() {
+		if (!is_dir($this->config->theme)) {
+			$themePath = dirname(__FILE__) . '/Themes/'. $this->config->theme;
+			$this->config->merge(array('options' => array('theme' => $themePath)));
 		}
 	}
 	
@@ -181,7 +198,7 @@ class ConsoleRunner {
 	 * Returns true if the given argument is a configuration option.
 	 * @return boolean
 	 */
-	public function isOption($argument) {
+	private function isOption($argument) {
 		return (substr($argument, 0, 1) == '-');
 	}
 	

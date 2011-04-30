@@ -12,7 +12,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase {
 
 	function testDefaultSettingsLoadedByClass() {
 		$config = Configuration::instance();
-		$this->assertEquals('Sample Documentation', $config->meta['title']);
+		$this->assertEquals('Default Project', $config->meta['title']);
 	}
 	
 	function testConfigurationMerge() {
@@ -24,7 +24,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase {
 			)
 		));
 		$this->assertEquals('Should Be Overwritten', $config->meta['title']);
-		$this->assertEquals('Yarrow', $config->meta['generator']);
+		$this->assertEquals('Project Author', $config->meta['author']);
 	}
 	
 	function testConfigurationAppend() {
@@ -33,10 +33,10 @@ class ConfigTest extends PHPUnit_Framework_TestCase {
 		$config->append(array(
 			'meta' => array(
 				'title' => 'Should Be Overwritten',
-				'author' => 'Erika Mustermann'
+				'editor' => 'Erika Mustermann'
 			)
 		));
-		$this->assertEquals('Sample Documentation', $config->meta['title']);
-		$this->assertEquals('Erika Mustermann', $config->meta['author']);
+		$this->assertEquals('Default Project', $config->meta['title']);
+		$this->assertEquals('Erika Mustermann', $config->meta['editor']);
 	}
 }

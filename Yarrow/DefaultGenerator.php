@@ -37,6 +37,7 @@ class DefaultGenerator extends Generator {
 	}
 	
 	protected function getConverter() {
-		return new PhpConverter(dirname(__FILE__).'/Themes/Default');
+		$config = Configuration::instance();
+		return new PhpConverter($config->options['theme']);
 	}
 }

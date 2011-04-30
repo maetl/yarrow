@@ -13,6 +13,8 @@
 
 /**
  * Parses a subset of the Java style .properties format, similar to .ini files.
+ *
+ * @todo support whitespace in front of keys and Yaml style syntax for section headings
  */
 class PropertiesParser extends Scanner {
 	private $properties;
