@@ -25,9 +25,17 @@ class Analyzer {
 		$manifest = array();
 		
 		foreach($this->config->inputTargets as $target) {
-			$collector = new FileCollector($target);
-			$collector->includeByPattern("/\.php$/");
-			$manifest = array_merge($manifest, $collector->getManifest());
+			if (is_dir($target)) {
+				$collector = new FileCollector($target);
+				$collector->includeByPattern("/\.php$/");
+				$manifest = array_merge($manifest, $collector->getManifest());
+			} else {
+				$manifest[] = array(
+					'filename' => basename($target),
+					'relative_path' => $target,
+					'absolute_path' => realpath($target)
+				);
+			}
 		}
 		
 		foreach($manifest as $file) {
