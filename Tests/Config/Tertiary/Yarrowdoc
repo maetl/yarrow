@@ -1,0 +1,5 @@
+# These settings should load third and overwrite
+# the secondary settings
+
+[meta]
+title: 		Tertiary Title

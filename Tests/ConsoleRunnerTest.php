@@ -11,7 +11,13 @@ class ConsoleRunnerStub extends ConsoleRunner {
 	function runOutputProcess() {
 		return;
 	}
+}
+
+class ConsoleRunnerStubWithInput extends ConsoleRunner {
 	
+	function runOutputProcess() {
+		return;
+	}
 }
 
 class ConsoleRunnerTest extends PHPUnit_Framework_TestCase {
@@ -133,6 +139,17 @@ class ConsoleRunnerTest extends PHPUnit_Framework_TestCase {
 		$this->assertContains($classpath1, $config->inputTargets);
 		$this->assertContains($classpath2, $config->inputTargets);
 		$this->assertEquals('MyDocs', $config->outputTarget);		
+	}
+	
+	function testConfigurationLoadingPrecedence() {
+		$dir = dirname(__FILE__) . DIRECTORY_SEPARATOR;
+		$arguments = array('yarrow', $dir.'Config', $dir.'Config/Secondary', $dir.'Config/Tertiary', 'MyDocs');
+		$app = new ConsoleRunnerStubWithInput($arguments);
+		$this->assertExitSuccess($app->runApplication());
+		$output = ob_get_contents();
+		$this->assertStringStartsWith($this->getVersionHeader(), $output);
+		$config = Configuration::instance();
+		$this->assertEquals('Tertiary Title', $config->meta['title']);
 	}
 	
 	function testInputTargetErrorFromBadArguments() {

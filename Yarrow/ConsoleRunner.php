@@ -50,9 +50,7 @@ class ConsoleRunner {
 	 */
 	private $allowedConfigFiles = array(
 		'.yarrowdoc',
-		'Yarrowdoc',
-		'yarrow.conf',
-		'doc.conf'
+		'Yarrowdoc'
 	);
 	
 	/**
@@ -171,6 +169,7 @@ class ConsoleRunner {
 	 */
 	private function collectConfigFile($path) {
 		foreach($this->allowedConfigFiles as $filename) {
+			echo $filename;
 			$configPath = $path . DIRECTORY_SEPARATOR . $filename;
 			if (file_exists($configPath)) {
 				$properties = PropertiesFile::load($configPath);
