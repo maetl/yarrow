@@ -74,4 +74,15 @@ class CodeParserTest extends PHPUnit_Framework_TestCase {
 		$parser = new CodeParser($tokens, $reader);
 		$parser->parse();
 	}
+	
+	function testCanParseConditionallyDeclaredClasses() {
+		$tokens = $this->tokenizeSampleFile('Corpus/conditionally.php');
+		
+		$methods = array('onClass', 'onMethod', 'onMethodEnd', 'onClassEnd');
+		$reader = $this->getMock('CodeReader', $methods, array('sample.php'));
+		$reader->expects($this->exactly(6))->method('onClass');
+	
+		$parser = new CodeParser($tokens, $reader);
+		$parser->parse();
+	}
 }

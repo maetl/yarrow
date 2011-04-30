@@ -29,6 +29,10 @@ class ClassModel extends CodeModel {
 		$this->functions = array();
 	}
 	
+	function getAncestor() {
+		return $this->ancestor;
+	}
+	
 	function addDocBlock($docblock) {
 		$this->docblock = $docblock;
 	}

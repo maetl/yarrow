@@ -20,10 +20,11 @@ class CodeReader {
 		$this->classes = array();
 		$this->currentClass = false;
 		$this->currentFunction = false;
+		$this->registry = new CodeRegistry();
 	}
 	
 	function getClasses() {
-		return $this->classes;
+		return $this->registry->getClasses();
 	}
 	
 	function getFunctions() {
@@ -35,7 +36,7 @@ class CodeReader {
 		$this->docblocks[] = $docblock->parse();
 	}
 	
-	function onClass($name, $parent=false, $implements=false, $final=false) {
+	function onClass($name, $parent=ClassModel::BASE_TYPE, $implements=false, $final=false) {
 		$this->currentClass = new ClassModel($name, $parent);
 		$docblock = array_pop($this->docblocks);
 		if ($docblock) $this->currentClass->addDocblock($docblock);
@@ -51,6 +52,7 @@ class CodeReader {
 	
 	function onClassEnd() {
 		$this->classes[] = $this->currentClass;
+		$this->registry->addClass($this->currentClass);
 		$this->currentClass = false;
 	}
 	
