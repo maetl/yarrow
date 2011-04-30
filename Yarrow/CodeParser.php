@@ -107,7 +107,6 @@ class CodeParser {
 				
 				case T_FUNCTION:
 					$this->shredFunction();
-					$this->complexity = 0;
 				break;
 				
 				case T_SCOPE_START:
@@ -219,7 +218,7 @@ class CodeParser {
 				$this->reader->onFunction($name, $arguments);
 			}
 		}
-		
+		$this->complexity = 0;
 		$this->state = self::FUNCTION_SCOPE;
 	}
 	
