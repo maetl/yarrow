@@ -168,7 +168,10 @@ class CodeParser {
 	 * Acceptor to build a class name and link to it's ancestor.
 	 */
 	function shredClass() {
-		$interface = ($this->current[0] == T_INTERFACE) ? true : false;
+		
+		if ($this->symbol == T_INTERFACE) {
+			$this->keywords['interface'] = true;
+		}
 		
 		$id = $this->current+2;
 		$class = $this->tokens[$id][1];
@@ -182,7 +185,16 @@ class CodeParser {
 			}
 		}
 		
-		$this->reader->onClass($class, $parent, $interface);
+		if ($this->tokens[$id+2][0] == T_IMPLEMENTS) {
+			$id += 4;
+			$implements = $this->tokens[$id][1];
+			while($this->tokens[$id+1][0] != T_WHITESPACE) {
+				$implements .= $this->tokens[++$id][1];
+			}
+			$this->keywords['implements'] = $implements;
+		}
+		
+		$this->reader->onClass($class, $parent, $this->keywords);
 		$this->state = self::CLASS_SCOPE;
 	}
 
@@ -222,8 +234,10 @@ class CodeParser {
 				$this->reader->onFunction($name, $arguments);
 			}
 		}
+		
 		$this->complexity = 0;
 		$this->state = self::FUNCTION_SCOPE;
+		$this->resetKeywords();
 	}
 	
 	/**

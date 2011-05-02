@@ -85,4 +85,51 @@ class CodeParserTest extends PHPUnit_Framework_TestCase {
 		$parser = new CodeParser($tokens, $reader);
 		$parser->parse();
 	}
+	
+	function testCanParseInterfaces() {
+		$tokens = $this->tokenizeSampleFile('Samples/SampleInterface.php');
+		
+		$methods = array('onClass', 'onMethod', 'onMethodEnd', 'onClassEnd');
+		$reader = $this->getMock('CodeReader', $methods, array('sample.php'));
+		$reader->expects($this->exactly(1))->method('onClass')
+										   ->with(
+												  'SampleInterface',
+												  ClassModel::BASE_TYPE
+												 );
+	
+		$parser = new CodeParser($tokens, $reader);
+		$parser->parse();
+	}
+	
+	function testCanParseMultipleInheritanceInterfaces() {
+		$tokens = $this->tokenizeSampleFile('Corpus/implements.php');
+		
+		$methods = array('onClass', 'onMethod', 'onMethodEnd', 'onClassEnd');
+		$reader = $this->getMock('CodeReader', $methods, array('sample.php'));
+
+		$reader->expects($this->at(0))->method('onClass')
+									  ->with(
+										 'TypeA',
+										 ClassModel::BASE_TYPE,
+										 array('interface' => true)
+										);
+										
+		$reader->expects($this->at(9))->method('onClass')
+									  ->with(
+										 'TypeD',
+										 'TypeC',
+										 array('interface' => true)
+										);
+										
+		$reader->expects($this->at(12))->method('onClass')
+									  ->with(
+										 'KlassA',
+										 ClassModel::BASE_TYPE,
+										 array('implements' => 'TypeA')
+										);
+										   
+	
+		$parser = new CodeParser($tokens, $reader);
+		$parser->parse();
+	}
 }

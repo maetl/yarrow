@@ -36,20 +36,10 @@ class CodeReader {
 		$this->docblocks[] = $docblock->parse();
 	}
 	
-	function onClass($name, $parent, $interface, $implements=false, $abstract=false, $final=false) {
-		$this->currentClass = new ClassModel($name, $parent, $implements, $abstract, $final);
+	function onClass($name, $parent, $keywords) {
+		$this->currentClass = new ClassModel($name, $parent, $keywords);
 		$docblock = array_pop($this->docblocks);
 		if ($docblock) $this->currentClass->addDocblock($docblock);
-	}
-	
-	function onAbstractClass($name, $parent, $implements) {
-		throw new Exception("not implemented");
-	}
-	
-	function onInterface($name, $implements) {
-		$this->currentClass = new ClassModel($name, $parent, $implements, true);
-		$docblock = array_pop($this->docblocks);
-		if ($docblock) $this->currentClass->addDocblock($docblock);	
 	}
 	
 	function onClassEnd() {

@@ -23,19 +23,21 @@ class ClassModel extends CodeModel {
 	private $isInterface;
 	private $isAbstract;
 	private $isFinal;
+	private $implements;
 	
 	/**
 	 * Base type for all PHP classes
 	 */
 	const BASE_TYPE = 'stdClass';
 	
-	function __construct($name, $extends=self::BASE_TYPE, $implements=false, $interface=false, $abstract=false, $final=false) {
+	function __construct($name, $extends=self::BASE_TYPE, $keywords=array()) {
 		$this->name = $name;
 		$this->ancestor = $extends;
 		$this->functions = array();
-		$this->isInterface = $interface;
-		$this->isAbstract = $abstract;
-		$this->isFinal = $abstract;
+		$this->isInterface = (isset($keywords['interface']));
+		$this->isAbstract =  (isset($keywords['abstract']));
+		$this->isFinal =  (isset($keywords['final']));
+		$this->implements = (isset($keywords['interface'])) ? $keywords['interface'] : false;
 	}
 
 	public function isInterface() {
