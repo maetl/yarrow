@@ -91,6 +91,9 @@
 		<file name="Generator.php" role="php">
 			<tasks:replace from="{{version}}" to="version" type="package-info" />
 		</file>
+		<file name="InterfaceModel.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
 		<file name="MethodModel.php" role="php">
 			<tasks:replace from="{{version}}" to="version" type="package-info" />
 		</file>
