@@ -17,6 +17,9 @@ class ClassModel extends CodeModel {
 	private $functions;
 	private $docblock;
 	private $file;
+	private $isInterface;
+	private $isAbstract;
+	private $isFinal;
 	
 	/**
 	 * Base type for all PHP classes
@@ -27,6 +30,24 @@ class ClassModel extends CodeModel {
 		$this->name = $name;
 		$this->ancestor = $ancestor;
 		$this->functions = array();
+		$this->isFinal = false;
+		$this->isAbstract = false;
+	}
+
+	public function isInterface() {
+		return $this->isInterface;
+	}
+	
+	function isAbstract() {
+		return $this->isAbstract;
+	}
+	
+	function isInstantiable() {
+		return ($this->isInterface || $this->isAbstract);
+	}
+	
+	function isFinal() {
+		return $this->isFinal;
 	}
 	
 	function getAncestor() {
