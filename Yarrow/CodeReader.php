@@ -36,8 +36,8 @@ class CodeReader {
 		$this->docblocks[] = $docblock->parse();
 	}
 	
-	function onClass($name, $parent=ClassModel::BASE_TYPE, $implements=false, $final=false) {
-		$this->currentClass = new ClassModel($name, $parent);
+	function onClass($name, $parent, $interface, $implements=false, $abstract=false, $final=false) {
+		$this->currentClass = new ClassModel($name, $parent, $implements, $abstract, $final);
 		$docblock = array_pop($this->docblocks);
 		if ($docblock) $this->currentClass->addDocblock($docblock);
 	}
@@ -47,7 +47,9 @@ class CodeReader {
 	}
 	
 	function onInterface($name, $implements) {
-		throw new Exception("not implemented");		
+		$this->currentClass = new ClassModel($name, $parent, $implements, true);
+		$docblock = array_pop($this->docblocks);
+		if ($docblock) $this->currentClass->addDocblock($docblock);	
 	}
 	
 	function onClassEnd() {

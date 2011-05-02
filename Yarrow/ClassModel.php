@@ -11,6 +11,9 @@
  * with this source code for details about modification and redistribution.
  */
 
+/**
+ * Represents a class type.
+ */
 class ClassModel extends CodeModel {
 	private $name;
 	private $ancestor;
@@ -26,12 +29,13 @@ class ClassModel extends CodeModel {
 	 */
 	const BASE_TYPE = 'stdClass';
 	
-	function __construct($name, $ancestor=self::BASE_TYPE) {
+	function __construct($name, $extends=self::BASE_TYPE, $implements=false, $interface=false, $abstract=false, $final=false) {
 		$this->name = $name;
-		$this->ancestor = $ancestor;
+		$this->ancestor = $extends;
 		$this->functions = array();
-		$this->isFinal = false;
-		$this->isAbstract = false;
+		$this->isInterface = $interface;
+		$this->isAbstract = $abstract;
+		$this->isFinal = $abstract;
 	}
 
 	public function isInterface() {
@@ -68,16 +72,6 @@ class ClassModel extends CodeModel {
 	
 	function getFile() {
 		return $this->file;
-	}
-	
-	/** @deprecated */
-	function addFunction($method) {
-		$this->addMethod($method);
-	}
-	
-	/** @deprecated */
-	function getFunctions() {
-		$this->getMethods();
 	}
 	
 	function getText() {

@@ -16,13 +16,29 @@
  */
 abstract class CodeModel {
 	
+	/**
+	 * The name declared in the source code for this object.
+	 *
+	 * @return string
+	 */
 	abstract public function getName();
 	
+	/**
+	 * Dynamic lookup for accessor methods.
+	 *
+	 * Maps properties to the corresponding method wrapper:
+	 *
+	 * <code>
+	 * print $model->name; // calls $model->getName()
+	 * print $model->relativeLink; // calls $model->getRelativeLink()
+	 * </code>
+	 *
+	 * @return mixed
+	 */
 	function __get($key) {
 		$accessor = 'get' . ucfirst($key);
 		if (method_exists($this, $accessor)) {
 			return $this->$accessor();
 		}
-	}
-	
+	}	
 }

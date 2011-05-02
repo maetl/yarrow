@@ -78,7 +78,7 @@ class StubObjectModel extends ObjectModel {
 	 */
 	function buildStubClassModel() {
 		$class = new ClassModel('StubClass');
-		$class->addFunction(new FunctionModel('getName'));
+		$class->addMethod(new MethodModel('getName'));
 		return $class;
 	}
 	

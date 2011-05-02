@@ -168,6 +168,8 @@ class CodeParser {
 	 * Acceptor to build a class name and link to it's ancestor.
 	 */
 	function shredClass() {
+		$interface = ($this->current[0] == T_INTERFACE) ? true : false;
+		
 		$id = $this->current+2;
 		$class = $this->tokens[$id][1];
 		$parent = ClassModel::BASE_TYPE;
@@ -180,7 +182,7 @@ class CodeParser {
 			}
 		}
 		
-		$this->reader->onClass($class, $parent);
+		$this->reader->onClass($class, $parent, $interface);
 		$this->state = self::CLASS_SCOPE;
 	}
 

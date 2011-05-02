@@ -15,7 +15,7 @@ class MethodModel extends FunctionModel {
 	private $visibility;
 	private $final;
 	
-	public function __construct($name, $arguments, $visibility='public', $final=false) {
+	public function __construct($name, $arguments=array(), $visibility='public', $final=false) {
 		parent::__construct($name, $arguments);
 		$this->visibility = $visibility;
 		$this->final = $final;
