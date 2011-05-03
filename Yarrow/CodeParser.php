@@ -212,27 +212,16 @@ class CodeParser {
 			$this->current++;
 		}
 		
-		extract($this->keywords);
-		
 		$arguments = $this->shredArguments($this->current+1);
 		
 		if ($this->state == self::CLASS_SCOPE) {
 			
-			$visibility = (isset($visibility)) ? $visibility : 'public';
-			$final = isset($final);
-			
-			if (isset($static)) {
-				$this->reader->onStaticMethod($name, $arguments, $visibility, $final);
-			} else {
-				$this->reader->onMethod($name, $arguments, $visibility, $final);
-			}
+			$this->reader->onMethod($name, $arguments, $this->keywords);
 			
 		} else {
-			if (isset($static)) {
-				$this->reader->onStaticFunction($name, $arguments);
-			} else {
-				$this->reader->onFunction($name, $arguments);
-			}
+			
+			$this->reader->onFunction($name, $arguments, $this->keywords);
+		
 		}
 		
 		$this->complexity = 0;

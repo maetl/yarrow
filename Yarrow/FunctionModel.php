@@ -16,10 +16,16 @@ class FunctionModel extends CodeModel {
 	private $docblock;
 	private $arguments;
 	private $file;
+	private $static;
 	
-	function __construct($name, $arguments=array()) {
+	function __construct($name, $arguments=array(), $keywords=array()) {
 		$this->name = $name;
 		$this->arguments = $arguments;
+		$this->static = (isset($keywords['static'])) ? true : false;
+	}
+	
+	function isStatic() {
+		return $this->static;
 	}
 	
 	function addDocBlock($docblock) {

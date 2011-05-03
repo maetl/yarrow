@@ -48,16 +48,10 @@ class CodeReader {
 		$this->currentClass = false;
 	}
 	
-	function onFunction($name, $arguments) {
-		$this->currentFunction = new FunctionModel($name, $arguments);
+	function onFunction($name, $arguments, $keywords=array()) {
+		$this->currentFunction = new FunctionModel($name, $arguments, $keywords);
 		$docblock = array_pop($this->docblocks);
 		if ($docblock) $this->currentFunction->addDocblock($docblock);
-	}
-	
-	function onStaticFunction($name, $arguments) {
-		$this->currentFunction = new FunctionModel($name, $arguments);
-		$docblock = array_pop($this->docblocks);
-		if ($docblock) $this->currentFunction->addDocblock($docblock);		
 	}
 
 	function onFunctionEnd() {
@@ -66,14 +60,8 @@ class CodeReader {
 		$this->currentFunction = false;
 	}
 	
-	function onMethod($name, $arguments, $visibility='public', $final=false) {
-		$this->currentFunction = new MethodModel($name, $arguments, $visibility, $final);
-		$docblock = array_pop($this->docblocks);
-		if ($docblock) $this->currentFunction->addDocblock($docblock);		
-	}
-	
-	function onStaticMethod($name, $arguments, $visibility='public', $final=false) {
-		$this->currentFunction = new MethodModel($name, $arguments, $visibility, $final);
+	function onMethod($name, $arguments, $keywords=array()) {
+		$this->currentFunction = new MethodModel($name, $arguments, $keywords);
 		$docblock = array_pop($this->docblocks);
 		if ($docblock) $this->currentFunction->addDocblock($docblock);		
 	}
