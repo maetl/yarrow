@@ -144,6 +144,12 @@ class CodeParser {
 						// cyclomatic complexity generated, but not captured!
 					}
 				break;
+				
+				case T_CURLY_OPEN:
+				case T_DOLLAR_OPEN_CURLY_BRACES:
+				case T_STRING_VARNAME:
+					$this->startNestingScope();
+				break;
 			}
 		}
 	}

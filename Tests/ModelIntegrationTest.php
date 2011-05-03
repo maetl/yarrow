@@ -17,4 +17,17 @@ class ModelIntegrationTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals('FirstType, SecondType', $model->classes[3]->ancestor);
 	}
 	
+	function testHandleComplexStringInterpolation() {
+		$analyzer = new Analyzer();
+		
+		$analyzer->analyzeFile(array('absolute_path' => dirname(__FILE__).'/Corpus/interpolation.php',
+									 'relative_path' => 'Corpus/interpolation.php'));
+									
+		
+		$model = $analyzer->getModel();
+		
+		$this->assertEquals(1, count($model->classes));
+		$this->assertEquals(2, count($model->classes[0]->methods));
+	}	
+	
 }
