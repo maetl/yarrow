@@ -108,7 +108,7 @@ class ConsoleRunner {
 			
 			return self::SUCCESS;
 
-		} catch(ConfigurationError $error) {
+		} catch(Yarrow_Exception $error) {
 			self::printError($error);
 			return self::FAILURE;
 		}

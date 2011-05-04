@@ -11,4 +11,7 @@
  * with this source code for details about modification and redistribution.
  */
 
-class ConfigurationError extends Yarrow_Exception {}
+/**
+ * Base exception.
+ */
+class Yarrow_Exception extends Exception {}

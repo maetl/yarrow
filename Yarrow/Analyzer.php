@@ -29,12 +29,14 @@ class Analyzer {
 				$collector = new FileCollector($target);
 				$collector->includeByPattern("/\.php$/");
 				$manifest = array_merge($manifest, $collector->getManifest());
-			} else {
+			} elseif (is_file($target)) {
 				$manifest[] = array(
 					'filename' => basename($target),
 					'relative_path' => $target,
 					'absolute_path' => realpath($target)
 				);
+			} else {
+				throw new Yarrow_Exception("$target path not found.");
 			}
 		}
 		
