@@ -160,4 +160,32 @@ class CodeParserTest extends PHPUnit_Framework_TestCase {
 		$parser = new CodeParser($tokens, $reader);
 		$parser->parse();
 	}
+	
+	function testCanParseKeywordVariants() {
+		$tokens = $this->tokenizeSampleFile('Corpus/keywords.php');
+		
+		$methods = array('onClass', 'onMethod', 'onMethodEnd', 'onClassEnd');
+		$reader = $this->getMock('CodeReader', $methods, array('sample.php'));
+
+		$reader->expects($this->at(0))->method('onClass')
+									  ->with(
+										 'FinalStatic',
+										 ClassModel::BASE_TYPE,
+										 array('final' => true)
+										);
+										
+		$reader->expects($this->at(1))->method('onMethod')
+									  ->with(
+										 'hello',
+										  array('$a'=> ''),
+										  array(
+										    'static' => true,
+										    'visibility' => 'public'	
+										  )
+										);
+										   
+	
+		$parser = new CodeParser($tokens, $reader);
+		$parser->parse();
+	}
 }

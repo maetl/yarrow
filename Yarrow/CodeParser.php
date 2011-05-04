@@ -131,6 +131,10 @@ class CodeParser {
 					$this->setAbstract();
 				break;
 				
+				case T_FINAL:
+					$this->setFinal();
+				break;
+				
 				case T_IF:
 				case T_ELSEIF:
 				case T_FOR:
@@ -202,6 +206,7 @@ class CodeParser {
 		
 		$this->reader->onClass($class, $parent, $this->keywords);
 		$this->state = self::CLASS_SCOPE;
+		$this->resetKeywords();
 	}
 
 	/**
@@ -244,7 +249,7 @@ class CodeParser {
 	}
 	
 	function setStatic() {
-		$this->keywords['static'] = $this->value;
+		$this->keywords['static'] = true;
 	}
 	
 	function setAbstract() {
@@ -252,7 +257,7 @@ class CodeParser {
 	}
 	
 	function setFinal() {
-		$this->keywords['final'] = $this->value;
+		$this->keywords['final'] = true;
 	}
 	
 	function resetKeywords() {
