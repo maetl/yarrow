@@ -188,4 +188,23 @@ class CodeParserTest extends PHPUnit_Framework_TestCase {
 		$parser = new CodeParser($tokens, $reader);
 		$parser->parse();
 	}
+	
+	
+	function testCanParseClassInstanceProperties() {
+		$tokens = $this->tokenizeSampleFile('Corpus/properties.php');
+		
+		$methods = array('onClass', 'onMethod', 'onProperty', 'onMethodEnd', 'onClassEnd');
+		$reader = $this->getMock('CodeReader', $methods, array('sample.php'));
+										
+		$reader->expects($this->at(1))->method('onProperty')->with('$myFirstProperty', array('visibility' => 'public'));
+		$reader->expects($this->at(2))->method('onProperty')->with(
+										 '$mySecondProperty',
+										  array('visibility' => 'public'));
+		$reader->expects($this->at(2))->method('onProperty')->with('$mySecondProperty', array('visibility' => 'public'));
+		$reader->expects($this->at(3))->method('onProperty')->with('$myThirdProperty', array('visibility' => 'protected'));
+		$reader->expects($this->at(4))->method('onProperty')->with('$myFourthProperty', array('visibility' => 'private'));								   
+	
+		$parser = new CodeParser($tokens, $reader);
+		$parser->parse();
+	}
 }

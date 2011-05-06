@@ -117,6 +117,8 @@ class CodeParser {
 					$this->endNestingScope();
 				break;
 				
+				case T_VAR:
+					$this->value = 'public';
 				case T_PRIVATE:
 				case T_PROTECTED:
 				case T_PUBLIC:
@@ -133,6 +135,10 @@ class CodeParser {
 				
 				case T_FINAL:
 					$this->setFinal();
+				break;
+				
+				case T_VARIABLE:
+					$this->shredProperty();
 				break;
 				
 				case T_IF:
@@ -172,6 +178,17 @@ class CodeParser {
 	function shredDocBlock() {
 		$symbol = $this->currentToken();
 		$this->reader->onDocComment($symbol[1]);
+	}
+	
+	/**
+	 * If the variable is in a class scope, then trigger a class
+	 * property event.
+	 */
+	function shredProperty() {
+		if ($this->state == self::CLASS_SCOPE) {
+			$this->reader->onProperty($this->value, $this->keywords);
+			$this->resetKeywords();
+		}
 	}
 	
 	/**

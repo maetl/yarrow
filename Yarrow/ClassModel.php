@@ -17,13 +17,14 @@
 class ClassModel extends CodeModel {
 	private $name;
 	private $ancestor;
-	private $functions;
+	private $methods;
 	private $docblock;
 	private $file;
 	private $isInterface;
 	private $isAbstract;
 	private $isFinal;
 	private $implements;
+	private $properties;
 	
 	/**
 	 * Base type for all PHP classes
@@ -33,7 +34,8 @@ class ClassModel extends CodeModel {
 	function __construct($name, $extends=self::BASE_TYPE, $keywords=array()) {
 		$this->name = $name;
 		$this->ancestor = $extends;
-		$this->functions = array();
+		$this->methods = array();
+		$this->properties = array();
 		$this->isInterface = (isset($keywords['interface']));
 		$this->isAbstract =  (isset($keywords['abstract']));
 		$this->isFinal =  (isset($keywords['final']));
@@ -64,8 +66,12 @@ class ClassModel extends CodeModel {
 		$this->docblock = $docblock;
 	}
 	
-	function addMethod($function) {
-		$this->functions[] = $function;
+	function addMethod($method) {
+		$this->methods[] = $method;
+	}
+	
+	function addProperty($property) {
+		$this->properties[] = $property;
 	}
 
 	function setFile($file) {
@@ -84,8 +90,12 @@ class ClassModel extends CodeModel {
 		if ($this->docblock) return $this->docblock->getSummary();
 	}
 	
+	function getProperties() {
+		return $this->properties;
+	}
+	
 	function getMethods() {
-		return $this->functions;
+		return $this->methods;
 	}
 	
 	function getDoc() {
@@ -93,7 +103,7 @@ class ClassModel extends CodeModel {
 	}
 	
 	function methodCount() {
-		return count($this->functions);
+		return count($this->methods);
 	}
 	
 	public function getName() {

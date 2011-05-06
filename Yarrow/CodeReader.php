@@ -48,6 +48,11 @@ class CodeReader {
 		$this->currentClass = false;
 	}
 	
+	function onProperty($name, $keywords=array(), $default=false) {
+		$property = new PropertyModel($name, $keywords, $default);
+		$this->currentClass->addProperty($property);
+	}
+	
 	function onFunction($name, $arguments, $keywords=array()) {
 		$this->currentFunction = new FunctionModel($name, $arguments, $keywords);
 		$docblock = array_pop($this->docblocks);
