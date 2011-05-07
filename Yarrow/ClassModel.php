@@ -25,6 +25,7 @@ class ClassModel extends CodeModel {
 	private $isFinal;
 	private $implements;
 	private $properties;
+	private $constants;
 	
 	/**
 	 * Base type for all PHP classes
@@ -36,6 +37,7 @@ class ClassModel extends CodeModel {
 		$this->ancestor = $extends;
 		$this->methods = array();
 		$this->properties = array();
+		$this->constants = array();
 		$this->isInterface = (isset($keywords['interface']));
 		$this->isAbstract =  (isset($keywords['abstract']));
 		$this->isFinal =  (isset($keywords['final']));
@@ -97,6 +99,10 @@ class ClassModel extends CodeModel {
 	function getMethods() {
 		return $this->methods;
 	}
+	
+	function getConstants() {
+		return $this->constants;
+	}	
 	
 	function getDoc() {
 		return $this->docblock;

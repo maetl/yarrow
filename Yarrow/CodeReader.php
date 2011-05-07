@@ -48,6 +48,11 @@ class CodeReader {
 		$this->currentClass = false;
 	}
 	
+	function onConstant($name) {
+		$constant = new ConstantModel($name);
+		$this->currentClass->addConstant($constant);
+	}
+	
 	function onProperty($name, $keywords=array(), $default=false) {
 		$property = new PropertyModel($name, $keywords, $default);
 		$this->currentClass->addProperty($property);

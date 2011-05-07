@@ -92,10 +92,7 @@ class CodeParserTest extends PHPUnit_Framework_TestCase {
 		$methods = array('onClass', 'onMethod', 'onMethodEnd', 'onClassEnd');
 		$reader = $this->getMock('CodeReader', $methods, array('sample.php'));
 		$reader->expects($this->exactly(1))->method('onClass')
-										   ->with(
-												  'SampleInterface',
-												  ClassModel::BASE_TYPE
-												 );
+										   ->with('SampleInterface', ClassModel::BASE_TYPE);
 	
 		$parser = new CodeParser($tokens, $reader);
 		$parser->parse();
@@ -108,25 +105,13 @@ class CodeParserTest extends PHPUnit_Framework_TestCase {
 		$reader = $this->getMock('CodeReader', $methods, array('sample.php'));
 
 		$reader->expects($this->at(0))->method('onClass')
-									  ->with(
-										 'TypeA',
-										 ClassModel::BASE_TYPE,
-										 array('interface' => true)
-										);
+									  ->with('TypeA', ClassModel::BASE_TYPE, array('interface' => true));
 										
 		$reader->expects($this->at(9))->method('onClass')
-									  ->with(
-										 'TypeD',
-										 'TypeC',
-										 array('interface' => true)
-										);
+									  ->with('TypeD', 'TypeC', array('interface' => true));
 										
 		$reader->expects($this->at(12))->method('onClass')
-									  ->with(
-										 'KlassA',
-										 ClassModel::BASE_TYPE,
-										 array('implements' => 'TypeA')
-										);
+									  ->with('KlassA', ClassModel::BASE_TYPE, array('implements' => 'TypeA'));
 										   
 	
 		$parser = new CodeParser($tokens, $reader);
@@ -168,27 +153,15 @@ class CodeParserTest extends PHPUnit_Framework_TestCase {
 		$reader = $this->getMock('CodeReader', $methods, array('sample.php'));
 
 		$reader->expects($this->at(0))->method('onClass')
-									  ->with(
-										 'FinalStatic',
-										 ClassModel::BASE_TYPE,
-										 array('final' => true)
-										);
+									  ->with('FinalStatic', ClassModel::BASE_TYPE, array('final' => true));
 										
 		$reader->expects($this->at(1))->method('onMethod')
-									  ->with(
-										 'hello',
-										  array('$a'=> ''),
-										  array(
-										    'static' => true,
-										    'visibility' => 'public'	
-										  )
-										);
+									  ->with('hello', array('$a'=> ''), array('static' => true, 'visibility' => 'public'));
 										   
 	
 		$parser = new CodeParser($tokens, $reader);
 		$parser->parse();
 	}
-	
 	
 	function testCanParseClassInstanceProperties() {
 		$tokens = $this->tokenizeSampleFile('Corpus/properties.php');
@@ -196,15 +169,32 @@ class CodeParserTest extends PHPUnit_Framework_TestCase {
 		$methods = array('onClass', 'onMethod', 'onProperty', 'onMethodEnd', 'onClassEnd');
 		$reader = $this->getMock('CodeReader', $methods, array('sample.php'));
 										
-		$reader->expects($this->at(1))->method('onProperty')->with('$myFirstProperty', array('visibility' => 'public'));
-		$reader->expects($this->at(2))->method('onProperty')->with(
-										 '$mySecondProperty',
-										  array('visibility' => 'public'));
-		$reader->expects($this->at(2))->method('onProperty')->with('$mySecondProperty', array('visibility' => 'public'));
-		$reader->expects($this->at(3))->method('onProperty')->with('$myThirdProperty', array('visibility' => 'protected'));
-		$reader->expects($this->at(4))->method('onProperty')->with('$myFourthProperty', array('visibility' => 'private'));								   
+		$reader->expects($this->at(1))->method('onProperty')
+									  ->with('$myFirstProperty', array('visibility' => 'public'));
+		$reader->expects($this->at(2))->method('onProperty')
+									  ->with('$mySecondProperty', array('visibility' => 'public'));
+		$reader->expects($this->at(2))->method('onProperty')
+								  	  ->with('$mySecondProperty', array('visibility' => 'public'));
+		$reader->expects($this->at(3))->method('onProperty')
+									  ->with('$myThirdProperty', array('visibility' => 'protected'));
+		$reader->expects($this->at(4))->method('onProperty')
+									  ->with('$myFourthProperty', array('visibility' => 'private'));								   
 	
 		$parser = new CodeParser($tokens, $reader);
 		$parser->parse();
 	}
+	
+	function testCanParseClassConstants() {
+		$tokens = $this->tokenizeSampleFile('Corpus/constants.php');
+		
+		$methods = array('onClass', 'onMethod', 'onProperty', 'onMethodEnd', 'onClassEnd', 'onConstant');
+		$reader = $this->getMock('CodeReader', $methods, array('sample.php'));
+										
+		$reader->expects($this->at(1))->method('onConstant')->with('FIXEDVALUE');
+		$reader->expects($this->at(2))->method('onConstant')->with('NAME');
+		$reader->expects($this->at(3))->method('onConstant')->with('NUMBER');
+	
+		$parser = new CodeParser($tokens, $reader);
+		$parser->parse();
+	}	
 }
