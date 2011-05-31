@@ -14,9 +14,16 @@
 	
 	<p>In File: <a href="../<?php echo $class->file->getRelativeLink(); ?>"><?php echo $class->file->name; ?></a></p>
 
+	<div>
+		<h3>Description</h3>
+		
+		<p><?php echo nl2br($class->text); ?></p>
+		
+	</div>
+
 	<?php foreach($class->methods as $method): ?>
 
-		<h2><?php echo $method; ?></h2>
+		<h3><?php echo $method; ?></h3>
 		<p><?php echo $method->summary; ?></p>
 
 
