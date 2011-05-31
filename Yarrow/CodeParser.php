@@ -125,6 +125,10 @@ class CodeParser {
 					$this->setVisibility();
 				break;
 				
+				case T_CONST:
+					$this->shredConstant();
+				break;
+				
 				case T_STATIC:
 					$this->setStatic();					
 				break;
@@ -178,6 +182,15 @@ class CodeParser {
 	function shredDocBlock() {
 		$symbol = $this->currentToken();
 		$this->reader->onDocComment($symbol[1]);
+	}
+	
+	/**
+	 * Trigger a class constant event.
+	 */
+	function shredConstant() {
+		$id = $this->current+2;
+		$constant = $this->tokens[$id][1];
+		$this->reader->onConstant($constant);
 	}
 	
 	/**
