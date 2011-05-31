@@ -155,7 +155,7 @@ class CodeParser {
 				case T_TERNARY_IF:
 					if ($this->state == self::FUNCTION_SCOPE) {
 						$this->complexity++;
-						// cyclomatic complexity generated, but not captured!
+						// cyclomatic complexity calculated but not captured!
 					}
 				break;
 				
