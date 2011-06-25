@@ -1,0 +1,157 @@
+h1, h2, h3, h4, li {
+  text-rendering: optimizeLegibility;     
+    font-family: "ff-meta-web-pro-1","ff-meta-web-pro-2",sans-serif;
+}
+
+p {
+  text-rendering: optimizeLegibility;    
+  font-family: "gesta-1","gesta-2",sans-serif;
+  line-height:150%;
+}
+
+.header-box p {
+     text-rendering: optimizeLegibility; 
+    font-family: "ff-meta-web-pro-1","ff-meta-web-pro-2",sans-serif;
+}
+
+pre, code {
+  font-family: "inconsolata-1","inconsolata-2",monospace;
+}
+
+.clear {
+    clear:both;
+}
+
+pre {
+    background-color:#222;
+    color:#fff;
+    border-radius:6px;
+    padding:6px;
+}
+
+body, div, h1 {
+    margin:0;
+    padding:0;    
+}
+
+h1 {
+    font-size:68px;
+    letter-spacing:-2px;
+    margin:0 0 6px 22px;
+}
+
+body {
+    background-color:#F9F8F0;
+    background-color:#fff;    
+    color:#F6700F;
+}
+
+.header-top {
+    height:15px;
+    background-color:#F9E014;
+    border-bottom:10px solid #F6B70F;
+    color:#eee;
+}
+
+.header h1 {
+    float:left;
+}
+
+.header ul {
+    list-style-type:none;
+    float:right;
+    margin:30px 50px 0 0;
+    padding:0;
+}
+
+.header li {
+    font-size:20px;
+    display:block;
+    float:left;
+    margin:0 20px 0 0;
+    padding:0;  
+}
+
+.header li a {
+    color:#333;
+}
+
+.header {
+    background-color:#F2F2F2;
+    height:90px;
+    color:#343434;
+}
+
+/*F1DA26
+
+background-color:#F6B70F;
+
+*/
+
+.footer {
+    margin-top:90px;
+    height:200px;
+    background-color:#D3E3EC;
+}
+
+.footer a {
+    color:#343468;
+}
+
+.header-box {
+    background-color:#F6700F;
+    border-radius:10px;
+    margin-top:18px;
+    padding:10px;
+    color:#fff;
+}
+
+.header-box h2 {
+    font-size:34px;
+    margin:6px 0 0 0;
+}
+
+.header-box p {
+    margin:6px 0 6px 0;
+    font-size:18px;
+}
+
+.content {
+    float:left;
+}
+
+.col {
+    float:left;
+}
+
+.col-a {
+    width:92%;
+    margin-left:3%;
+}
+
+.col-b {
+    margin-left:3%;
+    width:43%;
+}
+
+.col-c {
+    margin-left:3%;
+    width:30%;
+}
+
+.col-d {
+    margin-left:3%;
+    width:20%;
+}
+
+/* 9F7B48  BA9352 */
+
+p {
+    color:#16110A;
+}
+
+/* FFFEFC */
+/* 282F36 */
+/* BDA21D */
+/* BFBC5B */
+/* D2E098 */

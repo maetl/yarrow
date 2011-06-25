@@ -1,33 +1,77 @@
 ---
-layout: default
+layout: main
 title: Yarrow - Simple Documentation Generator for PHP
 ---
 
-<h1>Yarrow</h1>
+	<div class="col col-a header-box">
+	<h2>Yarrow is a documentation tool for PHP projects.</h2>
 
-<p>Finally, a tidy documentation tool for PHP projects.</p>
+	<p>Yarrow shreds your source code and converts the structure into clean user friendly API documentation.</p>
+	</div>
 
-<p>Yarrow shreds your PHP code files and converts their structure into user friendly API documentation.</p>
+	<div class="col col-d">
 
-<p>Yarrow is a fully object oriented library written in idiomatic PHP. You can easily extend it to produce your own custom documentation tools.</p>
+		<h3>Simple</h3>
 
-<h2>Motivation</h2>
+		<p>Yarrow is designed to be as straightforward and easy to use as possible.</p>
 
-<p>The needs of people writing libraries and utility classes are not the same as those of people working on large applications. In order to be useful, a documentation generator must provide value in a wide variety of use cases where concise and readable documentation is required in a format that suits the particular size and shape of a PHP project.</p>
+	</div>
 
-<p>Yarrow takes the approach that documentation output should not be locked to the class-per-file pattern. This provides the flexibility to produce diverse documents – from a single page manual for a small, tightly focused API, to a multi-page documentation system for a large application.</p>
+<div class="col col-d">
 
-<h2>Install</h2>
+	<h3>Flexible</h3>
 
-<p>The recommended method of installing Yarrow is through the official PEAR channel:
+	<p>Yarrow is a fully object oriented library written in idiomatic PHP. You can easily extend it to produce your own custom documentation generators.</p>
 
-<pre>
-$ pear channel-discover yo.yarrowdoc.org
-$ pear install yarrow/Yarrow
-</pre>
+</div>
 
-<p>Depending on how PEAR is set up on your local system, you may need to use sudo.</p>
+<div class="col col-d">
 
-<p>If you download the code manually, you need to place the Yarrow folder somewhere on your PHP include path and add the yarrow.php file to your bin path, changing its permissions so that it is executable.</p>
+	<h3>Design Friendly</h3>
 
-<p>More to come...</p>
+	<p>Yarrow supports building themes with plain-old-PHP templates, as well as third-party template engines like Twig and Smarty.</p>
+
+</div>
+
+<div class="col col-d">
+
+	<h3>Open Source</h3>
+	
+	<p>Yarrow is free software, published under the MIT License. You can extend it, hack it, and bundle the code with other projects.</p>
+	
+</div>	
+
+</div>
+<div>	
+	
+	<div class="col col-b">
+	
+	<h2>Getting Started</h2>
+	
+	<p>Yarrow is a command line tool. To install with PEAR:</p>
+	
+	<pre>$ pear channel-discover yo.yarrowdoc.org
+$ pear install yarrow/Yarrow</pre>
+	
+	<p>View available commands and options:</pre>
+	
+	<pre>$ yarrow --help</pre>
+	
+	<p>Build documentation for all the PHP code in your project’s <code>myapp</code> folder:</p>
+	
+	<pre>$ cd myapp
+$ yarrow</pre>
+	
+
+
+	</div>
+
+	<div class="col col-b">
+
+	<h2>Philosophy</h2>
+
+	<p>People writing libraries and utility classes do not have the same requirements for documentation as people working on large applications. In order to be useful, a documentation generator should provide output in a format and structure that suits the particular size and shape of a project.</p>
+
+	<p>The core design principle of Yarrow is that that documentation output should not be locked to the class-per-file pattern or a narrow range of output formats. Yarrow is designed with such flexibility in mind. The tool can be customized to produce diverse documents – from a single page manual for a small and focused API, to a multi-page documentation system for a large application.</p>
+	
+	</div>
