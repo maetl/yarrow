@@ -36,8 +36,8 @@ ie:
 
 class ClassConvention {
 
-    private function method() {
-        $this->doInternals();
+    private function runSomething() {
+        Observer::triggerEvent();
     }
 }
 
