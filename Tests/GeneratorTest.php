@@ -24,7 +24,7 @@ class PHPTemplateStubGenerator extends Generator {
 	}
 	
 	protected function getConverter() {
-		return new PHPConverter(dirname(__FILE__).'/Templates');
+		return new PhpConverter(dirname(__FILE__).'/Templates');
 	}
 }
 
