@@ -1,10 +1,10 @@
 <?php
 
 class ClassWithConstants {
-	
-	const FIXEDVALUE;
-	
+
+	const FIXEDVALUE = true;
+
 	const NAME = 'NAME';
-	
+
 	const NUMBER = 999;
 }
