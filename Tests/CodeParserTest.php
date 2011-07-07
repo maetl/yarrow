@@ -190,9 +190,9 @@ class CodeParserTest extends PHPUnit_Framework_TestCase {
 		$methods = array('onClass', 'onMethod', 'onProperty', 'onMethodEnd', 'onClassEnd', 'onConstant');
 		$reader = $this->getMock('CodeReader', $methods, array('sample.php'));
 
-		$reader->expects($this->at(1))->method('onConstant')->with('FIXEDVALUE');
-		$reader->expects($this->at(2))->method('onConstant')->with('NAME');
-		$reader->expects($this->at(3))->method('onConstant')->with('NUMBER');
+		$reader->expects($this->at(1))->method('onConstant')->with('FIXEDVALUE', 'true');
+		$reader->expects($this->at(2))->method('onConstant')->with('NAME', '\'NAME\'');
+		$reader->expects($this->at(3))->method('onConstant')->with('NUMBER', '999');
 
 		$parser = new CodeParser($tokens, $reader);
 		$parser->parse();

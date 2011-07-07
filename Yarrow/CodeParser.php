@@ -17,6 +17,7 @@ define('T_BRACE_OPEN', 911);
 define('T_BRACE_CLOSE', 919);
 define('T_TERNARY_IF', 977);
 define('T_AMPERSAND', 988);
+define('T_SEMICOLON', 990);
 define('T_UNKNOWN', 999);
 
 /**
@@ -38,7 +39,8 @@ class CodeParser {
 		'(' => T_BRACE_OPEN,
 		')' => T_BRACE_CLOSE,
 		'?' => T_TERNARY_IF,
-		'&' => T_AMPERSAND
+		'&' => T_AMPERSAND,
+		';' => T_SEMICOLON
 	);
 	
 	const GLOBAL_SCOPE 	 = 1;
@@ -105,6 +107,10 @@ class CodeParser {
 					$this->shredClass();
 				break;
 				
+				case T_CONST:
+					$this->shredConstant();
+				break;
+				
 				case T_FUNCTION:
 					$this->shredFunction();
 				break;
@@ -123,10 +129,6 @@ class CodeParser {
 				case T_PROTECTED:
 				case T_PUBLIC:
 					$this->setVisibility();
-				break;
-				
-				case T_CONST:
-					$this->shredConstant();
 				break;
 				
 				case T_STATIC:
@@ -189,8 +191,18 @@ class CodeParser {
 	 */
 	function shredConstant() {
 		$id = $this->current+2;
-		$constant = $this->tokens[$id][1];
-		$this->reader->onConstant($constant);
+		$name = $this->tokens[$id][1];
+		while($this->tokens[$id+1][1] != '=') {
+			$this->tokens[++$id];
+		}
+		$id++;
+		while($this->tokens[$id+1][0] != T_SEMICOLON) {
+			if ($this->tokens[++$id][0] != T_WHITESPACE) {
+				$value = $this->tokens[$id][1];
+			}
+		}
+		
+		$this->reader->onConstant($name, $value);
 	}
 	
 	/**
