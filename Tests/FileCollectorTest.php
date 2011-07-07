@@ -3,38 +3,35 @@
 require_once dirname(__FILE__).'/../Yarrow/Autoload.php';
 
 class FileCollectorTest extends PHPUnit_Framework_TestCase {
-
-	function assertNestedArrayContains($expected, $array, $key) {
-		$result = false;
-		foreach($array as $value) {
-			if (isset($value[$key])) {
-				if ($value[$key] == $expected) {
-					$result = true;
-					break;
-				}
-			}
+	
+	private function getFiles($manifest) {
+		$files = array();
+		foreach($manifest as $file) {
+			$files[] = $file['filename'];
 		}
-		$this->assertTrue($result);
+		return $files;
 	}
 
 	function testFilterAllFilesByIncludePattern() {
 		$collector = new FileCollector(dirname(__FILE__).'/Samples');
 		$collector->includeByPattern("/\.php$/");
 		$manifest = $collector->getManifest();
+		$files = $this->getFiles($manifest);
 
 		$this->assertEquals(6, count($manifest));
-		$this->assertNestedArrayContains('sample.class.php', $manifest, 'filename');
-		$this->assertNestedArrayContains('sample.php', $manifest, 'filename');
-		$this->assertNestedArrayContains('sample_function.php', $manifest, 'filename');
-		$this->assertNestedArrayContains('SampleInterface.php', $manifest, 'filename');
-		$this->assertNestedArrayContains('SampleObject.php', $manifest, 'filename');
-		$this->assertNestedArrayContains('samples.php', $manifest, 'filename');
+		$this->assertContains('sample.class.php', $files);
+		$this->assertContains('sample.php', $files);
+		$this->assertContains('sample_function.php', $files);
+		$this->assertContains('SampleInterface.php', $files);
+		$this->assertContains('SampleObject.php', $files);
+		$this->assertContains('samples.php', $files);
 	}
 
 	function testFilterFilesByIncludePattern() {
 		$collector = new FileCollector(dirname(__FILE__).'/Samples');
 		$collector->includeByPattern("/\.class\.php$/");
 		$manifest = $collector->getManifest();
+		$files = $this->getFiles($manifest);
 
 		$this->assertEquals(1, count($manifest));
 		$this->assertEquals('sample.class.php', $manifest[0]['filename']);
