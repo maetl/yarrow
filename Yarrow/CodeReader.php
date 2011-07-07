@@ -48,8 +48,8 @@ class CodeReader {
 		$this->currentClass = false;
 	}
 	
-	function onConstant($name) {
-		$constant = new ConstantModel($name);
+	function onConstant($name, $value) {
+		$constant = new ConstantModel($name, $value);
 		$this->currentClass->addConstant($constant);
 	}
 	
