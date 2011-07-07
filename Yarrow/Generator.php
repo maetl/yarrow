@@ -11,11 +11,19 @@
  * with this source code for details about modification and redistribution.
  */
 
+/**
+ * Generates documentation from an object model.
+ *
+ * Subclasses of Generator need to override the template methods,
+ * to specify a particular file structure to output.
+ */
 abstract class Generator {
 	
 	protected $directory;
 	
 	protected $objectModel;
+	
+	protected $config;
 	
 	/**
 	 * @param $target string path to target directory
@@ -25,6 +33,7 @@ abstract class Generator {
 		$this->ensureDirectoryExists($target);
 		$this->directory = $target;
 		$this->objectModel = $model;
+		$this->config = Configuration::instance();
 		$this->validateTemplateMethods();
 	}
 	
@@ -86,12 +95,11 @@ abstract class Generator {
 		$converter = $this->getConverter();
 		$templates = $this->getTemplateMap();
 		$objectMap = $this->getObjectMap();
-		$config	   = Configuration::instance();
 		
 		foreach ($objectMap as $index => $objects) {
 			foreach ($objects as $object) {
 				$variables = array(
-								'meta'		  => $config->meta,
+								'meta'		  => $this->config->meta,
 								$index   	  => $object,
 								'objectModel' => $this->objectModel
 							 );
