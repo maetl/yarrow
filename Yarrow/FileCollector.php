@@ -30,7 +30,7 @@ class FilePatternIncludeFilter extends FilePatternFilter {
 class FilePatternExcludeFilter extends FilePatternFilter {
 
 	public function accept() {
-		return (!$this->isFile() || !preg_match($this->pattern, $this->getFilename()));
+		return ($this->isFile() && !preg_match($this->pattern, $this->getFilename()));
 	}
 }
 

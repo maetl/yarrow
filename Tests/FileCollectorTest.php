@@ -31,7 +31,6 @@ class FileCollectorTest extends PHPUnit_Framework_TestCase {
 		$collector = new FileCollector(dirname(__FILE__).'/Samples');
 		$collector->includeByPattern("/\.class\.php$/");
 		$manifest = $collector->getManifest();
-		$files = $this->getFiles($manifest);
 
 		$this->assertEquals(1, count($manifest));
 		$this->assertEquals('sample.class.php', $manifest[0]['filename']);
@@ -42,13 +41,14 @@ class FileCollectorTest extends PHPUnit_Framework_TestCase {
 		$collector = new FileCollector(dirname(__FILE__).'/Samples');
 		$collector->excludeByPattern("/\.class\.php$/");
 		$manifest = $collector->getManifest();
+		$files = $this->getFiles($manifest);
 
 		$this->assertEquals(5, count($manifest));
-		$this->assertEquals('sample.php', $manifest[0]['filename']);
-		$this->assertEquals('sample_function.php', $manifest[1]['filename']);
-		$this->assertEquals('SampleInterface.php', $manifest[2]['filename']);
-		$this->assertEquals('SampleObject.php', $manifest[3]['filename']);
-		$this->assertEquals('samples.php', $manifest[4]['filename']);
+		$this->assertContains('sample.php', $files);
+		$this->assertContains('sample_function.php', $files);
+		$this->assertContains('SampleInterface.php', $files);
+		$this->assertContains('SampleObject.php', $files);
+		$this->assertContains('samples.php', $files);
 	}
 
 	function testFilterFilesByMultipleExcludePatterns() {
@@ -56,11 +56,12 @@ class FileCollectorTest extends PHPUnit_Framework_TestCase {
 		$collector->excludeByPattern("/\.class\.php$/");
 		$collector->excludeByPattern("/\_function\.php$/");
 		$manifest = $collector->getManifest();
+		$files = $this->getFiles($manifest);
 
 		$this->assertEquals(4, count($manifest));
-		$this->assertEquals('sample.php', $manifest[0]['filename']);
-		$this->assertEquals('SampleInterface.php', $manifest[1]['filename']);
-		$this->assertEquals('SampleObject.php', $manifest[2]['filename']);
-		$this->assertEquals('samples.php', $manifest[3]['filename']);
+		$this->assertContains('sample.php', $files);
+		$this->assertContains('SampleInterface.php', $files);
+		$this->assertContains('SampleObject.php', $files);
+		$this->assertContains('samples.php', $files);
 	}
 }
