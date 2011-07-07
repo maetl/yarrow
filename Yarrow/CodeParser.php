@@ -277,19 +277,34 @@ class CodeParser {
 	function setVisibility() {
 		$this->keywords['visibility'] = $this->value;
 	}
-	
+
+	/**
+	 * Collects the static keyword of a function from current position
+	 * in the token stream.
+	 */	
 	function setStatic() {
 		$this->keywords['static'] = true;
 	}
 	
+	/**
+	 * Collects the abstract keyword of a function or class from current position
+	 * in the token stream.
+	 */
 	function setAbstract() {
 		$this->keywords['abstract'] = $this->value;
 	}
 	
+	/**
+	 * Collects the final keyword of a class from current position
+	 * in the token stream.
+	 */
 	function setFinal() {
 		$this->keywords['final'] = true;
 	}
 	
+	/**
+	 * Resets the keyword list when the scope is popped.
+	 */
 	function resetKeywords() {
 		$this->keywords = array();
 	}
@@ -320,10 +335,16 @@ class CodeParser {
 		return $arguments;
 	}
 	
+	/**
+	 * Descend into a nested scope marked by an open brace ({...)
+	 */
 	function startNestingScope() {
 		$this->scope->push($this->state);
 	}
 	
+	/**
+	 * Emerge out of a nested scope marked by a closing brace (...})
+	 */
 	function endNestingScope() {
 		$previous = $this->scope->pop();
 		$this->state = $this->scope->peek();
