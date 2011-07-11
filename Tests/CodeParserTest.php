@@ -198,8 +198,17 @@ class CodeParserTest extends PHPUnit_Framework_TestCase {
 		$parser->parse();
 	}
 
-	//function testCanParseGlobalConstants() {
-	//	$tokens = $this->tokenizeSampleFile('Corpus/defines.php');
-	//
-	//}
+	function testCanParseGlobalConstants() {
+		$tokens = $this->tokenizeSampleFile('Corpus/defines.php');
+
+		$methods = array('onClass', 'onMethod', 'onProperty', 'onMethodEnd', 'onClassEnd', 'onConstant');
+		$reader = $this->getMock('CodeReader', $methods, array('defines.php'));
+
+		$reader->expects($this->at(0))->method('onConstant')->with('GLOBAL_CONST', 'true');
+		$reader->expects($this->at(1))->method('onConstant')->with('NUMBER_CONST', '999');
+		$reader->expects($this->at(2))->method('onConstant')->with('STRING_CONST', '\'this is a string\'');
+
+		$parser = new CodeParser($tokens, $reader);
+		$parser->parse();
+	}
 }

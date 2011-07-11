@@ -6,7 +6,7 @@
  *
  * Copyright (c) 2010-2011, Mark Rickerby <http://maetl.net>
  * All rights reserved.
- * 
+ *
  * This library is free software; refer to the terms in the LICENSE file found
  * with this source code for details about modification and redistribution.
  */
@@ -42,18 +42,18 @@ class CodeParser {
 		'&' => T_AMPERSAND,
 		';' => T_SEMICOLON
 	);
-	
+
 	const GLOBAL_SCOPE 	 = 1;
 	const CLASS_SCOPE  	 = 2;
 	const FUNCTION_SCOPE = 3;
-	
+
 	/**
 	 * @param $tokens array of token identifiers
 	 * @param $reader CodeReader instance
 	 */
 	function __construct($tokens, $reader) {
 		$line = 1;
-		
+
 		foreach($tokens as $i => $token) {
 			if (!is_array($token)) {
 				$tokens[$i] = $this->normalizeToken($token, $line);
@@ -61,7 +61,7 @@ class CodeParser {
 			$lines = substr_count($tokens[$i][1], "\n");
 			$line += $lines;
 		}
-		
+
 		$this->tokens = $tokens;
 		$this->total = count($this->tokens);
 		$this->current = 0;
@@ -70,7 +70,7 @@ class CodeParser {
 		$this->reader = $reader;
 		$this->keywords = array();
 	}
-	
+
 	/**
 	 * Converts strings from the PHP tokenizer to the standard format.
 	 */
@@ -78,26 +78,26 @@ class CodeParser {
 		$symbol = (isset($this->tokenMap[$token])) ? $this->tokenMap[$token] : T_UNKNOWN;
 		return array($symbol, $token, $line);
 	}
-	
+
 	/**
 	 * Shreds a PHP code file for classes, methods, and doc comments.
 	 */
 	function parse() {
-		
+
 		for ($this->current = 0; $this->current < $this->total; $this->current++) {
-			
+
 			$token = $this->currentToken();
-						
+
 			$this->symbol = $token[0];
 			$this->value = $token[1];
 			$this->line = $token[1];
-			
+
 			switch ($this->symbol) {
-				
+
 				case T_OPEN_TAG:
 					$this->scope->push($this->state);
 				break;
-				
+
 				case T_DOC_COMMENT:
 					$this->shredDocBlock();
 				break;
@@ -106,23 +106,23 @@ class CodeParser {
 				case T_INTERFACE:
 					$this->shredClass();
 				break;
-				
+
 				case T_CONST:
 					$this->shredConstant();
 				break;
-				
+
 				case T_FUNCTION:
 					$this->shredFunction();
 				break;
-				
+
 				case T_SCOPE_OPEN:
 					$this->startNestingScope();
 				break;
-				
+
 				case T_SCOPE_CLOSE:
 					$this->endNestingScope();
 				break;
-				
+
 				case T_VAR:
 					$this->value = 'public';
 				case T_PRIVATE:
@@ -130,23 +130,23 @@ class CodeParser {
 				case T_PUBLIC:
 					$this->setVisibility();
 				break;
-				
+
 				case T_STATIC:
-					$this->setStatic();					
+					$this->setStatic();
 				break;
-				
+
 				case T_ABSTRACT:
 					$this->setAbstract();
 				break;
-				
+
 				case T_FINAL:
 					$this->setFinal();
 				break;
-				
+
 				case T_VARIABLE:
 					$this->shredProperty();
 				break;
-				
+
 				case T_IF:
 				case T_ELSEIF:
 				case T_FOR:
@@ -160,23 +160,54 @@ class CodeParser {
 						// cyclomatic complexity calculated but not captured!
 					}
 				break;
-				
+
 				case T_CURLY_OPEN:
 				case T_DOLLAR_OPEN_CURLY_BRACES:
 				case T_STRING_VARNAME:
 					$this->startNestingScope();
 				break;
+
+				case T_STRING:
+					$this->shredDefinedStrings();
+				break;
 			}
 		}
 	}
-	
+
 	/**
 	 * Return the symbol at current position in the token stream.
 	 */
 	function currentToken() {
 		return $this->tokens[$this->current];
 	}
-	
+
+	/**
+	 * Somewhat of a hack to recognize global constant definitions.
+	 */
+	function shredDefinedStrings() {
+		if ($this->value == 'define') {
+			$position = $this->current+1;
+			$token = $this->tokens[$position];
+			$pos  = $position;
+			$hint = false;
+			while ($token[0] != T_SEMICOLON) {
+				if ($token[0] == T_CONSTANT_ENCAPSED_STRING) {
+					if (!isset($name)) {
+						$name = str_replace(array('\'', '"'), '', $token[1]);
+					} else {
+						$value = $token[1];
+					}
+				} elseif ($token[0] == T_STRING || $token[0] == T_LNUMBER) {
+					$value = $token[1];
+				}
+				$pos++;
+				$token = $this->tokens[$pos];
+			}
+			$this->current = $pos;
+			$this->reader->onConstant($name, $value);
+		}
+	}
+
 	/**
 	 * Acceptor to shred a docblock out of the token stream and
 	 * hand it off to a semantic txt parser.
@@ -185,7 +216,7 @@ class CodeParser {
 		$symbol = $this->currentToken();
 		$this->reader->onDocComment($symbol[1]);
 	}
-	
+
 	/**
 	 * Trigger a class constant event.
 	 */
@@ -201,10 +232,10 @@ class CodeParser {
 				$value = $this->tokens[$id][1];
 			}
 		}
-		
+
 		$this->reader->onConstant($name, $value);
 	}
-	
+
 	/**
 	 * If the variable is in a class scope, then trigger a class
 	 * property event.
@@ -215,20 +246,20 @@ class CodeParser {
 			$this->resetKeywords();
 		}
 	}
-	
+
 	/**
 	 * Acceptor to build a class name and link to it's ancestor.
 	 */
 	function shredClass() {
-		
+
 		if ($this->symbol == T_INTERFACE) {
 			$this->keywords['interface'] = true;
 		}
-		
+
 		$id = $this->current+2;
 		$class = $this->tokens[$id][1];
 		$parent = ClassModel::BASE_TYPE;
-		
+
 		if ($this->tokens[$id+2][0] == T_EXTENDS) {
 			$id += 4;
 			$parent = $this->tokens[$id][1];
@@ -236,7 +267,7 @@ class CodeParser {
 				$parent .= $this->tokens[++$id][1];
 			}
 		}
-		
+
 		if ($this->tokens[$id+2][0] == T_IMPLEMENTS) {
 			$id += 4;
 			$implements = $this->tokens[$id][1];
@@ -245,7 +276,7 @@ class CodeParser {
 			}
 			$this->keywords['implements'] = $implements;
 		}
-		
+
 		$this->reader->onClass($class, $parent, $this->keywords);
 		$this->state = self::CLASS_SCOPE;
 		$this->resetKeywords();
@@ -255,33 +286,33 @@ class CodeParser {
 	 * Acceptor to build a function signature.
 	 */
 	function shredFunction() {
-		
+
 		while ($this->tokens[$this->current][0] != T_BRACE_OPEN) {
-			
+
 			if ($this->tokens[$this->current][0] == T_STRING) {
 				$name = $this->tokens[$this->current][1];
 			}
-			
+
 			$this->current++;
 		}
-		
+
 		$arguments = $this->shredArguments($this->current+1);
-		
+
 		if ($this->state == self::CLASS_SCOPE) {
-			
+
 			$this->reader->onMethod($name, $arguments, $this->keywords);
-			
+
 		} else {
-			
+
 			$this->reader->onFunction($name, $arguments, $this->keywords);
-		
+
 		}
-		
+
 		$this->complexity = 0;
 		$this->state = self::FUNCTION_SCOPE;
 		$this->resetKeywords();
 	}
-	
+
 	/**
 	 * Collects the visibility signature of a function from current position
 	 * in the token stream.
@@ -293,11 +324,11 @@ class CodeParser {
 	/**
 	 * Collects the static keyword of a function from current position
 	 * in the token stream.
-	 */	
+	 */
 	function setStatic() {
 		$this->keywords['static'] = true;
 	}
-	
+
 	/**
 	 * Collects the abstract keyword of a function or class from current position
 	 * in the token stream.
@@ -305,7 +336,7 @@ class CodeParser {
 	function setAbstract() {
 		$this->keywords['abstract'] = $this->value;
 	}
-	
+
 	/**
 	 * Collects the final keyword of a class from current position
 	 * in the token stream.
@@ -313,14 +344,14 @@ class CodeParser {
 	function setFinal() {
 		$this->keywords['final'] = true;
 	}
-	
+
 	/**
 	 * Resets the keyword list when the scope is popped.
 	 */
 	function resetKeywords() {
 		$this->keywords = array();
 	}
-	
+
 	/**
 	 * Collects the parameter signature of a function from a given position in
 	 * the token stream.
@@ -330,7 +361,7 @@ class CodeParser {
 		$arguments = array();
 		$pos  = $position;
 		$hint = false;
-		
+
 		while ($token[0] != T_BRACE_CLOSE) {
 			if ($token[0] == T_STRING) {
 				$hint = $token[1];
@@ -342,18 +373,18 @@ class CodeParser {
 			$pos++;
 			$token = $this->tokens[$pos];
 		}
-		
+
 		$this->current = $pos;
 		return $arguments;
 	}
-	
+
 	/**
 	 * Descend into a nested scope marked by an open brace ({...)
 	 */
 	function startNestingScope() {
 		$this->scope->push($this->state);
 	}
-	
+
 	/**
 	 * Emerge out of a nested scope marked by a closing brace (...})
 	 */
@@ -370,6 +401,6 @@ class CodeParser {
 			} else {
 				$this->reader->onClassEnd();
 			}
-		}		
+		}
 	}
 }
