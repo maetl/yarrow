@@ -124,7 +124,6 @@ class CodeParser {
 				break;
 
 				case T_VAR:
-					$this->value = 'public';
 				case T_PRIVATE:
 				case T_PROTECTED:
 				case T_PUBLIC:
@@ -318,7 +317,7 @@ class CodeParser {
 	 * in the token stream.
 	 */
 	function setVisibility() {
-		$this->keywords['visibility'] = $this->value;
+		$this->keywords['visibility'] = ($this->value == 'var') ? 'public' : $this->value;
 	}
 
 	/**
