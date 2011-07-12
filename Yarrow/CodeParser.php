@@ -358,9 +358,8 @@ class CodeParser {
 	 * the token stream.
 	 */
 	function shredArguments($position) {
-		$token = $this->tokens[$position];
+		$token = $this->currentToken();
 		$arguments = array();
-		$pos  = $position;
 		$hint = false;
 
 		while ($token[0] != T_BRACE_CLOSE) {
@@ -371,11 +370,9 @@ class CodeParser {
 				$arguments[$name] = $hint;
 				$hint = false;
 			}
-			$pos++;
-			$token = $this->tokens[$pos];
+			$token = $this->nextToken();
 		}
 
-		$this->current = $pos;
 		return $arguments;
 	}
 
