@@ -181,28 +181,30 @@ class CodeParser {
 	}
 
 	/**
+	 * Advance to the symbol at next position in the token stream.
+	 */
+	function nextToken() {
+		return $this->tokens[++$this->current];
+	}
+
+	/**
 	 * Somewhat of a hack to recognize global constant definitions.
 	 */
 	function shredDefinedStrings() {
 		if ($this->value == 'define') {
-			$position = $this->current+1;
-			$token = $this->tokens[$position];
-			$pos  = $position;
-			$hint = false;
+			$token = $this->nextToken();
 			while ($token[0] != T_SEMICOLON) {
 				if ($token[0] == T_CONSTANT_ENCAPSED_STRING) {
 					if (!isset($name)) {
-						$name = str_replace(array('\'', '"'), '', $token[1]);
+						$name = str_replace(array("'", '"'), '', $token[1]);
 					} else {
 						$value = $token[1];
 					}
 				} elseif ($token[0] == T_STRING || $token[0] == T_LNUMBER) {
 					$value = $token[1];
 				}
-				$pos++;
-				$token = $this->tokens[$pos];
+				$token = $this->nextToken();
 			}
-			$this->current = $pos;
 			$this->reader->onConstant($name, $value);
 		}
 	}
