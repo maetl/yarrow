@@ -11,40 +11,27 @@
  * with this source code for details about modification and redistribution.
  */
 
-abstract class FilePatternFilter extends RecursiveFilterIterator {
+abstract class FilePatternFilter extends RecursiveRegexIterator {
 	protected $pattern;
 
 	public function __construct(RecursiveIterator $it, $pattern) {
 		$this->pattern = $pattern;
-		parent::__construct($it);
+		parent::__construct($it, $pattern);
 	}
-}
 
-class FileIncludeFilter extends FilePatternFilter {
-
-	public function accept() {
-		return ($this->isFile() && fnmatch($this->pattern, $this->getFilename()));
-	}
-}
-
-class FileExcludeFilter extends FilePatternFilter {
-
-	public function accept() {
-		return ($this->isFile() && !fnmatch($this->pattern, $this->getFilename()));
-	}
 }
 
 class FilePatternIncludeFilter extends FilePatternFilter {
 
-	public function accept() {
-		return ($this->isFile() && preg_match($this->pattern, $this->getFilename()));
+	public function accept() {		
+		return ($this->isDir() || preg_match($this->pattern, $this->getFilename()));
 	}
 }
 
 class FilePatternExcludeFilter extends FilePatternFilter {
 
 	public function accept() {
-		return ($this->isFile() && !preg_match($this->pattern, $this->getFilename()));
+		return ($this->isDir() || !preg_match($this->pattern, $this->getFilename()));
 	}
 }
 
@@ -60,11 +47,15 @@ class FileCollector {
 	}
 	
 	function includeByMatch($pattern) {
-		$this->collection = new FileIncludeFilter($this->collection, $pattern);
+		$pattern = str_replace('.', '\.', $pattern);
+		$pattern = str_replace('*', '.+', $pattern);
+		$this->includeByPattern("/$pattern$/");
 	}
 	
 	function excludeByMatch($pattern) {
-		$this->collection = new FileExcludeFilter($this->collection, $pattern);
+		$pattern = str_replace('.', '\.', $pattern);
+		$pattern = str_replace('*', '.+', $pattern);
+		$this->excludeByPattern("/$pattern$/");
 	}
 
 	function includeByPattern($pattern) {
@@ -74,10 +65,15 @@ class FileCollector {
 	function excludeByPattern($pattern) {
 		$this->collection = new FilePatternExcludeFilter($this->collection, $pattern);
 	}
+	
+	function getIterator() {
+		return new RecursiveIteratorIterator($this->collection);
+	}
 
 	function getManifest() {
 		$map = array();
-		foreach(new RecursiveIteratorIterator($this->collection) as $file) {
+		$files = new RecursiveIteratorIterator($this->collection);
+		foreach($files as $file) {
 			$map[] = array(
 				"filename" => $file->getFilename(),
 				"relative_path" => $this->base_dir . str_replace($this->base_path, '', $file->getPathname()),
