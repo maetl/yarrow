@@ -36,10 +36,34 @@ class FileCollectorTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals('sample.class.php', $manifest[0]['filename']);
 		$this->assertEquals('Samples/sample.class.php', $manifest[0]['relative_path']);
 	}
+	
+	function testFilterFilesByIncludeWildard() {
+		$collector = new FileCollector(dirname(__FILE__).'/Samples');
+		$collector->includeByMatch("*.class.php");
+		$manifest = $collector->getManifest();
+
+		$this->assertEquals(1, count($manifest));
+		$this->assertEquals('sample.class.php', $manifest[0]['filename']);
+		$this->assertEquals('Samples/sample.class.php', $manifest[0]['relative_path']);
+	}
 
 	function testFilterFilesByExcludePattern() {
 		$collector = new FileCollector(dirname(__FILE__).'/Samples');
 		$collector->excludeByPattern("/\.class\.php$/");
+		$manifest = $collector->getManifest();
+		$files = $this->getFiles($manifest);
+
+		$this->assertEquals(5, count($manifest));
+		$this->assertContains('sample.php', $files);
+		$this->assertContains('sample_function.php', $files);
+		$this->assertContains('SampleInterface.php', $files);
+		$this->assertContains('SampleObject.php', $files);
+		$this->assertContains('samples.php', $files);
+	}
+	
+	function testFilterFilesByExcludeWildcard() {
+		$collector = new FileCollector(dirname(__FILE__).'/Samples');
+		$collector->excludeByMatch("*.class.php");
 		$manifest = $collector->getManifest();
 		$files = $this->getFiles($manifest);
 

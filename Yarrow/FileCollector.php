@@ -11,12 +11,26 @@
  * with this source code for details about modification and redistribution.
  */
 
-abstract class FilePatternFilter extends RecursiveRegexIterator {
+abstract class FilePatternFilter extends RecursiveFilterIterator {
 	protected $pattern;
 
 	public function __construct(RecursiveIterator $it, $pattern) {
 		$this->pattern = $pattern;
-		parent::__construct($it, $pattern);
+		parent::__construct($it);
+	}
+}
+
+class FileIncludeFilter extends FilePatternFilter {
+
+	public function accept() {
+		return ($this->isFile() && fnmatch($this->pattern, $this->getFilename()));
+	}
+}
+
+class FileExcludeFilter extends FilePatternFilter {
+
+	public function accept() {
+		return ($this->isFile() && !fnmatch($this->pattern, $this->getFilename()));
 	}
 }
 
@@ -43,6 +57,14 @@ class FileCollector {
 		$this->base_path = $path;
 		$this->base_dir = basename($path);
 		$this->collection = new RecursiveDirectoryIterator($path);
+	}
+	
+	function includeByMatch($pattern) {
+		$this->collection = new FileIncludeFilter($this->collection, $pattern);
+	}
+	
+	function excludeByMatch($pattern) {
+		$this->collection = new FileExcludeFilter($this->collection, $pattern);
 	}
 
 	function includeByPattern($pattern) {
