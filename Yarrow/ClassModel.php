@@ -75,6 +75,10 @@ class ClassModel extends CodeModel {
 	function addProperty($property) {
 		$this->properties[] = $property;
 	}
+	
+	function addConstant($constant) {
+		$this->constants[] = $constant;
+	}
 
 	function setFile($file) {
 		$this->file = $file;
