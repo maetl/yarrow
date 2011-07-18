@@ -97,6 +97,9 @@
 		<file name="ObjectModel.php" role="php">
 			<tasks:replace from="{{version}}" to="version" type="package-info" />
 		</file>
+		<file name="PackageModel.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>		
 		<file name="PhpConverter.php" role="php">
 			<tasks:replace from="{{version}}" to="version" type="package-info" />
 		</file>
