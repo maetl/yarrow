@@ -23,7 +23,7 @@ abstract class FilePatternFilter extends RecursiveRegexIterator {
 
 class FilePatternIncludeFilter extends FilePatternFilter {
 
-	public function accept() {		
+	public function accept() {
 		return ($this->isDir() || preg_match($this->pattern, $this->getFilename()));
 	}
 }
@@ -45,13 +45,13 @@ class FileCollector {
 		$this->base_dir = basename($path);
 		$this->collection = new RecursiveDirectoryIterator($path);
 	}
-	
+
 	function includeByMatch($pattern) {
 		$pattern = str_replace('.', '\.', $pattern);
 		$pattern = str_replace('*', '.+', $pattern);
 		$this->includeByPattern("/$pattern$/");
 	}
-	
+
 	function excludeByMatch($pattern) {
 		$pattern = str_replace('.', '\.', $pattern);
 		$pattern = str_replace('*', '.+', $pattern);
@@ -65,7 +65,7 @@ class FileCollector {
 	function excludeByPattern($pattern) {
 		$this->collection = new FilePatternExcludeFilter($this->collection, $pattern);
 	}
-	
+
 	function getIterator() {
 		return new RecursiveIteratorIterator($this->collection);
 	}
@@ -74,6 +74,7 @@ class FileCollector {
 		$map = array();
 		$files = new RecursiveIteratorIterator($this->collection);
 		foreach($files as $file) {
+			if ($file->isDir()) continue;
 			$map[] = array(
 				"filename" => $file->getFilename(),
 				"relative_path" => $this->base_dir . str_replace($this->base_path, '', $file->getPathname()),
