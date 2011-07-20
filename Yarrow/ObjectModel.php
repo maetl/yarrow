@@ -15,6 +15,7 @@ class ObjectModel extends CodeModel {
 
 	function __construct($name='Default') {
 		$this->name = $name;
+		$this->packages = array();
 		$this->classes = array();
 		$this->functions = array();
 		$this->constants = array();
@@ -23,6 +24,10 @@ class ObjectModel extends CodeModel {
 
 	public function getName() {
 		return $this->name;
+	}
+
+	function addPackage($package) {
+		$this->packages[] = $package;
 	}
 
 	function addFile($file) {
@@ -51,6 +56,20 @@ class ObjectModel extends CodeModel {
 
 	function functionCount() {
 		return count($this->functions);
+	}
+
+	/**
+	 * A list of all the packages collected in the project
+	 */
+	function getPackages() {
+		return $this->packages;
+	}
+
+	/**
+	 * A list of all the global constants collected in the project
+	 */
+	function getConstants() {
+		return $this->constants;
 	}
 
 	/**
