@@ -90,12 +90,4 @@ class CodeReader {
 		$this->currentClass->addMethod($this->currentFunction);
 		$this->currentFunction = false;
 	}
-
-	function onInstanceProperty($property, $visibility, $default=null) {
-		throw new Exception("not implemented");
-	}
-
-	function onStaticProperty($property, $visibility, $default=null) {
-		throw new Exception("not implemented");
-	}
 }
