@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <title>{{ meta.title }}</title>
+  </head>
+  <body>
+	<h1>{{ function }}</h1>
+	
+	<p>{{ function.summary }}</p>
+	
+	<p>In File: <a href="../{{ function.file.relativeLink }}">{{ function.file.name }}</a></p>
+	
+	  {% if function.arguments %}
+	  	<h3>Arguments</h3>
+	  	<ul>
+	  	{% for arg in function.arguments %}
+			<li>{{ arg }}</li>
+	  	{% endfor %}
+    	</ul>
+	  {% endif %}
+	
+	  {% if function.text %}
+	  	<div class="text">
+			<h3>Information</h3>
+			{{ function.text|nl2br }}
+		</div>
+	  {% endif %}
+	
+  </body>
+</html>
