@@ -1,0 +1,14 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <title>{{ meta.title }}</title>
+  </head>
+  <body>
+	<h1>{{ meta.title }}</h1>
+    <ul>
+    {% for class in objectModel.classes %}
+      <li><a href="{{ class.relativeLink }}.html">{{ class }}</a></li>
+    {% endfor %}
+	</ul>
+  </body>
+</html>

@@ -31,7 +31,7 @@ abstract class TemplateConverter {
 	/**
 	 * @return string path to documentation theme
 	 */
-	function getTemplatePath() {
+	public function getTemplatePath() {
 		return $this->templatePath;
 	}
 	

@@ -59,6 +59,12 @@ abstract class Generator {
 		file_put_contents($fullpath, $content);
 	}
 	
+	private function copyFile($file) {
+		$fullpath = $this->directory . '/' . $file['relative_path'];
+		$this->ensureDirectoryExists(dirname($fullpath));
+		copy($file['absolute_path'], $fullpath);
+	}
+	
 	/**
 	 * File extension of generated documentation. Defaults to '.html'.
 	 */
@@ -107,6 +113,13 @@ abstract class Generator {
 				$filename = $this->convertToFilename($object);
 				$this->writeFile($filename, $content);
 			}
+		}
+		
+		$assets = new FileCollector($this->config->options['theme']);
+		$assets->includeByMatch("*.css");
+		foreach ($assets->getIterator() as $asset) {
+			//$this->copyFile($asset);
+			// fix this
 		}
 	}
 }
