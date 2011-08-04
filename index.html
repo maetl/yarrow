@@ -70,8 +70,10 @@ $ yarrow</pre>
 
 	<h2>Philosophy</h2>
 
-	<p>People writing libraries and utility classes do not have the same requirements for documentation as people working on large applications. In order to be useful, a documentation generator should provide output in a format and structure that suits the particular size and shape of a project.</p>
+	<p>People writing small libraries and utility classes do not have the same needs for documentation as people developing large applications.</p>
 
-	<p>The core design principle of Yarrow is that that documentation output should not be locked to the class-per-file pattern or a narrow range of output formats. Yarrow is designed with such flexibility in mind. The tool can be customized to produce diverse documents – from a single page manual for a small and focused API, to a multi-page documentation system for a large application.</p>
+	<p>The core design principle of Yarrow is to enable visual and structural flexibility. Yarrow builds parsed PHP code into an object model representing the structure and relationships of the code. Anything that can be referenced in the object model can be compiled into a separate documentation template or condensed into a single template.</p>
+	
+	<p>This architecture means that output from Yarrow can be easily customized to suit varying styles of organization – from single page manuals to traditional API documentation with separate pages for packages, files, and classes.</p>
 	
 	</div>
