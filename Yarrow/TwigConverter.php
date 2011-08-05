@@ -29,7 +29,7 @@ class TwigConverter extends TemplateConverter {
 	public function render($template, $context) {		
 		$loader = new Twig_Loader_Filesystem($this->getTemplatePath());
 		$twig = new Twig_Environment($loader);
-		$twig->addExtension(new Twig_Extensions_Extension_Text());
+		$twig->addExtension(new TwigConverter_Text());
 		$template = $twig->loadTemplate($template);
 		
 		return $template->render($context);
@@ -48,7 +48,7 @@ class TwigConverter extends TemplateConverter {
  * @package Twig
  * @subpackage Twig-extensions
  */
-class Twig_Extensions_Extension_Text extends Twig_Extension
+class TwigConverter_Text extends Twig_Extension
 {
     /**
      * Returns a list of filters.

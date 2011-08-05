@@ -1,9 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
-<html lang="en">
-  <head>
-    <title><?php echo $meta['title']; ?></title>
-  </head>
-  <body>
+
 	
 	<div><a href="<?php echo $file->getBaseLinkPrefix(); ?>/index.html">Index</a></div>
 
@@ -19,8 +14,4 @@
 
 	<h2>Source</h2>
 
-	<?php echo highlight_string($file->source, true); ?>
-	
-	
-  </body>
-</html>
+	<pre class="php"><code><?php echo htmlentities($file->source); ?></code></pre>
