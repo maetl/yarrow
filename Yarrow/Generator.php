@@ -117,8 +117,8 @@ abstract class Generator {
 		
 		$assets = new FileCollector($this->config->options['theme']);
 		$assets->includeByMatch("*.css");
-		foreach ($assets->getIterator() as $asset) {
-			//$this->copyFile($asset);
+		foreach ($assets->getManifest() as $asset) {
+			$this->copyFile($asset);
 			// fix this
 		}
 	}

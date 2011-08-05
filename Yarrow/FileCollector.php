@@ -76,8 +76,9 @@ class FileCollector {
 		foreach($files as $file) {
 			if ($file->isDir()) continue;
 			$map[] = array(
-				"filename" => $file->getFilename(),
-				"relative_path" => $this->base_dir . str_replace($this->base_path, '', $file->getPathname()),
+				"filename" 		=> $file->getFilename(),
+				"base_path" 	=> $this->base_dir . str_replace($this->base_path, '', $file->getPathname()),
+				"relative_path" => str_replace($this->base_path, '', $file->getPathname()),
 				"absolute_path" => $file->getRealPath()
 			);
 		}
