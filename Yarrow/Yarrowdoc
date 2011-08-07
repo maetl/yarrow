@@ -2,9 +2,9 @@
 # This is loaded when the configuration is initialized.
 
 [meta]
-title: 			Default Project
-author: 		Project Author
+title: 				Default Project
+author: 			Project Author
 
 [options]
-theme: 			Default
-generator:		DefaultGenerator
+theme: 				Default
+packageBuilder:		File

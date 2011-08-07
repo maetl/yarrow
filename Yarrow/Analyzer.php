@@ -15,10 +15,15 @@
  * Intends to analyze a file, yes.
  */
 class Analyzer {
+	private $objectModel;
+	private $config;
+	private $packageBuilder;
 
 	function __construct() {
 		$this->objectModel = new ObjectModel();
 		$this->config = Configuration::instance();
+		$packageBuilderClass = ucfirst($this->config->options['packageBuilder']) . 'PackageBuilder';
+		$this->packageBuilder = new $packageBuilderClass();
 	}
 
 	function analyzeProject() {
@@ -48,25 +53,12 @@ class Analyzer {
 	
 	/**
 	 * Look for code organized according to the given package strategy.
-	 * Currently locked to PEAR style naming convention only.
 	 *
-	 * @todo move to strategy classes
+	 * @param array $file file object from collector mess
 	 */
-	function getPackageForFile($file) {
-		
-		$name = basename($file['absolute_path'], '.php');
-		$basedir = dirname($file['base_path']);
-		$package = str_replace('/', '_', $basedir);
-		
-		if (is_dir($basedir . '/' . $name)) {
-			$package .= '_' . $name;
-		}
-		
+	function getPackageFromFile($file) {
+		$package = $this->packageBuilder->getFromFile($file);
 		return PackageModel::create($package);
-	}
-	
-	function getPackageForClass($class) {
-		
 	}
 
 	/**
@@ -78,7 +70,7 @@ class Analyzer {
 		$source = file_get_contents($file_['absolute_path']);
 		$tokens = token_get_all($source);
 		
-		$package = $this->getPackageForFile($file_);
+		$package = $this->getPackageFromFile($file_);
 		$file = FileModel::create($file_['relative_path']);
 		$file->setSource($source);
 		$package->addFile($file);
@@ -91,6 +83,9 @@ class Analyzer {
 		$file->setConstants($reader->getConstants());
 	}
 
+	/**
+	 * Returns the complete code model.
+	 */
 	function getModel() {		
 		return $this->objectModel;
 	}

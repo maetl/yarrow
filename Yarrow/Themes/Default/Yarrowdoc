@@ -2,3 +2,6 @@
 # 
 [meta]
 charset: utf-8
+
+[theme]
+generator: DefaultGenerator
