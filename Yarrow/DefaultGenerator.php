@@ -24,7 +24,8 @@ class DefaultGenerator extends Generator {
 		return array(
 				'index'  => array('index'),
 				'file'   => $this->objectModel->getFiles(),
-				'class'  => $this->objectModel->getClasses()
+				'class'  => $this->objectModel->getClasses(),
+				'package'=> $this->objectModel->getPackages()
 			   );
 	}
 	
@@ -32,7 +33,8 @@ class DefaultGenerator extends Generator {
 		return array(
 				'index'  =>  'index.tpl.php',
 				'file'   =>  'file.tpl.php',
-				'class'  =>  'class.tpl.php'
+				'class'  =>  'class.tpl.php',
+				'package'=>	 'package.tpl.php'
 			   );
 	}
 	

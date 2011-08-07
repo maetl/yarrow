@@ -13,19 +13,15 @@
 
 class CodeReader {
 
-	function __construct() {
+	function __construct($package, $file) {
+		$this->currentPackage = $package;
+		$this->currentFile = $file;
+		$this->currentClass = false;
+		$this->currentFunction = false;		
 		$this->docblocks = array();
 		$this->functions = array();
 		$this->files = array();
 		$this->constants = array();
-		$this->classes = array();
-		$this->currentClass = false;
-		$this->currentFunction = false;
-		$this->registry = new CodeRegistry();
-	}
-
-	function getClasses() {
-		return $this->registry->getClasses();
 	}
 
 	function getFunctions() {
@@ -36,21 +32,20 @@ class CodeReader {
 		return $this->constants;
 	}
 
-
 	function onDocComment($comment) {
 		$docblock = new DocblockParser($comment);
 		$this->docblocks[] = $docblock->parse();
 	}
 
 	function onClass($name, $parent, $keywords) {
-		$this->currentClass = new ClassModel($name, $parent, $keywords);
+		$this->currentClass = ClassModel::create($name, $parent, $keywords);
 		$docblock = array_pop($this->docblocks);
 		if ($docblock) $this->currentClass->addDocblock($docblock);
 	}
 
 	function onClassEnd() {
-		$this->classes[] = $this->currentClass;
-		$this->registry->addClass($this->currentClass);
+		$this->currentPackage->addClass($this->currentClass);
+		$this->currentFile->addClass($this->currentClass);
 		$this->currentClass = false;
 	}
 

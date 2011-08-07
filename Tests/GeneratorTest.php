@@ -101,7 +101,19 @@ class GeneratorTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	public function tearDown() {
-		if (is_dir($this->target)) rmdir($this->target);
+		if (is_dir($this->target)) $this->deleteDirs($this->target);
+	}
+	
+	function deleteDirs($dir) { 
+		$files = glob($dir . '*', GLOB_MARK); 
+		foreach($files as $file) { 
+			if(substr($file, -1) == '/') {
+				$this->deleteDirs($file); 
+			} else {
+				unlink($file);
+			}
+		} 
+		if (is_dir($dir)) rmdir($dir); 
 	}
 	
 	public function testPHPTemplateEngineGeneratesExpectedFiles() {

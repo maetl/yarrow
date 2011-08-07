@@ -34,7 +34,7 @@ class FileCollectorTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(1, count($manifest));
 		$this->assertEquals('sample.class.php', $manifest[0]['filename']);
-		$this->assertEquals('Samples/sample.class.php', $manifest[0]['relative_path']);
+		$this->assertEquals('Samples/sample.class.php', $manifest[0]['base_path']);
 	}
 	
 	function testFilterFilesByIncludeWildard() {
@@ -44,7 +44,7 @@ class FileCollectorTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(1, count($manifest));
 		$this->assertEquals('sample.class.php', $manifest[0]['filename']);
-		$this->assertEquals('Samples/sample.class.php', $manifest[0]['relative_path']);
+		$this->assertEquals('Samples/sample.class.php', $manifest[0]['base_path']);
 	}
 
 	function testFilterFilesByExcludePattern() {
