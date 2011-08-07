@@ -36,11 +36,12 @@ class Analyzer {
 				$collector->excludeByPattern("/\.tpl\.php$/");
 				$manifest = array_merge($manifest, $collector->getManifest());
 			} elseif (is_file($target)) {
-				$manifest[] = array(
-					'filename' => basename($target),
-					'relative_path' => $target,
-					'absolute_path' => realpath($target)
-				);
+				$manifest[] = new FileListing($target, basedir($target));
+				//$manifest[] = array(
+				//	'filename' => basename($target),
+				//	'relative_path' => $target,
+				//	'absolute_path' => realpath($target)
+				//);
 			} else {
 				throw new Yarrow_Exception("$target path not found.");
 			}
@@ -67,11 +68,11 @@ class Analyzer {
 	 * @param array manifest list
 	 */
 	function analyzeFile($file_) {
-		$source = file_get_contents($file_['absolute_path']);
+		$source = file_get_contents($file_->getAbsolutePath());
 		$tokens = token_get_all($source);
 		
 		$package = $this->getPackageFromFile($file_);
-		$file = FileModel::create($file_['relative_path']);
+		$file = FileModel::create($file_->getRelativePath());
 		$file->setSource($source);
 		$package->addFile($file);
 		

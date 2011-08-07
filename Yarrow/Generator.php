@@ -60,9 +60,9 @@ abstract class Generator {
 	}
 	
 	private function copyFile($file) {
-		$fullpath = $this->directory . '/' . $file['relative_path'];
+		$fullpath = $this->directory . '/' . $file->getRelativePath();
 		$this->ensureDirectoryExists(dirname($fullpath));
-		copy($file['absolute_path'], $fullpath);
+		copy($file->getAbsolutePath(), $fullpath);
 	}
 	
 	/**

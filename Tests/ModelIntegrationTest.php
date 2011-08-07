@@ -11,9 +11,7 @@ class ModelIntegrationTest extends PHPUnit_Framework_TestCase {
 	function testCanModelConditionallyDeclaredClasses() {
 		$analyzer = new Analyzer();
 		
-		$analyzer->analyzeFile(array('absolute_path' => dirname(__FILE__).'/Corpus/conditionally.php',
-									 'relative_path' => 'Corpus/conditionally.php',
-									 'base_path'	 => 'Tests/Corpus/conditionally.php'));
+		$analyzer->analyzeFile(new FileListing(dirname(__FILE__).'/Corpus/conditionally.php'));
 									
 		
 		$model = $analyzer->getModel();
@@ -26,9 +24,7 @@ class ModelIntegrationTest extends PHPUnit_Framework_TestCase {
 	function testHandleComplexStringInterpolation() {
 		$analyzer = new Analyzer();
 		
-		$analyzer->analyzeFile(array('absolute_path' => dirname(__FILE__).'/Corpus/interpolation.php',
-									 'relative_path' => 'Corpus/interpolation.php',
-									 'base_path'	 => 'Tests/Corpus/interpolation.php'));
+		$analyzer->analyzeFile(new FileListing(dirname(__FILE__).'/Corpus/interpolation.php'));
 									
 		
 		$model = $analyzer->getModel();

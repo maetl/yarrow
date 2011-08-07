@@ -15,9 +15,7 @@
 class FolderPackageBuilder implements PackageBuilder {
 
 	public function getFromFile($file) {
-		$name = basename($file['absolute_path'], '.php');
-		$basedir = dirname($file['base_path']);
-		return $basedir;
+		return dirname($file->getBasePath());
 	}
 	
 }

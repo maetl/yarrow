@@ -17,8 +17,8 @@
 class PearPackageBuilder implements PackageBuilder {
 	
 	public function getFromFile($file) {
-		$name = basename($file['absolute_path'], '.php');
-		$basedir = dirname($file['base_path']);
+		$name = basename($file->getAbsolutePath(), '.php');
+		$basedir = dirname($file->getBasePath());
 		$package = str_replace('/', '_', $basedir);
 
 		if (is_dir($basedir . '/' . $name)) {

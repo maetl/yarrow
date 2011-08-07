@@ -79,6 +79,9 @@
 		<file name="FileCollector.php" role="php">
 			<tasks:replace from="{{version}}" to="version" type="package-info" />
 		</file>
+		<file name="FileListing.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
 		<file name="FileModel.php" role="php">
 			<tasks:replace from="{{version}}" to="version" type="package-info" />
 		</file>

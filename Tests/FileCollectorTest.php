@@ -7,7 +7,7 @@ class FileCollectorTest extends PHPUnit_Framework_TestCase {
 	private function getFiles($manifest) {
 		$files = array();
 		foreach($manifest as $file) {
-			$files[] = $file['filename'];
+			$files[] = $file->getFilename();
 		}
 		return $files;
 	}
@@ -33,8 +33,8 @@ class FileCollectorTest extends PHPUnit_Framework_TestCase {
 		$manifest = $collector->getManifest();
 
 		$this->assertEquals(1, count($manifest));
-		$this->assertEquals('sample.class.php', $manifest[0]['filename']);
-		$this->assertEquals('Samples/sample.class.php', $manifest[0]['base_path']);
+		$this->assertEquals('sample.class.php', $manifest[0]->getFilename());
+		$this->assertEquals('Samples/sample.class.php', $manifest[0]->getBasePath());
 	}
 	
 	function testFilterFilesByIncludeWildard() {
@@ -43,8 +43,8 @@ class FileCollectorTest extends PHPUnit_Framework_TestCase {
 		$manifest = $collector->getManifest();
 
 		$this->assertEquals(1, count($manifest));
-		$this->assertEquals('sample.class.php', $manifest[0]['filename']);
-		$this->assertEquals('Samples/sample.class.php', $manifest[0]['base_path']);
+		$this->assertEquals('sample.class.php', $manifest[0]->getFilename());
+		$this->assertEquals('Samples/sample.class.php', $manifest[0]->getBasePath());
 	}
 
 	function testFilterFilesByExcludePattern() {

@@ -17,7 +17,7 @@
 class FilePackageBuilder implements PackageBuilder {
 
 	public function getFromFile($file) {
-		return substr(str_replace('.php', '', $file['relative_path']), 1);
+		return substr(str_replace('.php', '', $file->getRelativePath()), 1);
 	}
 	
 }

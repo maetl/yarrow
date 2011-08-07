@@ -13,9 +13,7 @@ class ClassBlockTest extends PHPUnit_Framework_TestCase {
 
 	public function testAnalyzeFile() {
 		$analyzer = new Analyzer();
-		$analyzer->analyzeFile(array('absolute_path' => __FILE__,
-									 'relative_path' => 'Tests/ClassBlockTest.php',
-									 'base_path'	 => 'Yarrow/Tests/ClassBlockTest.php'));
+		$analyzer->analyzeFile(new FileListing(__FILE__, dirname(__FILE__)));
 		
 		$model = $analyzer->getModel();
 		$this->assertEquals($model->classCount(), 1);
