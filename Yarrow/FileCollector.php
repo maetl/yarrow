@@ -75,11 +75,7 @@ class FileCollector {
 		$files = new RecursiveIteratorIterator($this->collection);
 		foreach($files as $file) {
 			if ($file->isDir()) continue;
-			$map[] = array(
-				"filename" => $file->getFilename(),
-				"relative_path" => $this->base_dir . str_replace($this->base_path, '', $file->getPathname()),
-				"absolute_path" => $file->getRealPath()
-			);
+			$map[] = new FileListing($file, $this->base_path);
 		}
 		return $map;
 	}

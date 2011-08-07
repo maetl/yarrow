@@ -7,10 +7,13 @@ require_once dirname(__FILE__).'/../Yarrow/Autoload.php';
  */
 class ClassBlockTest extends PHPUnit_Framework_TestCase {
 
+	public function tearDown() {
+		CodeRegistry::reset();
+	}
+
 	public function testAnalyzeFile() {
 		$analyzer = new Analyzer();
-		$analyzer->analyzeFile(array('absolute_path' => __FILE__,
-									 'relative_path' => 'Tests/ClassBlockTest.php'));
+		$analyzer->analyzeFile(new FileListing(__FILE__, dirname(__FILE__)));
 		
 		$model = $analyzer->getModel();
 		$this->assertEquals($model->classCount(), 1);
@@ -18,12 +21,12 @@ class ClassBlockTest extends PHPUnit_Framework_TestCase {
 		$classes = $model->getClasses();
 		$methods = $classes[0]->getMethods();
 		
-		$this->assertEquals($classes[0]->methodCount(), 4);
+		$this->assertEquals($classes[0]->methodCount(), 5);
 		$this->assertEquals($classes[0]->getSummary(), "This is indeed a very amusing piece of machinery.");
-		$this->assertFalse($methods[1]->isPublic());
-		$this->assertTrue($methods[2]->isPublic());
-		$this->assertEquals($methods[2]->getSummary(), "This is the public API, and should be documented.");
-		$this->assertEquals($methods[3]->getSummary(), "This is the public API, and has three arguments.");
+		$this->assertFalse($methods[2]->isPublic());
+		$this->assertTrue($methods[3]->isPublic());
+		$this->assertEquals($methods[3]->getSummary(), "This is the public API, and should be documented.");
+		$this->assertEquals($methods[4]->getSummary(), "This is the public API, and has three arguments.");
 	}
 	
 	/**

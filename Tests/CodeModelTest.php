@@ -4,6 +4,10 @@ require_once dirname(__FILE__).'/../Yarrow/Autoload.php';
 
 class CodeModelTest extends PHPUnit_Framework_TestCase {
 
+	public function tearDown() {
+		CodeRegistry::reset();
+	}
+
 	function testEmptyAggregateRoot() {
 		$model = new ObjectModel();
 		$this->assertEquals(array(), $model->getPackages());

@@ -23,9 +23,17 @@ class FileModel extends CodeModel {
 		$this->functions = array();
 		$this->constants = array();
 	}
+	
+	public static function create($filename) {
+		return CodeRegistry::createFile($filename);
+	}
 
 	public function getName() {
 		return $this->filename;
+	}
+	
+	public function getPath() {
+		return dirname($this->filename);
 	}
 
 	function getBaseLinkPrefix() {
@@ -53,13 +61,6 @@ class FileModel extends CodeModel {
 		return $this->functions;
 	}
 
-	function setClasses($classes) {
-		$this->classes = $classes;
-		foreach($this->classes as $class) {
-			if ($class) $class->setFile($this);
-		}
-	}
-
 	function setFunctions($functions) {
 		$this->functions = $functions;
 		foreach($this->functions as $func) {
@@ -72,7 +73,10 @@ class FileModel extends CodeModel {
 	}
 
 	function addClass($class) {
-		$this->classes[] = $class;
+		if ($class) {
+			$this->classes[] = $class;
+			$class->setFile($this);			
+		}
 	}
 
 	function addFunction($function) {

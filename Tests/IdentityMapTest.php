@@ -13,7 +13,7 @@ class IdentityMapTest extends PHPUnit_Framework_TestCase {
 		$this->assertSame($object1, $registry->getClass('MyClass'));
 	}
 	
-	function testDuplicateObjectsReturnConflictComposite() {
+	function testDuplicateObjectsReturnSame() {
 		$object1 = new ClassModel('MyClass', 'MyParent');
 		$object2 = new ClassModel('MyClass', 'MyOtherParent');
 		
@@ -23,7 +23,7 @@ class IdentityMapTest extends PHPUnit_Framework_TestCase {
 		
 		$object = $registry->getClass('MyClass');
 		
-		$this->assertNotSame($object1, $object);
-		$this->assertEquals('MyParent, MyOtherParent', $object->getAncestor());
+		$this->assertSame($object1, $object);
+		//$this->assertEquals('MyParent, MyOtherParent', $object->getAncestor());
 	}
 }

@@ -63,9 +63,6 @@
 		<file name="ConfigurationError.php" role="php">
 			<tasks:replace from="{{version}}" to="version" type="package-info" />
 		</file>
-		<file name="ConflictedClassModel.php" role="php">
-			<tasks:replace from="{{version}}" to="version" type="package-info" />
-		</file>
 		<file name="ConsoleRunner.php" role="php">
 			<tasks:replace from="{{version}}" to="version" type="package-info" />
 			<tasks:replace from="{{appname}}" to="name" type="package-info" />
@@ -82,7 +79,16 @@
 		<file name="FileCollector.php" role="php">
 			<tasks:replace from="{{version}}" to="version" type="package-info" />
 		</file>
+		<file name="FileListing.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
 		<file name="FileModel.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
+		<file name="FilePackageBuilder.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
+		<file name="FolderPackageBuilder.php" role="php">
 			<tasks:replace from="{{version}}" to="version" type="package-info" />
 		</file>
 		<file name="FunctionModel.php" role="php">
@@ -97,7 +103,13 @@
 		<file name="ObjectModel.php" role="php">
 			<tasks:replace from="{{version}}" to="version" type="package-info" />
 		</file>
+		<file name="PackageBuilder.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
 		<file name="PackageModel.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
+		<file name="PearPackageBuilder.php" role="php">
 			<tasks:replace from="{{version}}" to="version" type="package-info" />
 		</file>		
 		<file name="PhpConverter.php" role="php">

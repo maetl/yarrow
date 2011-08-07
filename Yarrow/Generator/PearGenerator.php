@@ -14,7 +14,7 @@
 /**
  * Experimental default for testing.
  */
-class DefaultGenerator extends Generator {
+class PearGenerator extends Generator {
 
 	protected function convertToFilename($object) {
 		return strtolower(str_replace(' ', '/', str_replace('.php', '', $object)));
@@ -25,20 +25,20 @@ class DefaultGenerator extends Generator {
 				'index'  => array('index'),
 				'file'   => $this->objectModel->getFiles(),
 				'class'  => $this->objectModel->getClasses(),
-				'package'=> $this->objectModel->getPackages()
+				'function' => $this->objectModel->getFunctions(),
 			   );
 	}
 	
 	protected function getTemplateMap() {
 		return array(
-				'index'  =>  'index.tpl.php',
-				'file'   =>  'file.tpl.php',
-				'class'  =>  'class.tpl.php',
-				'package'=>	 'package.tpl.php'
+				'index'  =>  'index.html',
+				'file'   =>  'file.html',
+				'class'  =>  'class.html',
+				'function' => 'function.html'
 			   );
 	}
 	
 	protected function getConverter() {
-		return new PhpConverter($this->config->options['theme']);
+		return new TwigConverter(dirname(__FILE__).'/Themes/Pretty');
 	}
 }

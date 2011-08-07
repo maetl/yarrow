@@ -15,10 +15,15 @@
  * Intends to analyze a file, yes.
  */
 class Analyzer {
+	private $objectModel;
+	private $config;
+	private $packageBuilder;
 
 	function __construct() {
 		$this->objectModel = new ObjectModel();
 		$this->config = Configuration::instance();
+		$packageBuilderClass = ucfirst($this->config->options['packageBuilder']) . 'PackageBuilder';
+		$this->packageBuilder = new $packageBuilderClass();
 	}
 
 	function analyzeProject() {
@@ -28,13 +33,15 @@ class Analyzer {
 			if (is_dir($target)) {
 				$collector = new FileCollector($target);
 				$collector->includeByPattern("/\.php$/");
+				$collector->excludeByPattern("/\.tpl\.php$/");
 				$manifest = array_merge($manifest, $collector->getManifest());
 			} elseif (is_file($target)) {
-				$manifest[] = array(
-					'filename' => basename($target),
-					'relative_path' => $target,
-					'absolute_path' => realpath($target)
-				);
+				$manifest[] = new FileListing($target, basedir($target));
+				//$manifest[] = array(
+				//	'filename' => basename($target),
+				//	'relative_path' => $target,
+				//	'absolute_path' => realpath($target)
+				//);
 			} else {
 				throw new Yarrow_Exception("$target path not found.");
 			}
@@ -44,45 +51,43 @@ class Analyzer {
 			$this->analyzeFile($file);
 		}
 	}
+	
+	/**
+	 * Look for code organized according to the given package strategy.
+	 *
+	 * @param array $file file object from collector mess
+	 */
+	function getPackageFromFile($file) {
+		$package = $this->packageBuilder->getFromFile($file);
+		return PackageModel::create($package);
+	}
 
 	/**
 	 * Analyze the structure of a single code file.
 	 *
 	 * @param array manifest list
 	 */
-	function analyzeFile($file) {
-		$source = file_get_contents($file['absolute_path']);
+	function analyzeFile($file_) {
+		$source = file_get_contents($file_->getAbsolutePath());
 		$tokens = token_get_all($source);
-
-		// hackety hack to get working end to end
-		// this code is currently a mess, but is just
-		// used for testing and experimenting with
-		// different ways of building a code model
-
-		$reader = new CodeReader();
-
+		
+		$package = $this->getPackageFromFile($file_);
+		$file = FileModel::create($file_->getRelativePath());
+		$file->setSource($source);
+		$package->addFile($file);
+		
+		$reader = new CodeReader($package, $file);
 		$parser = new CodeParser($tokens, $reader);
 		$parser->parse();
-
-		$file = new FileModel($file['relative_path']);
-		$file->setSource($source);
-		$file->setClasses($reader->getClasses());
+		
 		$file->setFunctions($reader->getFunctions());
 		$file->setConstants($reader->getConstants());
-
-		foreach($reader->getClasses() as $class) {
-			$this->objectModel->addClass($class);
-		}
-		foreach($reader->getFunctions() as $func) {
-			$this->objectModel->addFunction($func);
-		}
-		foreach($reader->getConstants() as $const) {
-			$this->objectModel->addConstant($const);
-		}
-		$this->objectModel->addFile($file);
 	}
 
-	function getModel() {
+	/**
+	 * Returns the complete code model.
+	 */
+	function getModel() {		
 		return $this->objectModel;
 	}
 }

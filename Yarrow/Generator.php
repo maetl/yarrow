@@ -60,9 +60,9 @@ abstract class Generator {
 	}
 	
 	private function copyFile($file) {
-		$fullpath = $this->directory . '/' . $file['relative_path'];
+		$fullpath = $this->directory . '/' . $file->getRelativePath();
 		$this->ensureDirectoryExists(dirname($fullpath));
-		copy($file['absolute_path'], $fullpath);
+		copy($file->getAbsolutePath(), $fullpath);
 	}
 	
 	/**
@@ -77,6 +77,28 @@ abstract class Generator {
 	 */
 	protected function convertToFilename($object) {
 		return strtolower(str_replace(' ', '-', str_replace('.php', '', str_replace('/', '-', $object))));
+	}
+	
+	/**
+	 * Resolves the relative path back to the base directory from the given path fragment.
+	 *
+	 * eg: 
+	 *  index.html returns ''
+	 *  ui/css/layout.css returns '../../'
+	 *
+	 * @param string $path path relative to the base directory
+	 * @return string path fragment linking back to base directory
+	 */
+	protected function resolveRelativePath($path) {
+		if (strpos($path, '/') === 0) {
+			return '';
+		}
+		$levels = substr_count($path, '/');
+		if ($levels == 0) {
+			return '';
+		} else {
+			return implode('/', array_fill(0, $levels, '..')).'/';
+		}
 	}
 	
 	/**
@@ -95,7 +117,7 @@ abstract class Generator {
 	abstract protected function getTemplateMap();
 	
 	/**
-	 * Generates documentation from template methods provided by subclass.
+	 * Generates documentation using template methods provided by the subclass.
 	 */
 	public function makeDocs() {
 		$converter = $this->getConverter();
@@ -104,22 +126,23 @@ abstract class Generator {
 		
 		foreach ($objectMap as $index => $objects) {
 			foreach ($objects as $object) {
+				$filename = $this->convertToFilename($object);
 				$variables = array(
 								'meta'		  => $this->config->meta,
 								$index   	  => $object,
-								'objectModel' => $this->objectModel
+								'objectModel' => $this->objectModel,
+								'basepath'	  => $this->resolveRelativePath($filename)
 							 );
 				$content = $converter->render($templates[$index], $variables);
-				$filename = $this->convertToFilename($object);
+				
 				$this->writeFile($filename, $content);
 			}
 		}
 		
 		$assets = new FileCollector($this->config->options['theme']);
-		$assets->includeByMatch("*.css");
-		foreach ($assets->getIterator() as $asset) {
-			//$this->copyFile($asset);
-			// fix this
+		$assets->includeByMatch("*.css|*.js");
+		foreach ($assets->getManifest() as $asset) {
+			$this->copyFile($asset);
 		}
 	}
 }

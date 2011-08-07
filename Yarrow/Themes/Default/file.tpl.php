@@ -1,26 +1,17 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
-<html lang="en">
-  <head>
-    <title><?php echo $meta['title']; ?></title>
-  </head>
-  <body>
+<?php $this->wrap('layout'); ?>
 	
-	<div><a href="<?php echo $file->getBaseLinkPrefix(); ?>/index.html">Index</a></div>
+<div><a href="<?php echo $file->getBaseLinkPrefix(); ?>/index.html">Index</a></div>
 
-	<h1><?php echo $file; ?></h1>
+<h1><?php echo $file; ?></h1>
 
-	<h2>Classes</h2>
+<h2>Classes</h2>
 
-	<ul><?php foreach($file->classes as $class): ?>
+<ul><?php foreach($file->classes as $class): ?>
 
-		<li><a href="<?php echo $file->getBaseLinkPrefix(), $class->getRelativeLink(); ?>.html"><?php echo $class->name; ?></a></li>
+	<li><a href="<?php echo $file->getBaseLinkPrefix(), $class->getRelativeLink(); ?>.html"><?php echo $class->name; ?></a></li>
 
-	<?php endforeach ?></ul>
+<?php endforeach ?></ul>
 
-	<h2>Source</h2>
+<h2>Source</h2>
 
-	<?php echo highlight_string($file->source, true); ?>
-	
-	
-  </body>
-</html>
+<pre class="php"><code><?php echo htmlentities($file->source); ?></code></pre>

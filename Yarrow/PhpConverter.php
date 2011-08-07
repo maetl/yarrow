@@ -61,6 +61,7 @@ class PhpConverter extends TemplateConverter {
 		
 		$out = ob_get_contents();
 		ob_clean();
+		$this->wrappingTemplate = false;
 		return $out;
 	}
 }

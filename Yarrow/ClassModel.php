@@ -16,10 +16,11 @@
  */
 class ClassModel extends CodeModel {
 	private $name;
-	private $ancestor;
+	private $ancestors;
 	private $methods;
 	private $docblock;
 	private $file;
+	private $package;
 	private $isInterface;
 	private $isAbstract;
 	private $isFinal;
@@ -34,7 +35,7 @@ class ClassModel extends CodeModel {
 	
 	function __construct($name, $extends=self::BASE_TYPE, $keywords=array()) {
 		$this->name = $name;
-		$this->ancestor = $extends;
+		$this->ancestors = array($extends);
 		$this->methods = array();
 		$this->properties = array();
 		$this->constants = array();
@@ -42,6 +43,10 @@ class ClassModel extends CodeModel {
 		$this->isAbstract =  (isset($keywords['abstract']));
 		$this->isFinal =  (isset($keywords['final']));
 		$this->implements = (isset($keywords['interface'])) ? $keywords['interface'] : false;
+	}
+	
+	public static function create($name, $extends=self::BASE_TYPE, $keywords=array()) {
+		return CodeRegistry::createClass($name, $extends, $keywords);
 	}
 
 	public function isInterface() {
@@ -61,7 +66,25 @@ class ClassModel extends CodeModel {
 	}
 	
 	function getAncestor() {
-		return $this->ancestor;
+		return implode(', ', $this->ancestors);
+	}
+	
+	function getParent() {
+		return $this->getAncestor();
+	}
+	
+	/**
+ 	 * Represents a class model conflict where multiple classes with the same
+ 	 * name are declared in a project.
+	 *
+	 * This will generally happen when classes are defined in conditional logic.
+	 *
+	 * Because we're analyzing the code statically, we can't process all the
+	 * dynamic stuff that happens at runtime, so we just detect an overlapping
+	 * class name and add it to the list of ancestors.
+	 */
+	function addConflict($ancestor) {
+		$this->ancestors[] = $ancestor;
 	}
 	
 	function addDocBlock($docblock) {
@@ -86,6 +109,14 @@ class ClassModel extends CodeModel {
 	
 	function getFile() {
 		return $this->file;
+	}
+	
+	function setPackage($package) {
+		$this->package = $package;
+	}
+	
+	function getPackage() {
+		return $this->package;
 	}
 	
 	function getText() {
