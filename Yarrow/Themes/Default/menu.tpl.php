@@ -3,8 +3,8 @@
 	<dd><a href="<?php echo $basepath; ?>index.html">Overview</a></dd>
 </dl>
 <dl>
-	<dt>Classes</dt>
-	<?php foreach($objectModel->classes as $class): ?>
-		<dd><a href="<?php echo $basepath, $this->convertToFilename($object); ?>.html"><?php echo $class->getName(); ?></a></dd>
+	<dt>Packages</dt>
+	<?php foreach($objectModel->getPackages() as $dd): ?>
+		<dd><a href="#"><?php echo $dd->getName(); ?></a></dd>
 	<?php endforeach ?>
 </dl>

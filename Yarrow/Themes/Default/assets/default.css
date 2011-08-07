@@ -98,6 +98,10 @@ p {
     right:185px;
 }
 
+.menu dd {
+    margin-left:0;
+}
+
 .footer {
     clear:both;
     float:left;

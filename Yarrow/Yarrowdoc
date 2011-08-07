@@ -4,7 +4,6 @@
 [meta]
 title: 			Default Project
 author: 		Project Author
-generator:		Yarrow {{VERSION}}
 
 [options]
 theme: 			Default
