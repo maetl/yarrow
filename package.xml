@@ -63,9 +63,6 @@
 		<file name="ConfigurationError.php" role="php">
 			<tasks:replace from="{{version}}" to="version" type="package-info" />
 		</file>
-		<file name="ConflictedClassModel.php" role="php">
-			<tasks:replace from="{{version}}" to="version" type="package-info" />
-		</file>
 		<file name="ConsoleRunner.php" role="php">
 			<tasks:replace from="{{version}}" to="version" type="package-info" />
 			<tasks:replace from="{{appname}}" to="name" type="package-info" />
