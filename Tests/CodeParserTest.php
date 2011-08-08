@@ -10,9 +10,16 @@ class CodeParserTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	function getMockReader($file) {
-		$methods = array('onFunction', 'onClass', 'onMethod', 'onProperty', 'onMethodEnd', 'onClassEnd', 'onConstant');
+		$methods = array('onFunction',
+					     'onClass',
+					     'onMethod',
+					     'onProperty',
+					     'onMethodEnd',
+					     'onClassEnd',
+					     'onConstant',
+						 'onDocblock',
+						 'onFileHeader');
 		$constructor = array(new PackageModel(__CLASS__), new FileModel($file));
-		
 		return $this->getMock('CodeReader', $methods, $constructor);
 	}
 
@@ -209,6 +216,29 @@ class CodeParserTest extends PHPUnit_Framework_TestCase {
 		$reader->expects($this->at(1))->method('onConstant')->with('NUMBER_CONST', '999');
 		$reader->expects($this->at(2))->method('onConstant')->with('STRING_CONST', '\'this is a string\'');
 
+		$parser = new CodeParser($tokens, $reader);
+		$parser->parse();
+	}
+	
+	function testCanParseClassLevelDocblocks() {
+		$file = 'Corpus/classdoc.php';
+		$tokens = $this->tokenizeSampleFile($file);
+		$reader = $this->getMockReader($file);
+		
+		$reader->expects($this->at(0))->method('onFileHeader');
+		$reader->expects($this->at(1))->method('onClass');
+		
+		$parser = new CodeParser($tokens, $reader);
+		$parser->parse();
+	}
+	
+	function testCanParseFileLevelDocblocks() {
+		$file = 'Corpus/filedoc.php';
+		$tokens = $this->tokenizeSampleFile($file);
+		$reader = $this->getMockReader($file);
+		
+		$reader->expects($this->at(0))->method('onFileHeader');
+		
 		$parser = new CodeParser($tokens, $reader);
 		$parser->parse();
 	}

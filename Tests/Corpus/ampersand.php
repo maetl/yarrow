@@ -1,9 +1,6 @@
 <?php
 
-/**
- * Deprecated reference operator hack from legacy PHP versions.
- */
-class Ampersand {
+class AmpersandAsReferenceHack {
 	
 	function &hasReferenceSymbol() {
 		return array('deprecated');

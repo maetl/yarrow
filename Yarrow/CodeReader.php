@@ -32,7 +32,12 @@ class CodeReader {
 		return $this->constants;
 	}
 
-	function onDocComment($comment) {
+	function onFileHeader($comment) {
+		$docblock = new DocblockParser($comment);
+		$this->currentFile->addDocblock($docblock->parse());
+	}
+	
+	function onDocblock($comment) {
 		$docblock = new DocblockParser($comment);
 		$this->docblocks[] = $docblock->parse();
 	}

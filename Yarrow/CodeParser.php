@@ -99,7 +99,7 @@ class CodeParser {
 				break;
 
 				case T_DOC_COMMENT:
-					$this->shredDocBlock();
+					$this->shredDocblock();
 				break;
 
 				case T_CLASS:
@@ -210,12 +210,15 @@ class CodeParser {
 	}
 
 	/**
-	 * Acceptor to shred a docblock out of the token stream and
-	 * hand it off to a semantic txt parser.
+	 * Sets the currently recognized docblock
 	 */
-	function shredDocBlock() {
+	function shredDocblock() {
 		$symbol = $this->currentToken();
-		$this->reader->onDocComment($symbol[1]);
+		if ($this->current == 2) {
+			$this->reader->onFileHeader($symbol[1]);
+		} else {
+			$this->reader->onDocblock($symbol[1]);
+		}
 	}
 
 	/**

@@ -16,6 +16,7 @@ class FileModel extends CodeModel {
 	private $classes;
 	private $functions;
 	private $source;
+	private $header;
 
 	function __construct($filename) {
 		$this->filename = $filename;
@@ -26,6 +27,10 @@ class FileModel extends CodeModel {
 	
 	public static function create($filename) {
 		return CodeRegistry::createFile($filename);
+	}
+
+	public function addDocblock($docblock) {
+		$this->header = $docblock;
 	}
 
 	public function getName() {
