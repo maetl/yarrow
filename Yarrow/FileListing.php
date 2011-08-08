@@ -12,35 +12,45 @@
  */
 
 /**
- * Listing of a relative file path in a directory.
+ * An individual file listing, relative to the base directory of a collection.
  */
 class FileListing {
-	private $filename;
+	private $file;
 	private $basePath;
-	private $relativePath;
-	private $absolutePath;
 	
-	public function __construct($file, $basePath=false) {
-		if (!$basePath) $basePath = basename($file);
-		$this->filename = $file->getFilename();
-		$this->relativePath = str_replace($basePath, '', $file->getPathname());
-		$this->basePath = basename($basePath) . $this->relativePath;
-		$this->absolutePath = $file->getRealPath();
+	public function __construct(SplFileInfo $file, $basePath=false) {
+		if (!$basePath) {
+			$basePath = basename($file->getFilename());
+		}
+		$this->file = $file;
+		$this->basePath = $basePath;
 	}
 
+	/**
+	 * @return string filename
+	 */
 	public function getFilename() {
-		return $this->filename;
+		return $this->file->getFilename();
 	}
 	
+	/**
+	 * @return string relative path to file
+	 */
 	public function getRelativePath() {
-		return $this->relativePath;
+		return str_replace($this->basePath, '', $this->file->getPathname());
 	}
 	
+	/**
+	 * @return string relative path to file, including base directory
+	 */
 	public function getBasePath() {
-		return $this->basePath;
+		return basename($this->basePath) . $this->getRelativePath();
 	}
 	
+	/**
+	 * @return string absolute path on the filesystem
+	 */
 	public function getAbsolutePath() {
-		return $this->absolutePath;
+		return $this->file->getRealPath();
 	}
 }

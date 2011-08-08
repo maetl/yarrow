@@ -9,11 +9,10 @@ class ModelIntegrationTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	function testCanModelConditionallyDeclaredClasses() {
+		$fileListing = new FileListing(new SplFileObject(dirname(__FILE__).'/Corpus/conditionally.php'));
+		
 		$analyzer = new Analyzer();
-		
-		$analyzer->analyzeFile(new FileListing(dirname(__FILE__).'/Corpus/conditionally.php'));
-									
-		
+		$analyzer->analyzeFile($fileListing);					
 		$model = $analyzer->getModel();
 		$classes = $model->getClasses();
 		
@@ -22,15 +21,14 @@ class ModelIntegrationTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	function testHandleComplexStringInterpolation() {
+		$fileListing = new FileListing(new SplFileObject(dirname(__FILE__).'/Corpus/interpolation.php'));
+		
 		$analyzer = new Analyzer();
-		
-		$analyzer->analyzeFile(new FileListing(dirname(__FILE__).'/Corpus/interpolation.php'));
-									
-		
+		$analyzer->analyzeFile($fileListing);							
 		$model = $analyzer->getModel();
+		$classes = $model->getClasses();
 		
 		$this->assertEquals(1, count($model->classCount()));
-		$classes = $model->getClasses();
 		$this->assertEquals(2, count($classes[0]->getMethods()));
 	}	
 	

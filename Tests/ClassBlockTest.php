@@ -13,7 +13,7 @@ class ClassBlockTest extends PHPUnit_Framework_TestCase {
 
 	public function testAnalyzeFile() {
 		$analyzer = new Analyzer();
-		$analyzer->analyzeFile(new FileListing(__FILE__, dirname(__FILE__)));
+		$analyzer->analyzeFile(new FileListing(new SplFileObject(__FILE__)));
 		
 		$model = $analyzer->getModel();
 		$this->assertEquals($model->classCount(), 1);
