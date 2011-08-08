@@ -10,17 +10,10 @@ class CodeParserTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	function getMockReader($file) {
-		$methods = array('onFunction',
-					     'onClass',
-					     'onMethod',
-					     'onProperty',
-					     'onMethodEnd',
-					     'onClassEnd',
-					     'onConstant',
-						 'onDocblock',
-						 'onFileHeader');
 		$constructor = array(new PackageModel(__CLASS__), new FileModel($file));
-		return $this->getMock('CodeReader', $methods, $constructor);
+		return $this->getMockBuilder('CodeReader')
+					->setConstructorArgs($constructor)
+					->getMock();
 	}
 
 	function testTopLevelFunctionDeclaration() {
@@ -237,7 +230,8 @@ class CodeParserTest extends PHPUnit_Framework_TestCase {
 		$tokens = $this->tokenizeSampleFile($file);
 		$reader = $this->getMockReader($file);
 		
-		$reader->expects($this->at(0))->method('onFileHeader');
+		$reader->expects($this->once())->method('onFileHeader')
+			   ->with($this->stringContains('Summary for file.'));
 		
 		$parser = new CodeParser($tokens, $reader);
 		$parser->parse();

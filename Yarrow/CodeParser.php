@@ -214,7 +214,7 @@ class CodeParser {
 	 */
 	function shredDocblock() {
 		$symbol = $this->currentToken();
-		if ($this->current == 2) {
+		if ($this->current == 1) {
 			$this->reader->onFileHeader($symbol[1]);
 		} else {
 			$this->reader->onDocblock($symbol[1]);
