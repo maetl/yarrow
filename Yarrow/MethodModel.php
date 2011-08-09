@@ -23,6 +23,10 @@ class MethodModel extends FunctionModel {
 		$this->final = (isset($keywords['final'])) ? true : false;
 	}
 	
+	public function getVisibility() {
+		return $this->visibility;
+	}
+	
 	public function isPublic() {
 		return ($this->visibility == 'public');
 	}
@@ -45,5 +49,13 @@ class MethodModel extends FunctionModel {
 	
 	public function isFinal() {
 		return $this->final;
-	}	
+	}
+	
+	public function getSignature() {
+		$signature = '';
+		if ($this->isFinal()) $signature .= 'final ';
+		$signature .= $this->getVisibility() . ' ';
+		$signature .= parent::getSignature();
+		return $signature;
+	}
 }

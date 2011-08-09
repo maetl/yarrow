@@ -27,5 +27,9 @@ class ConstantModel extends CodeModel {
 	public function getValue() {
 		return $this->value;
 	}
+	
+	public function __toString() {
+		return "Constant " . $this->name;
+	}
 
 }

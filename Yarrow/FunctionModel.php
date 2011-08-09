@@ -42,11 +42,11 @@ class FunctionModel extends CodeModel {
 	}
 	
 	function addArgument($argvar) {
-		$this->args[] = $argvar;
+		$this->arguments[] = $argvar;
 	}
 	
 	function getArguments() {
-		return $this->args;
+		return $this->arguments;
 	}
 	
 	function getText() {
@@ -63,5 +63,14 @@ class FunctionModel extends CodeModel {
 	
 	function __toString() {
 		return "Function " . $this->name;
+	}
+	
+	public function getSignature() {
+		$signature = '';
+		if ($this->isStatic()) $signature .= 'static ';
+		$signature .= 'function ' . $this->getName();
+		$arguments = ($this->getArguments()) ? implode(',', array_keys($this->getArguments())) : '';
+		$signature .= '(' . $arguments . ')';
+		return $signature;
 	}
 }
