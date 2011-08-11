@@ -42,6 +42,14 @@ p {
     padding:0;
 }
 
+.doc-element {
+    border-top:2px solid #F2F2F2;
+}
+
+.doc-element p {
+    font-size:13px;
+}
+
 .header {
     clear:both;
     float:left;

@@ -19,7 +19,7 @@
 </head> 
 <body> 
 <div class="header"> 
-	<p>Default</p>
+	<p><?php echo $meta['title']; ?></p>
 </div> 
 <div class="content-wrap">
     <div class="content"> 

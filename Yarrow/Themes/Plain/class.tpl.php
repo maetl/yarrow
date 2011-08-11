@@ -5,9 +5,6 @@
   </head>
   <body>
 	
-	
-	<div><a href="../index.html">Index</a></div>
-	
 	<h1><?php echo $class; ?></h1>
 
 	<p><?php echo $class->summary; ?></p>

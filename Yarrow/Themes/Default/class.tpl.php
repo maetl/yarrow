@@ -12,19 +12,25 @@
 <?php endif; ?>
 
 <?php if ($class->constants): ?>
-<div>
+<div class="doc-list doc-constants">
 	<h2>Constants</h2>
 	<?php foreach($class->constants as $constant): ?>
-	<p><span class="constant-name"><?php echo $constant->name; ?></span> = <span class="constant-value"><?php echo $constant->value; ?></span></p>
+		<div class="doc-element">
+			<pre class="php"><code><?php echo $constant->name; ?> = <?php echo $constant->value; ?></code></pre>
+		</div>
 	<?php endforeach ?>
 </div>
 <?php endif; ?>
 
-<div>
+<?php if ($class->methods): ?>
+<div class="doc-list doc-methods">
 	<h2>Methods</h2>
 	<?php foreach($class->methods as $method): ?>
-		<h3><?php echo $method->name; ?></h3>
-		<p><code><?php echo $method->getSignature(); ?></code></p>
-		<p><?php echo $method->summary; ?></p>
+		<div class="doc-element">
+			<h3><?php echo $method->name; ?></h3>
+			<pre class="php"><code><?php echo $method->getSignature(); ?></code></pre>
+			<p><?php echo $method->text; ?></p>
+		</div>
 	<?php endforeach ?>
 </div>
+<?php endif; ?>
