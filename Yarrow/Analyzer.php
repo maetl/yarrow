@@ -22,8 +22,8 @@ class Analyzer {
 	function __construct() {
 		$this->objectModel = new ObjectModel();
 		$this->config = Configuration::instance();
-		$packageBuilderClass = ucfirst($this->config->options['packageBuilder']) . 'PackageBuilder';
-		$this->packageBuilder = new $packageBuilderClass();
+		$packageBuilder = ucfirst($this->config->options['packageStyle']) . 'PackageBuilder';
+		$this->packageBuilder = new $packageBuilder();
 	}
 
 	function analyzeProject() {
@@ -37,11 +37,6 @@ class Analyzer {
 				$manifest = array_merge($manifest, $collector->getManifest());
 			} elseif (is_file($target)) {
 				$manifest[] = new FileListing($target, basedir($target));
-				//$manifest[] = array(
-				//	'filename' => basename($target),
-				//	'relative_path' => $target,
-				//	'absolute_path' => realpath($target)
-				//);
 			} else {
 				throw new Yarrow_Exception("$target path not found.");
 			}
