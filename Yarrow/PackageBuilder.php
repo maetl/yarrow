@@ -12,10 +12,16 @@
  */
 
 /**
- * 
+ * Interface for classes that resolve package names based on collected input.
  */
 interface PackageBuilder {
 	
+	/**
+	 * Get a package name based on a file path.
+	 *
+	 * @param string path to a code file
+	 * @return string package name
+	 */
 	public function getFromFile($file);
 	
 }
