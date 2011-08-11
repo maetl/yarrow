@@ -21,11 +21,19 @@ class DocblockModel {
 	}
 	
 	/**
-	 * Returns the summary description, which is always the first
+	 * Returns the summary, which is always the first
 	 * paragraph or text line declared in the docblock.
 	 */
 	function getSummary() {
 		return (isset($this->paragraphs[0])) ? $this->paragraphs[0] : '';
+	}
+	
+	/**
+	 * Returns the description, which is all lines of text following the
+	 * summary.
+	 */
+	function getDescription() {
+		return implode("\n\n", array_slice($this->paragraphs, 1));
 	}
 	
 	/**

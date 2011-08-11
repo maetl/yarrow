@@ -127,6 +127,10 @@ class ClassModel extends CodeModel {
 		if ($this->docblock) return $this->docblock->getSummary();
 	}
 	
+	function getDescription() {
+		if ($this->docblock) return $this->docblock->getDescription();
+	}
+	
 	function getProperties() {
 		return $this->properties;
 	}
