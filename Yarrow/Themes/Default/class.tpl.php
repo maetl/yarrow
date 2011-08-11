@@ -6,7 +6,7 @@
 	<p>In File: <a href="../<?php echo $class->file->getRelativeLink(); ?>"><?php echo $class->file->name; ?></a></p>
 </div>
 
-<?php if ($class->text): ?>
+<?php if ($class->description): ?>
 <div class="doc-description">
 	<h3>Description</h3>
 	<p><?php echo nl2br($class->description); ?></p>
