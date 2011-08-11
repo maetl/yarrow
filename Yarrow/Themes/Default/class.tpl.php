@@ -1,13 +1,15 @@
 <?php $this->wrap('layout'); ?>
 	
-<h1><?php echo $class->name; ?></h1>
-
-<p>In File: <a href="../<?php echo $class->file->getRelativeLink(); ?>"><?php echo $class->file->name; ?></a></p>
+<div>
+	<h1><?php echo $class->name; ?></h1>
+	<p><?php echo $class->summary; ?></p>
+	<p>In File: <a href="../<?php echo $class->file->getRelativeLink(); ?>"><?php echo $class->file->name; ?></a></p>
+</div>
 
 <?php if ($class->text): ?>
-<div>
-	<h2>Description</h2>
-	<p><?php echo nl2br($class->text); ?></p>
+<div class="doc-description">
+	<h3>Description</h3>
+	<p><?php echo nl2br($class->description); ?></p>
 </div>
 <?php endif; ?>
 
