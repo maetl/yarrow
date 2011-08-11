@@ -69,7 +69,7 @@ class FunctionModel extends CodeModel {
 		$signature = '';
 		if ($this->isStatic()) $signature .= 'static ';
 		$signature .= 'function ' . $this->getName();
-		$arguments = ($this->getArguments()) ? implode(',', array_keys($this->getArguments())) : '';
+		$arguments = ($this->getArguments()) ? implode(', ', array_keys($this->getArguments())) : '';
 		$signature .= '(' . $arguments . ')';
 		return $signature;
 	}
