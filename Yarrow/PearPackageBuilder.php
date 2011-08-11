@@ -23,7 +23,7 @@ class PearPackageBuilder implements PackageBuilder {
 
 		if (is_dir($basedir . '/' . $name)) {
 			$package .= '_' . $name;
-		}	
+		}
 		return $package;	
 	}
 }
