@@ -15,9 +15,9 @@ class DocblockModel {
 	private $paragraphs;
 	private $tags;
 	
-	function __construct() {
-		$this->paragraphs = array();
-		$this->tags = array();		
+	function __construct($paragraphs=array(), $tags=array()) {
+		$this->paragraphs = $paragraphs;
+		$this->tags = $tags;
 	}
 	
 	/**
@@ -44,7 +44,7 @@ class DocblockModel {
 	}
 	
 	function addParagraph($paragraph) {
-		$this->paragraphs[] = trim($paragraph);
+		$this->paragraphs[] = $paragraph;
 	}
 	
 	function addTag($tagline) {

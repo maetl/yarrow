@@ -23,13 +23,15 @@
  */
 class DocblockParser {
 	private $source;
+	private $paragraphs;
 	
 	/**
 	 * @param $docblock string
 	 */
 	function __construct($docblock) {
 		$this->source = $this->preProcess($docblock);
-		$this->model = new DocblockModel();
+		$this->paragraphs = array();
+		$this->tags = array();
 	}
 	
 	/**
@@ -44,18 +46,22 @@ class DocblockParser {
 		return $docblock;
 	}
 	
+	function addParagraph($line) {
+		$this->paragraphs[] = trim($line);
+	}
+	
 	function isTag($line) {
 		return substr($line, 0, 1) == '@';
 	}
 	
 	function parseTag($line) {
-		$this->model->addTag($line);
+		$this->tags[] = $line;
 	}
 	
 	function parseLine($line) {
 		$line = trim(str_replace("*", "", trim($line)));
 		if ($line == "" && $this->buffer != "") {
-			$this->model->addParagraph($this->buffer);
+			$this->addParagraph($this->buffer);
 			$this->buffer = "";
 		} else {
 			if ($line != "") {
@@ -79,8 +85,9 @@ class DocblockParser {
 				$this->parseLine($line);	
 			}
 		} else {
-			$this->model->addParagraph($this->source);
+			$this->addParagraph($this->source);
 		}
-		return $this->model;
+		
+		return new DocblockModel($this->paragraphs, $this->tags);
 	}
 }
