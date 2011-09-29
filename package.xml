@@ -13,11 +13,11 @@
   <email>me@maetl.net</email>
   <active>yes</active>
  </lead>
- <date>2011-05-01</date>
- <time>03:32:59</time>
+ <date>2011-09-30</date>
+ <time>07:58:25</time>
  <version>
-  <release>0.0.7</release>
-  <api>0.0.7</api>
+  <release>0.0.8</release>
+  <api>0.0.8</api>
  </version>
  <stability>
   <release>alpha</release>
