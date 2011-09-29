@@ -36,7 +36,7 @@ class Analyzer {
 				$collector->excludeByPattern("/\.tpl\.php$/");
 				$manifest = array_merge($manifest, $collector->getManifest());
 			} elseif (is_file($target)) {
-				$manifest[] = new FileListing($target, basedir($target));
+				$manifest[] = new FileListing(new SplFileInfo($target));
 			} else {
 				throw new Yarrow_Exception("$target path not found.");
 			}

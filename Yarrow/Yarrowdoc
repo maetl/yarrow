@@ -7,4 +7,4 @@ author: 			Project Author
 
 [options]
 theme: 				Default
-packageBuilder:		File
+packageStyle:		Folder

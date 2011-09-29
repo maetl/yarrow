@@ -3,7 +3,9 @@
 <div>
 	<h1><?php echo $class->name; ?></h1>
 	<p><?php echo $class->summary; ?></p>
+	<?php if ($class->file): ?>
 	<p>In File: <a href="../<?php echo $class->file->getRelativeLink(); ?>"><?php echo $class->file->name; ?></a></p>
+	<?php endif; ?>
 </div>
 
 <?php if ($class->description): ?>
@@ -30,7 +32,7 @@
 	<?php foreach($class->methods as $method): ?>
 		<div class="doc-element">
 			<h3><?php echo $method->name; ?></h3>
-			<pre class="php"><code><?php echo $method->getSignature(); ?></code></pre>
+			<pre class="php"><code><?php echo $method->signature; ?></code></pre>
 			<p><?php echo $method->text; ?></p>
 		</div>
 	<?php endforeach ?>
