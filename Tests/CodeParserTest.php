@@ -146,7 +146,6 @@ class CodeParserTest extends PHPUnit_Framework_TestCase {
 										  )
 										);
 
-
 		$parser = new CodeParser($tokens, $reader);
 		$parser->parse();
 	}
