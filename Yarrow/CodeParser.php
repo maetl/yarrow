@@ -290,30 +290,29 @@ class CodeParser {
 	 * Acceptor to build a function signature.
 	 */
 	function shredFunction() {
-
+		
 		while ($this->tokens[$this->current][0] != T_BRACE_OPEN) {
-
 			if ($this->tokens[$this->current][0] == T_STRING) {
 				$name = $this->tokens[$this->current][1];
 			}
-
 			$this->current++;
 		}
 
 		$arguments = $this->shredArguments($this->current+1);
 
 		if ($this->state == self::CLASS_SCOPE) {
-
 			$this->reader->onMethod($name, $arguments, $this->keywords);
-
 		} else {
-
 			$this->reader->onFunction($name, $arguments, $this->keywords);
-
 		}
-
+		
+		if (isset($this->keywords['abstract'])) {
+			$this->reader->onMethodEnd();
+		} else {
+			$this->state = self::FUNCTION_SCOPE;
+		}
+		
 		$this->complexity = 0;
-		$this->state = self::FUNCTION_SCOPE;
 		$this->resetKeywords();
 	}
 
