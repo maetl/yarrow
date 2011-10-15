@@ -76,7 +76,9 @@ class Analyzer {
 		$file->setSource($source);
 		$package->addFile($file);
 		
-		$reader = new CodeReader($package, $file);
+		$pp = $this->config->options['parse_private'];
+		
+		$reader = new CodeReader($package, $file, $pp);
 		$parser = new CodeParser($tokens, $reader);
 		$parser->parse();
 		

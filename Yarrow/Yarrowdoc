@@ -8,3 +8,4 @@ author: 		Project Author
 [options]
 theme: 			Default
 packages:		Folder
+parse_private:	false
