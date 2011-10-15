@@ -11,6 +11,9 @@
  * with this source code for details about modification and redistribution.
  */
 
+/**
+ * Event driven parser callbacks to build a code model.
+ */
 class CodeReader {
 	private $currentPackage;
 	private $currentFile;
@@ -26,7 +29,7 @@ class CodeReader {
 	 * @param PackageModel $package
 	 * @param FileModel $file
 	 */
-	function __construct($package, $file) {
+	function __construct($package, $file, $pp=false) {
 		$this->currentPackage = $package;
 		$this->currentFile = $file;
 		$this->currentClass = false;
@@ -35,6 +38,7 @@ class CodeReader {
 		$this->functions = array();
 		$this->files = array();
 		$this->constants = array();
+		$this->parsePrivate = $pp;
 	}
 
 	function getFunctions() {
@@ -78,7 +82,9 @@ class CodeReader {
 
 	function onProperty($name, $keywords=array(), $default=false) {
 		$property = new PropertyModel($name, $keywords, $default);
-		$this->currentClass->addProperty($property);
+		if ($this->parsePrivate || !$property->isPrivate()) {
+			$this->currentClass->addProperty($property);
+		}
 	}
 
 	function onFunction($name, $arguments, $keywords=array()) {	
@@ -103,10 +109,12 @@ class CodeReader {
 	 * End of method parsing event.
 	 *
 	 * Pushes current method object onto the current class. Ignores private methods,
-	 * unless explicitly specified from configuration options.
+	 * unless explicitly specified.
 	 */
 	function onMethodEnd() {
-		$this->currentClass->addMethod($this->currentFunction);
+		if ($this->parsePrivate || !$this->currentFunction->isPrivate()) {
+			$this->currentClass->addMethod($this->currentFunction);
+		}
 		$this->currentFunction = false;
 	}
 }
