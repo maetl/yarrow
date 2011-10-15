@@ -43,7 +43,8 @@ class ConsoleRunner {
 		'h' => 'help',
 		'v' => 'version',
 		'c' => 'config',
-		't' => 'theme'
+		't' => 'theme',
+		'p' => 'packages',
 	);
 	
 	/**
@@ -114,12 +115,18 @@ class ConsoleRunner {
 		}
 	}
 	
+	/**
+	 * Template method for input processing. Parses and analyzes the project source.
+	 */
 	protected function runInputProcess() {
 		$analyzer = new Analyzer();
 		$analyzer->analyzeProject();
 		$this->model = $analyzer->getModel();
 	}
 	
+	/**
+	 * Template method for output processing. Generates and renders the documentation.
+	 */
 	protected function runOutputProcess() {
 		$generator = new DefaultGenerator($this->config->outputTarget, $this->model);
 		$generator->makeDocs();
@@ -245,6 +252,7 @@ class ConsoleRunner {
 				return $this->options[$optionName] = $optionValue;
 			}
 		}
+		
 		throw new ConfigurationError("Unrecognized option: $option");
 	}
 	
@@ -334,9 +342,11 @@ Usage:
  Use -o or --option for boolean switches and --option=value or --option:value
  for options that require an explicit value to be set.
 
-  -h    --help      [switch]    Display this help message and exit.
-  -v    --version   [switch]    Display version header and exit.
-  -c    --config    [string]    Path to a config properties file.
+  -h    --help          [switch]    Display this help message and exit
+  -v    --version       [switch]    Display version header and exit
+  -c    --config        [string]    Path to a config properties file
+  -p    --packages   	[string]    Defines package convention for the model
+  -t    --theme         [string]    Template theme for generated docs
 
 
 HELP;

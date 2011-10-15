@@ -22,8 +22,13 @@ class Analyzer {
 	function __construct() {
 		$this->objectModel = new ObjectModel();
 		$this->config = Configuration::instance();
-		$packageBuilder = ucfirst($this->config->options['packageStyle']) . 'PackageBuilder';
-		$this->packageBuilder = new $packageBuilder();
+		
+		$packageBuilder = ucfirst($this->config->options['packages']) . 'PackageBuilder';
+		if (class_exists($packageBuilder)) {
+			$this->packageBuilder = new $packageBuilder();
+		} else {
+			throw new ConfigurationError("Invalid package format: {$this->config->options['packages']}");
+		}
 	}
 
 	function analyzeProject() {
