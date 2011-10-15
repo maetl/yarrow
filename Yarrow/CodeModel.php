@@ -24,9 +24,9 @@ abstract class CodeModel {
 	abstract public function getName();
 	
 	/**
-	 * Dynamic lookup for accessor methods.
+	 * Dynamic attribute finder.
 	 *
-	 * Maps properties to the corresponding method wrapper:
+	 * Maps named properties to the corresponding getter method:
 	 *
 	 * <code>
 	 * print $model->name; // calls $model->getName()
@@ -35,7 +35,7 @@ abstract class CodeModel {
 	 *
 	 * @return mixed
 	 */
-	function __get($key) {
+	public function __get($key) {
 		$accessor = 'get' . ucfirst($key);
 		if (method_exists($this, $accessor)) {
 			return $this->$accessor();
