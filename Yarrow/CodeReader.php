@@ -12,7 +12,20 @@
  */
 
 class CodeReader {
+	private $currentPackage;
+	private $currentFile;
+	private $currentClass;
+	private $currentFunction;
+	private $docblocks;
+	private $functions;
+	private $files;
+	private $constants;
+	private $parsePrivate;
 
+	/**
+	 * @param PackageModel $package
+	 * @param FileModel $file
+	 */
 	function __construct($package, $file) {
 		$this->currentPackage = $package;
 		$this->currentFile = $file;
@@ -68,7 +81,7 @@ class CodeReader {
 		$this->currentClass->addProperty($property);
 	}
 
-	function onFunction($name, $arguments, $keywords=array()) {
+	function onFunction($name, $arguments, $keywords=array()) {	
 		$this->currentFunction = new FunctionModel($name, $arguments, $keywords);
 		$docblock = array_pop($this->docblocks);
 		if ($docblock) $this->currentFunction->addDocblock($docblock);
@@ -86,6 +99,12 @@ class CodeReader {
 		if ($docblock) $this->currentFunction->addDocblock($docblock);
 	}
 
+	/**
+	 * End of method parsing event.
+	 *
+	 * Pushes current method object onto the current class. Ignores private methods,
+	 * unless explicitly specified from configuration options.
+	 */
 	function onMethodEnd() {
 		$this->currentClass->addMethod($this->currentFunction);
 		$this->currentFunction = false;
