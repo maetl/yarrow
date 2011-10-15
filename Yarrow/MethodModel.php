@@ -54,6 +54,7 @@ class MethodModel extends FunctionModel {
 	public function getSignature() {
 		$signature = '';
 		if ($this->isFinal()) $signature .= 'final ';
+		if ($this->isAbstract()) $signature .= 'abstract ';
 		$signature .= $this->getVisibility() . ' ';
 		$signature .= parent::getSignature();
 		return $signature;
