@@ -337,7 +337,7 @@ class CodeParser {
 	 * in the token stream.
 	 */
 	function setAbstract() {
-		$this->keywords['abstract'] = $this->value;
+		$this->keywords['abstract'] = true;
 	}
 
 	/**

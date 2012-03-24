@@ -130,21 +130,10 @@ class CodeParserTest extends PHPUnit_Framework_TestCase {
 		$reader = $this->getMockReader($file);
 
 		$reader->expects($this->at(0))->method('onClass')
-									  ->with(
-										 'AbstractBase',
-										 ClassModel::BASE_TYPE,
-										 array('abstract' => true)
-										);
+									  ->with('AbstractBase', ClassModel::BASE_TYPE, array('abstract' => true));
 
 		$reader->expects($this->at(3))->method('onMethod')
-									  ->with(
-										 'getType',
-										  array(),
-										  array(
-										    'abstract' => 'abstract',
-										    'visibility' => 'public'
-										  )
-										);
+									  ->with('getType', array(), array('abstract' => true, 'visibility' => 'public'));
 
 		$parser = new CodeParser($tokens, $reader);
 		$parser->parse();
