@@ -2,16 +2,23 @@
 
 class ClassWithInstanceProperties {
 	
-	var $myFirstProperty;
+	var $myFirst;
 	
-	public $mySecondProperty;
+	public $mySecond;
 	
-	protected $myThirdProperty;
+	protected $myThird = false;
 	
-	private $myFourthProperty;
+	private $myFourth = 1;
 
-	private $myFifthProperty = "stringalong";
+	private $myFifth = 3.1;
 	
-	private $mySixthProperty = array(1, 2, 3);
+	private $mySixth = "stringalong";
+	
+	private $mySeventh = array(1, 2, 3);
+	
+	private $myEighth = array(
+		'one' => array(888, 999),
+		'two' => array('one', 'two', array(1,2,3)),
+	);
 	
 }

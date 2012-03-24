@@ -18,6 +18,7 @@ define('T_BRACE_CLOSE', 919);
 define('T_TERNARY_IF', 977);
 define('T_AMPERSAND', 988);
 define('T_SEMICOLON', 990);
+define('T_COMMA', 991);
 define('T_UNKNOWN', 999);
 
 /**
@@ -40,7 +41,8 @@ class CodeParser {
 		')' => T_BRACE_CLOSE,
 		'?' => T_TERNARY_IF,
 		'&' => T_AMPERSAND,
-		';' => T_SEMICOLON
+		';' => T_SEMICOLON,
+		',' => T_COMMA,
 	);
 
 	const GLOBAL_SCOPE 	 = 1;
@@ -239,6 +241,105 @@ class CodeParser {
 
 		$this->reader->onConstant($name, $value);
 	}
+	
+	/**
+	 * Clip the default value off a class property or function argument.
+	 */
+	function shredValue() {		
+		$token = $this->nextToken();
+		
+		while ($token[0] != T_SEMICOLON) {
+			
+			switch($token[0]) {
+
+				case T_DNUMBER:
+					$this->keywords['default'] = array('decimal' => $token[1]);
+				break;
+				
+				case T_LNUMBER:
+					$this->keywords['default'] = array('integer' => $token[1]);
+				break;
+				
+				case T_CONSTANT_ENCAPSED_STRING:
+					$this->keywords['default'] = array('string' => $token[1]);
+				break;
+				
+				case T_ARRAY:
+					$this->keywords['default'] = array('array' => $this->readArray());
+				break;
+				
+			}
+			
+			$token = $this->nextToken();
+		}
+		
+		echo "\n----------------\n";
+		print_r($this->keywords);
+	}
+	
+	/**
+	 * Captures declarative array syntax and builds a data structure
+	 * representing the default values given in the source code.
+	 */
+	function readArray() {
+		$array = array();
+		$token = $this->nextToken();
+		
+		while ($token[0] != T_BRACE_CLOSE) {
+			
+			switch($token[0]) {
+				
+				case T_BRACE_OPEN:
+					$indices = array();
+					$map = false;
+				break;
+				
+				case T_ARRAY:
+					array_push($indices, $this->readArray());
+				break;
+				
+				case T_STRING:
+				case T_LNUMBER:
+				case T_CONSTANT_ENCAPSED_STRING:
+					array_push($indices, $token[1]);
+				break;
+				
+				case T_DOUBLE_ARROW:
+					$map = true;
+				break;
+				
+				case T_COMMA:
+					if ($map) {
+						$value = array_pop($indices);
+						$key = array_pop($indices);
+						$array[$key] = $value;
+					} else {
+						array_push($array, array_pop($indices));
+					}
+					
+				break;
+				
+				default:
+					echo "\n----------------\n";
+					print_r(token_name($token[0]));
+					print_r($token);
+				break;
+				
+			}
+			
+			$token = $this->nextToken();
+		}
+		
+		if (count($indices) == 2) {
+			$value = array_pop($indices);
+			$key = array_pop($indices);
+			$array[$key] = $value;			
+		} elseif (count($indices) == 1) {
+			array_push($array, array_pop($indices));
+		}
+		
+		return $array;
+	}
 
 	/**
 	 * If the variable is in a class scope, then trigger a class
@@ -246,6 +347,7 @@ class CodeParser {
 	 */
 	function shredProperty() {
 		if ($this->state == self::CLASS_SCOPE) {
+			$this->shredValue();
 			$this->reader->onProperty($this->value, $this->keywords);
 			$this->resetKeywords();
 		}

@@ -160,16 +160,14 @@ class CodeParserTest extends PHPUnit_Framework_TestCase {
 		$tokens = $this->tokenizeSampleFile($file);
 		$reader = $this->getMockReader($file);
 
-		$reader->expects($this->at(1))->method('onProperty')
-									  ->with('$myFirstProperty', array('visibility' => 'public'));
-		$reader->expects($this->at(2))->method('onProperty')
-									  ->with('$mySecondProperty', array('visibility' => 'public'));
-		$reader->expects($this->at(2))->method('onProperty')
-								  	  ->with('$mySecondProperty', array('visibility' => 'public'));
-		$reader->expects($this->at(3))->method('onProperty')
-									  ->with('$myThirdProperty', array('visibility' => 'protected'));
-		$reader->expects($this->at(4))->method('onProperty')
-									  ->with('$myFourthProperty', array('visibility' => 'private'));
+		$reader->expects($this->at(1))->method('onProperty')->with('$myFirst', array('visibility' => 'public'));
+		$reader->expects($this->at(2))->method('onProperty')->with('$mySecond', array('visibility' => 'public'));
+		$reader->expects($this->at(3))->method('onProperty')->with('$myThird', array('visibility' => 'protected'));
+		$reader->expects($this->at(4))->method('onProperty')->with('$myFourth', array('visibility' => 'private', 'default' => array('integer' => '1')));
+		$reader->expects($this->at(5))->method('onProperty')->with('$myFifth', array('visibility' => 'private', 'default' => array('decimal' => '3.1')));
+		$reader->expects($this->at(6))->method('onProperty')->with('$mySixth', array('visibility' => 'private', 'default' => array('string' => '"stringalong"')));
+		$reader->expects($this->at(7))->method('onProperty')->with('$mySeventh', array('visibility' => 'private', 'default' => array('array' => array('1','2','3'))));
+		$reader->expects($this->at(8))->method('onProperty')->with('$myEighth', array('visibility' => 'private', 'default' => array('array' => array("'one'"=>array(888,999),"'two'"=>array("'one'","'two'",array(1,2,3))))));
 
 		$parser = new CodeParser($tokens, $reader);
 		$parser->parse();
