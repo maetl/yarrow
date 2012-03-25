@@ -253,28 +253,25 @@ class CodeParser {
 			switch($token[0]) {
 
 				case T_DNUMBER:
-					$this->keywords['default'] = array('decimal' => $token[1]);
+					$this->keywords['default'] = NodeBuilder::decimal($token[1]);
 				break;
 				
 				case T_LNUMBER:
-					$this->keywords['default'] = array('integer' => $token[1]);
+					$this->keywords['default'] = NodeBuilder::integer($token[1]);
 				break;
 				
 				case T_CONSTANT_ENCAPSED_STRING:
-					$this->keywords['default'] = array('string' => $token[1]);
+					$this->keywords['default'] = NodeBuilder::string($token[1]);
 				break;
 				
 				case T_ARRAY:
-					$this->keywords['default'] = array('array' => $this->readArray());
+					$this->keywords['default'] = NodeBuilder::arrayList($this->readArray());
 				break;
 				
 			}
 			
 			$token = $this->nextToken();
 		}
-		
-		echo "\n----------------\n";
-		print_r($this->keywords);
 	}
 	
 	/**
@@ -295,13 +292,20 @@ class CodeParser {
 				break;
 				
 				case T_ARRAY:
-					array_push($indices, $this->readArray());
+					array_push($indices, NodeBuilder::arrayList($this->readArray()));
+				break;
+				
+				case T_DNUMBER:
+					array_push($indices, NodeBuilder::decimal($token[1]));
+				break;
+				
+				case T_LNUMBER:
+					array_push($indices, NodeBuilder::integer($token[1]));
 				break;
 				
 				case T_STRING:
-				case T_LNUMBER:
 				case T_CONSTANT_ENCAPSED_STRING:
-					array_push($indices, $token[1]);
+					array_push($indices, NodeBuilder::string($token[1]));
 				break;
 				
 				case T_DOUBLE_ARROW:
@@ -312,17 +316,11 @@ class CodeParser {
 					if ($map) {
 						$value = array_pop($indices);
 						$key = array_pop($indices);
-						$array[$key] = $value;
+						array_push($array, NodeBuilder::arrayIndex($key->value, $value));
 					} else {
 						array_push($array, array_pop($indices));
 					}
 					
-				break;
-				
-				default:
-					echo "\n----------------\n";
-					print_r(token_name($token[0]));
-					print_r($token);
 				break;
 				
 			}
@@ -333,7 +331,7 @@ class CodeParser {
 		if (count($indices) == 2) {
 			$value = array_pop($indices);
 			$key = array_pop($indices);
-			$array[$key] = $value;			
+			array_push($array, NodeBuilder::arrayIndex($key->value, $value));			
 		} elseif (count($indices) == 1) {
 			array_push($array, array_pop($indices));
 		}
