@@ -100,6 +100,9 @@
 		<file name="MethodModel.php" role="php">
 			<tasks:replace from="{{version}}" to="version" type="package-info" />
 		</file>
+		<file name="NodeBuilder.php" role="php">
+			<tasks:replace from="{{version}}" to="version" type="package-info" />
+		</file>
 		<file name="ObjectModel.php" role="php">
 			<tasks:replace from="{{version}}" to="version" type="package-info" />
 		</file>
