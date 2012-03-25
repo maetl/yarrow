@@ -163,11 +163,11 @@ class CodeParserTest extends PHPUnit_Framework_TestCase {
 		$reader->expects($this->at(1))->method('onProperty')->with('$myFirst', array('visibility' => 'public'));
 		$reader->expects($this->at(2))->method('onProperty')->with('$mySecond', array('visibility' => 'public'));
 		$reader->expects($this->at(3))->method('onProperty')->with('$myThird', array('visibility' => 'protected'));
-		$reader->expects($this->at(4))->method('onProperty')->with('$myFourth', array('visibility' => 'private', 'default' => NodeBuilder::integer('1')));
-		$reader->expects($this->at(5))->method('onProperty')->with('$myFifth', array('visibility' => 'private', 'default' => NodeBuilder::decimal('3.1')));
-		$reader->expects($this->at(6))->method('onProperty')->with('$mySixth', array('visibility' => 'private', 'default' => NodeBuilder::string('"stringalong"')));
-		$reader->expects($this->at(7))->method('onProperty')->with('$mySeventh', array('visibility' => 'private', 'default' => NodeBuilder::arrayList(array(NodeBuilder::integer('1'), NodeBuilder::integer('2'), NodeBuilder::integer('3')))));
-		$reader->expects($this->at(8))->method('onProperty')->with('$myEighth', array('visibility' => 'private', 'default' => NodeBuilder::arrayList(array(NodeBuilder::arrayIndex("'one'", NodeBuilder::arrayList(array(NodeBuilder::integer('888'), NodeBuilder::integer('999')))), NodeBuilder::arrayIndex("'two'", NodeBuilder::arrayList(array(NodeBuilder::string("'one'"), NodeBuilder::string("'two'"), NodeBuilder::arrayList(array(NodeBuilder::integer('1'), NodeBuilder::integer('2'), NodeBuilder::integer('3'))))))))));
+		$reader->expects($this->at(4))->method('onProperty')->with('$myFourth', array('visibility' => 'private'), NodeBuilder::integer('1'));
+		$reader->expects($this->at(5))->method('onProperty')->with('$myFifth', array('visibility' => 'private'), NodeBuilder::decimal('3.1'));
+		$reader->expects($this->at(6))->method('onProperty')->with('$mySixth', array('visibility' => 'private'), NodeBuilder::string('"stringalong"'));
+		$reader->expects($this->at(7))->method('onProperty')->with('$mySeventh', array('visibility' => 'private'),  NodeBuilder::arrayList(array(NodeBuilder::integer('1'), NodeBuilder::integer('2'), NodeBuilder::integer('3'))));
+		$reader->expects($this->at(8))->method('onProperty')->with('$myEighth', array('visibility' => 'private'), NodeBuilder::arrayList(array(NodeBuilder::arrayIndex("'one'", NodeBuilder::arrayList(array(NodeBuilder::integer('888'), NodeBuilder::integer('999')))), NodeBuilder::arrayIndex("'two'", NodeBuilder::arrayList(array(NodeBuilder::string("'one'"), NodeBuilder::string("'two'"), NodeBuilder::arrayList(array(NodeBuilder::integer('1'), NodeBuilder::integer('2'), NodeBuilder::integer('3')))))))));
 
 		$parser = new CodeParser($tokens, $reader);
 		$parser->parse();

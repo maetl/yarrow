@@ -71,6 +71,7 @@ class CodeParser {
 		$this->scope = new ScopeStack();
 		$this->reader = $reader;
 		$this->keywords = array();
+		$this->default = false;
 	}
 
 	/**
@@ -253,19 +254,19 @@ class CodeParser {
 			switch($token[0]) {
 
 				case T_DNUMBER:
-					$this->keywords['default'] = NodeBuilder::decimal($token[1]);
+					$this->default = NodeBuilder::decimal($token[1]);
 				break;
 				
 				case T_LNUMBER:
-					$this->keywords['default'] = NodeBuilder::integer($token[1]);
+					$this->default = NodeBuilder::integer($token[1]);
 				break;
 				
 				case T_CONSTANT_ENCAPSED_STRING:
-					$this->keywords['default'] = NodeBuilder::string($token[1]);
+					$this->default = NodeBuilder::string($token[1]);
 				break;
 				
 				case T_ARRAY:
-					$this->keywords['default'] = NodeBuilder::arrayList($this->readArray());
+					$this->default = NodeBuilder::arrayList($this->readArray());
 				break;
 				
 			}
@@ -346,7 +347,7 @@ class CodeParser {
 	function shredProperty() {
 		if ($this->state == self::CLASS_SCOPE) {
 			$this->shredValue();
-			$this->reader->onProperty($this->value, $this->keywords);
+			$this->reader->onProperty($this->value, $this->keywords, $this->default);
 			$this->resetKeywords();
 		}
 	}
@@ -453,6 +454,7 @@ class CodeParser {
 	 */
 	function resetKeywords() {
 		$this->keywords = array();
+		$this->default = false;
 	}
 
 	/**
