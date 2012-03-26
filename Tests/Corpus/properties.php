@@ -1,22 +1,26 @@
 <?php
 
-class ClassWithInstanceProperties {
+class ClassWithProperties {
 	
-	var $myFirst;
+	var $_var;
 	
-	public $mySecond;
+	public $_public;
 	
-	protected $myThird = false;
+	protected $_protected;
 	
-	private $myFourth = 1;
+	private $_private;
+	
+	public $_boolean = true;
+	
+	public $_integer = 1;
 
-	private $myFifth = 3.1;
+	public $_decimal = 3.1;
 	
-	private $mySixth = "stringalong";
+	public $_string = "stringalong";
 	
-	private $mySeventh = array(1, 2, 3);
+	public $_array = array(1, 2, 3);
 	
-	private $myEighth = array(
+	public $_assoc_array = array(
 		'one' => array(888, 999),
 		'two' => array('one', 'two', array(1,2,3)),
 	);

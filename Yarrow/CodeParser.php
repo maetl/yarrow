@@ -254,19 +254,20 @@ class CodeParser {
 			switch($token[0]) {
 
 				case T_DNUMBER:
-					$this->default = NodeBuilder::decimal($token[1]);
+					$this->default = floatval($token[1]);
 				break;
 				
 				case T_LNUMBER:
-					$this->default = NodeBuilder::integer($token[1]);
+					$this->default = intval($token[1]);
 				break;
 				
+				case T_STRING:
 				case T_CONSTANT_ENCAPSED_STRING:
-					$this->default = NodeBuilder::string($token[1]);
+					$this->default = self::castString($token[1]);
 				break;
 				
 				case T_ARRAY:
-					$this->default = NodeBuilder::arrayList($this->readArray());
+					$this->default = $this->readArray();
 				break;
 				
 			}
@@ -293,20 +294,20 @@ class CodeParser {
 				break;
 				
 				case T_ARRAY:
-					array_push($indices, NodeBuilder::arrayList($this->readArray()));
+					array_push($indices, $this->readArray());
 				break;
 				
 				case T_DNUMBER:
-					array_push($indices, NodeBuilder::decimal($token[1]));
+					array_push($indices, floatval($token[1]));
 				break;
 				
 				case T_LNUMBER:
-					array_push($indices, NodeBuilder::integer($token[1]));
+					array_push($indices, intval($token[1]));
 				break;
 				
 				case T_STRING:
 				case T_CONSTANT_ENCAPSED_STRING:
-					array_push($indices, NodeBuilder::string($token[1]));
+					array_push($indices, self::castString($token[1]));
 				break;
 				
 				case T_DOUBLE_ARROW:
@@ -317,7 +318,7 @@ class CodeParser {
 					if ($map) {
 						$value = array_pop($indices);
 						$key = array_pop($indices);
-						array_push($array, NodeBuilder::arrayIndex($key->value, $value));
+						$array[$key] = $value;
 					} else {
 						array_push($array, array_pop($indices));
 					}
@@ -332,12 +333,21 @@ class CodeParser {
 		if (count($indices) == 2) {
 			$value = array_pop($indices);
 			$key = array_pop($indices);
-			array_push($array, NodeBuilder::arrayIndex($key->value, $value));			
+			$array[$key] = $value;
 		} elseif (count($indices) == 1) {
 			array_push($array, array_pop($indices));
 		}
 		
 		return $array;
+	}
+
+	/**
+	 * Flip a string value from the parser into a native type.
+	 *
+	 * @return bool|string
+	 */
+	private static function castString($value) {
+		return ($value == 'true' || $value == 'false') ? (bool)$value : str_replace(array('"', "'"), '', $value);
 	}
 
 	/**
