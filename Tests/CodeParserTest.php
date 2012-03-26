@@ -172,6 +172,8 @@ class CodeParserTest extends PHPUnit_Framework_TestCase {
 		$reader->expects($this->at(8))->method('onProperty')->with('$_string', array('visibility' => 'public'), $properties->_string);
 		$reader->expects($this->at(9))->method('onProperty')->with('$_array', array('visibility' => 'public'), $properties->_array);
 		$reader->expects($this->at(10))->method('onProperty')->with('$_assoc_array', array('visibility' => 'public'), $properties->_assoc_array);
+		$reader->expects($this->at(11))->method('onProperty')->with('$_nested_array', array('visibility' => 'public'), $properties->_nested_array);
+		$reader->expects($this->at(12))->method('onProperty')->with('$_decl_array', array('visibility' => 'public'), $properties->_decl_array);
 
 		$parser = new CodeParser($tokens, $reader);
 		$parser->parse();
