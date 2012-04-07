@@ -228,4 +228,16 @@ class CodeParserTest extends PHPUnit_Framework_TestCase {
 		$parser = new CodeParser($tokens, $reader);
 		$parser->parse();
 	}
+	
+	function testCanParseAnonymousFunctions() {
+		$file = 'Corpus/closures.php';
+		$tokens = $this->tokenizeSampleFile($file);
+		$reader = $this->getMockReader($file);
+		
+		$reader->expects($this->once())->method('onFunction')->with('multiplier', array('$arg'=>false));
+		$reader->expects($this->once())->method('onMethod')->with('getMultiplier', array('$arg'=>false));
+		
+		$parser = new CodeParser($tokens, $reader);
+		$parser->parse();
+	}
 }

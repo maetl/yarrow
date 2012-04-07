@@ -413,7 +413,7 @@ class CodeParser {
 
 		if ($this->state == self::CLASS_SCOPE) {
 			$this->reader->onMethod($name, $arguments, $this->keywords);
-		} else {
+		} elseif ($this->state == self::GLOBAL_SCOPE) {
 			$this->reader->onFunction($name, $arguments, $this->keywords);
 		}
 		
