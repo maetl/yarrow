@@ -246,10 +246,10 @@ class CodeParser {
 	/**
 	 * Clip the default value off a class property or function argument.
 	 */
-	function shredValue() {		
+	function shredValue($endToken=T_SEMICOLON) {		
 		$token = $this->nextToken();
 		
-		while ($token[0] != T_SEMICOLON) {
+		while ($token[0] != $endToken) {
 			
 			switch($token[0]) {
 
