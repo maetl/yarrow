@@ -299,7 +299,7 @@ class ConsoleRunner {
 	 * Show the version header.
 	 */
 	private function printHeader() {
-		self::$startTime = mktime();
+		self::$startTime = time();
 		echo self::APPNAME . " " .self::VERSION . "\n\n";
 	}
 	
@@ -307,7 +307,7 @@ class ConsoleRunner {
 	 * Show the results footer.
 	 */
 	private function printFooter() {
-		$time = (mktime() - self::$startTime);
+		$time = (time() - self::$startTime);
 		$mb = memory_get_peak_usage() / (1024 * 1024);
 		echo "Time: $time seconds. Memory: " . round($mb, 1) . "MB.\n\n";
 		echo "Documentation generated at {$this->config->outputTarget}/\n";
