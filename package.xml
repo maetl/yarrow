@@ -124,6 +124,9 @@
 		<file name='PropertiesParser.php' role='php'>
 			<tasks:replace from='{{version}}' to='version' type='package-info'/>
 		</file>
+		<file name='PropertyModel.php' role='php'>
+			<tasks:replace from='{{version}}' to='version' type='package-info'/>
+		</file>		
 		<file name='Scanner.php' role='php'>
 			<tasks:replace from='{{version}}' to='version' type='package-info'/>
 		</file>
