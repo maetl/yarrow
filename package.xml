@@ -76,6 +76,9 @@
 		<file name='DocblockParser.php' role='php'>
 			<tasks:replace from='{{version}}' to='version' type='package-info'/>
 		</file>
+		<file name='Exception.php' role='php'>
+			<tasks:replace from='{{version}}' to='version' type='package-info'/>
+		</file>		
 		<file name='FileCollector.php' role='php'>
 			<tasks:replace from='{{version}}' to='version' type='package-info'/>
 		</file>

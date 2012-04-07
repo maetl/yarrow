@@ -11,10 +11,6 @@
  * with this source code for details about modification and redistribution.
  */
 
-// remove this when migration to PEAR
-// naming convention is complete
-require_once 'Exception.php';
-
 class Yarrow_Autoload {
 	
 	public static function getClassPath() {
