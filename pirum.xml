@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<server>
+  <name>yo.yarrowdoc.org</name>
+  <summary>Yarrow Channel</summary>
+  <alias>yarrow</alias>
+  <url>http://yo.yarrowdoc.org</url>
+</server>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<r xmlns="http://pear.php.net/dtd/rest.release" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://pear.php.net/dtd/rest.release http://pear.php.net/dtd/rest.release.xsd">
+    <p xlink:href="/rest/p/yarrow">Yarrow</p>
+    <c>yo.yarrowdoc.org</c>
+    <v>0.0.3</v>
+    <st>alpha</st>
+    <l>MIT</l>
+    <m>maetl</m>
+    <s>Simple Documentation Generator</s>
+    <d>Finally, a tidy documentation tool for PHP projects. Yarrow shreds your PHP code files and converts their structure into user friendly API documentation.</d>
+    <da>2011-04-24 19:52:01</da>
+    <n>
+-
+ </n>
+    <f>11051</f>
+    <g>http://yo.yarrowdoc.org/get/Yarrow-0.0.3</g>
+    <x xlink:href="package.0.0.3.xml"/>
+</r>

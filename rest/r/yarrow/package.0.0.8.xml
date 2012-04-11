@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.9.4" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0     http://pear.php.net/dtd/tasks-1.0.xsd     http://pear.php.net/dtd/package-2.0     http://pear.php.net/dtd/package-2.0.xsd">
+ <name>Yarrow</name>
+ <channel>yo.yarrowdoc.org</channel>
+ <summary>Simple Documentation Generator</summary>
+ <description>Finally, a tidy documentation tool for PHP projects. Yarrow shreds your PHP code files and converts their structure into user friendly API documentation.</description>
+ <lead>
+  <name>Mark Rickerby</name>
+  <user>maetl</user>
+  <email>me@maetl.net</email>
+  <active>yes</active>
+ </lead>
+ <date>2011-10-15</date>
+ <time>16:24:36</time>
+ <version>
+  <release>0.0.8</release>
+  <api>0.0.8</api>
+ </version>
+ <stability>
+  <release>alpha</release>
+  <api>alpha</api>
+ </stability>
+ <license uri="http://www.opensource.org/licenses/mit-license.php">MIT</license>
+ <notes>
+-
+ </notes>
+ <contents>
+  <dir name="/">
+   <file md5sum="5a16bde9950e6b5b6b9e7e0074a3493b" name="Yarrow/Themes/Default/Yarrowdoc" role="php" />
+   <file md5sum="cf32ac9b09c752f29b05eb462d45a93f" name="Yarrow/Themes/Default/index.tpl.php" role="php" />
+   <file md5sum="17fad5180dea9c8c04987989df5997e7" name="Yarrow/Themes/Default/class.tpl.php" role="php" />
+   <file md5sum="74e3c4cfbe8184a6b53815de7dad9665" name="Yarrow/Themes/Default/file.tpl.php" role="php" />
+   <file md5sum="fdf1ca5898fc542eb96c97affbb93a77" name="Yarrow/Themes/Plain/Yarrowdoc" role="php" />
+   <file md5sum="64895d652bf23c6f7967b365dd952e71" name="Yarrow/Themes/Plain/index.tpl.php" role="php" />
+   <file md5sum="b259a95e03c165a9f52adb58c9b97ce1" name="Yarrow/Themes/Plain/class.tpl.php" role="php" />
+   <file md5sum="20d3e6966d088dae433d72e486d0f6fb" name="Yarrow/Themes/Plain/file.tpl.php" role="php" />
+   <file md5sum="b4c92bb0978dac51eb1cef33a414b785" name="Yarrow/Yarrowdoc" role="php">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+   </file>
+   <file md5sum="6891543630610e1d41f5fe462554365a" name="Yarrow/Analyzer.php" role="php">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+   </file>
+   <file md5sum="6c67363fe651d29172c899d5262a93a3" name="Yarrow/Autoload.php" role="php">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+   </file>
+   <file md5sum="c57b441bc2304f932963fe141a49fe3a" name="Yarrow/ClassModel.php" role="php">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+   </file>
+   <file md5sum="0657b5cf3c7f629955c90dd904bb3af4" name="Yarrow/CodeModel.php" role="php">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+   </file>
+   <file md5sum="0e92f584ad45a1277a11faf7da560714" name="Yarrow/CodeParser.php" role="php">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+   </file>
+   <file md5sum="a12573cbe1566dc781e2157bf825d6a3" name="Yarrow/CodeReader.php" role="php">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+   </file>
+   <file md5sum="9ecf5adb7739cbc7dae4904714d1e452" name="Yarrow/CodeRegistry.php" role="php">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+   </file>
+   <file md5sum="e51a0b1aa018d8cfda2ec25a9d44b3e2" name="Yarrow/Configuration.php" role="php">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+   </file>
+   <file md5sum="c4dc5358e1460bc81fb8eacd739f3d89" name="Yarrow/ConfigurationError.php" role="php">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+   </file>
+   <file md5sum="4cc9ace230b99298535074eba530e407" name="Yarrow/ConsoleRunner.php" role="php">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+    <tasks:replace from="{{appname}}" to="name" type="package-info" />
+   </file>
+   <file md5sum="c0ad9120c98b6ced34d4b57c6d3bf41c" name="Yarrow/DefaultGenerator.php" role="php">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+   </file>
+   <file md5sum="c0b4f1a9dc8bac0adc4e54b51b44b39d" name="Yarrow/DocblockModel.php" role="php">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+   </file>
+   <file md5sum="287d846c2519bf10d947b0137a9bc28b" name="Yarrow/DocblockParser.php" role="php">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+   </file>
+   <file md5sum="7dcab8e370ba95b5ce099f81dedb3d6e" name="Yarrow/FileCollector.php" role="php">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+   </file>
+   <file md5sum="894e8670a4c2b07ca7d55f4ceff7354e" name="Yarrow/FileListing.php" role="php">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+   </file>
+   <file md5sum="2ec499e80b250d17724c41d9711f78ff" name="Yarrow/FileModel.php" role="php">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+   </file>
+   <file md5sum="fba0908e206c61953718dcff39b4c503" name="Yarrow/FilePackageBuilder.php" role="php">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+   </file>
+   <file md5sum="d97aca36a63c6b7601a188c7579e7eba" name="Yarrow/FolderPackageBuilder.php" role="php">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+   </file>
+   <file md5sum="0f459cf994ef77b3729a975b4d98a1e5" name="Yarrow/FunctionModel.php" role="php">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+   </file>
+   <file md5sum="9679f9b34c79b52ed0c59682a2b3a603" name="Yarrow/Generator.php" role="php">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+   </file>
+   <file md5sum="587d3bc5efe6f5fc7baa259fa08afa3c" name="Yarrow/MethodModel.php" role="php">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+   </file>
+   <file md5sum="049d750d126dce254dc71488b5cbda62" name="Yarrow/ObjectModel.php" role="php">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+   </file>
+   <file md5sum="c2549ff75a34106c5d92edb8a9fcc0c0" name="Yarrow/PackageBuilder.php" role="php">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+   </file>
+   <file md5sum="000b3aa1ebe5b2267e92362f1dcf2e9b" name="Yarrow/PackageModel.php" role="php">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+   </file>
+   <file md5sum="48a798d1bf14c8a4ed9dc95c181b62c9" name="Yarrow/PearPackageBuilder.php" role="php">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+   </file>
+   <file md5sum="9a786a8ff507fedbcbd13527f7949418" name="Yarrow/PhpConverter.php" role="php">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+   </file>
+   <file md5sum="4afb3c2944649cda0a60e726069e179b" name="Yarrow/PropertiesFile.php" role="php">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+   </file>
+   <file md5sum="96e67221fd52493f758fb3c32552109a" name="Yarrow/PropertiesParser.php" role="php">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+   </file>
+   <file md5sum="563261f91869181bafc683a84c730a0c" name="Yarrow/Scanner.php" role="php">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+   </file>
+   <file md5sum="ac76a83ce52c7056e0ac92931028be88" name="Yarrow/ScopeStack.php" role="php">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+   </file>
+   <file md5sum="1afaa735fca620ab8512b1e4fc21a40a" name="Yarrow/TemplateConverter.php" role="php">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+   </file>
+   <file md5sum="97ade28d5065b1780fdd4b110f287fef" name="README" role="doc" />
+   <file md5sum="36366f06dbee9ad7fbe669336aba8b25" name="LICENSE" role="doc" />
+   <file baseinstalldir="/" install-as="yarrow" md5sum="9283564aeaa6c3e34655958bd1537371" name="yarrow.php" role="script">
+    <tasks:replace from="{{version}}" to="version" type="package-info" />
+   </file>
+  </dir>
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>5.2.4</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.0</min>
+   </pearinstaller>
+  </required>
+ </dependencies>
+ <phprelease />
+</package>

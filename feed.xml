@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:base="http://yo.yarrowdoc.org">
+    <title>Yarrow Channel Latest Releases</title>
+    <link href="http://yo.yarrowdoc.org" />
+    <author>
+        <name>http://yo.yarrowdoc.org</name>
+    </author>
+
+    <entry>
+        <title>Yarrow 0.0.9 (alpha)</title>
+        <link href="http://yo.yarrowdoc.org/get/Yarrow-0.0.9.tgz" />
+        <id>Yarrow-0.0.9</id>
+        <author>
+            <name>maetl</name>
+        </author>
+        <updated>2012-04-07T12:50:21+12:00</updated>
+        <content>
+            Finally, a tidy documentation tool for PHP projects. Yarrow shreds your PHP code files and converts their structure into user friendly API documentation.
+        </content>
+    </entry>    <entry>
+        <title>Yarrow 0.0.8 (alpha)</title>
+        <link href="http://yo.yarrowdoc.org/get/Yarrow-0.0.8.tgz" />
+        <id>Yarrow-0.0.8</id>
+        <author>
+            <name>maetl</name>
+        </author>
+        <updated>2011-10-15T16:24:36+13:00</updated>
+        <content>
+            Finally, a tidy documentation tool for PHP projects. Yarrow shreds your PHP code files and converts their structure into user friendly API documentation.
+        </content>
+    </entry>    <entry>
+        <title>Yarrow 0.0.7 (alpha)</title>
+        <link href="http://yo.yarrowdoc.org/get/Yarrow-0.0.7.tgz" />
+        <id>Yarrow-0.0.7</id>
+        <author>
+            <name>maetl</name>
+        </author>
+        <updated>2011-05-01T03:24:28+12:00</updated>
+        <content>
+            Finally, a tidy documentation tool for PHP projects. Yarrow shreds your PHP code files and converts their structure into user friendly API documentation.
+        </content>
+    </entry>    <entry>
+        <title>Yarrow 0.0.6 (alpha)</title>
+        <link href="http://yo.yarrowdoc.org/get/Yarrow-0.0.6.tgz" />
+        <id>Yarrow-0.0.6</id>
+        <author>
+            <name>maetl</name>
+        </author>
+        <updated>2011-04-28T01:46:26+12:00</updated>
+        <content>
+            Finally, a tidy documentation tool for PHP projects. Yarrow shreds your PHP code files and converts their structure into user friendly API documentation.
+        </content>
+    </entry>    <entry>
+        <title>Yarrow 0.0.5 (alpha)</title>
+        <link href="http://yo.yarrowdoc.org/get/Yarrow-0.0.5.tgz" />
+        <id>Yarrow-0.0.5</id>
+        <author>
+            <name>maetl</name>
+        </author>
+        <updated>2011-04-26T14:41:41+12:00</updated>
+        <content>
+            Finally, a tidy documentation tool for PHP projects. Yarrow shreds your PHP code files and converts their structure into user friendly API documentation.
+        </content>
+    </entry>    <entry>
+        <title>Yarrow 0.0.4 (alpha)</title>
+        <link href="http://yo.yarrowdoc.org/get/Yarrow-0.0.4.tgz" />
+        <id>Yarrow-0.0.4</id>
+        <author>
+            <name>maetl</name>
+        </author>
+        <updated>2011-04-26T00:35:31+12:00</updated>
+        <content>
+            Finally, a tidy documentation tool for PHP projects. Yarrow shreds your PHP code files and converts their structure into user friendly API documentation.
+        </content>
+    </entry>    <entry>
+        <title>Yarrow 0.0.3 (alpha)</title>
+        <link href="http://yo.yarrowdoc.org/get/Yarrow-0.0.3.tgz" />
+        <id>Yarrow-0.0.3</id>
+        <author>
+            <name>maetl</name>
+        </author>
+        <updated>2011-04-24T19:52:01+12:00</updated>
+        <content>
+            Finally, a tidy documentation tool for PHP projects. Yarrow shreds your PHP code files and converts their structure into user friendly API documentation.
+        </content>
+    </entry>    <entry>
+        <title>Yarrow 0.0.2 (alpha)</title>
+        <link href="http://yo.yarrowdoc.org/get/Yarrow-0.0.2.tgz" />
+        <id>Yarrow-0.0.2</id>
+        <author>
+            <name>maetl</name>
+        </author>
+        <updated>2011-04-23T20:18:50+12:00</updated>
+        <content>
+            Finally, a tidy documentation tool for PHP projects. Yarrow shreds your PHP code files and converts their structure into user friendly API documentation.
+        </content>
+    </entry>    <entry>
+        <title>Yarrow 0.0.1 (alpha)</title>
+        <link href="http://yo.yarrowdoc.org/get/Yarrow-0.0.1.tgz" />
+        <id>Yarrow-0.0.1</id>
+        <author>
+            <name>maetl</name>
+        </author>
+        <updated>2011-04-08T21:42:20+12:00</updated>
+        <content>
+            Finally, a tidy documentation tool for PHP projects. Yarrow shreds your PHP code files and converts their structure into user friendly API documentation.
+        </content>
+    </entry>
+</feed>

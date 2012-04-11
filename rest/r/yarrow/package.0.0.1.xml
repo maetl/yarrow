@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.9.1" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0     http://pear.php.net/dtd/tasks-1.0.xsd     http://pear.php.net/dtd/package-2.0     http://pear.php.net/dtd/package-2.0.xsd">
+ <name>Yarrow</name>
+ <channel>yo.yarrowdoc.org</channel>
+ <summary>Simple documentation generator.</summary>
+ <description>Winning the battle against entropy.</description>
+ <lead>
+  <name>Mark Rickerby</name>
+  <user>maetl</user>
+  <email>me@maetl.net</email>
+  <active>yes</active>
+ </lead>
+ <date>2011-04-08</date>
+ <time>21:42:20</time>
+ <version>
+  <release>0.0.1</release>
+  <api>0.0.1</api>
+ </version>
+ <stability>
+  <release>alpha</release>
+  <api>alpha</api>
+ </stability>
+ <license uri="http://www.opensource.org/licenses/mit-license.php">MIT</license>
+ <notes>
+-
+ </notes>
+ <contents>
+  <dir name="/">
+   <file md5sum="2b84cf184856221d95bb6885d6766ee7" name="Yarrow/Analyzer.php" role="php" />
+   <file md5sum="d987bcd8c66207c8c67d5a79b4338090" name="Yarrow/CodeParser.php" role="php" />
+   <file md5sum="9423c5dc2a158adf37697bc8bcbd287a" name="Yarrow/FileCollector.php" role="php" />
+   <file md5sum="0aa865cf3347028101c2cb51623b88af" name="README" role="doc" />
+   <file baseinstalldir="/" install-as="yarrow" md5sum="a82445fd3fcb14de497bab8efe03ac31" name="yarrow.php" role="script" />
+  </dir>
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>5.2.0</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.0</min>
+   </pearinstaller>
+  </required>
+ </dependencies>
+ <phprelease />
+</package>
