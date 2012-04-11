@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<f xmlns="http://pear.php.net/dtd/rest.categorypackageinfo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://pear.php.net/dtd/rest.categorypackageinfo     http://pear.php.net/dtd/rest.categorypackageinfo.xsd">
+    <pi>
+        <p>
+            <n>Yarrow</n>
+            <c>yo.yarrowdoc.org</c>
+            <ca xlink:href="/rest/c/Default">Default</ca>
+            <l>MIT</l>
+            <s>Simple Documentation Generator</s>
+            <d>Finally, a tidy documentation tool for PHP projects. Yarrow shreds your PHP code files and converts their structure into user friendly API documentation.</d>
+            <r xlink:href="/rest/r/yarrow" />
+        </p>
+
+        <a>
+            <r>
+                <v>0.0.9</v>
+                <s>alpha</s>
+            </r>
+            <r>
+                <v>0.0.8</v>
+                <s>alpha</s>
+            </r>
+            <r>
+                <v>0.0.7</v>
+                <s>alpha</s>
+            </r>
+            <r>
+                <v>0.0.6</v>
+                <s>alpha</s>
+            </r>
+            <r>
+                <v>0.0.5</v>
+                <s>alpha</s>
+            </r>
+            <r>
+                <v>0.0.4</v>
+                <s>alpha</s>
+            </r>
+            <r>
+                <v>0.0.3</v>
+                <s>alpha</s>
+            </r>
+            <r>
+                <v>0.0.2</v>
+                <s>alpha</s>
+            </r>
+            <r>
+                <v>0.0.1</v>
+                <s>alpha</s>
+            </r>
+
+        </a>
+
+        <deps>
+            <v>0.0.9</v>
+            <d>a:1:{s:8:"required";a:2:{s:3:"php";a:1:{s:3:"min";s:5:"5.2.4";}s:13:"pearinstaller";a:1:{s:3:"min";s:5:"1.4.0";}}}</d>
+        </deps>
+        <deps>
+            <v>0.0.8</v>
+            <d>a:1:{s:8:"required";a:2:{s:3:"php";a:1:{s:3:"min";s:5:"5.2.4";}s:13:"pearinstaller";a:1:{s:3:"min";s:5:"1.4.0";}}}</d>
+        </deps>
+        <deps>
+            <v>0.0.7</v>
+            <d>a:1:{s:8:"required";a:2:{s:3:"php";a:1:{s:3:"min";s:5:"5.2.4";}s:13:"pearinstaller";a:1:{s:3:"min";s:5:"1.4.0";}}}</d>
+        </deps>
+        <deps>
+            <v>0.0.6</v>
+            <d>a:1:{s:8:"required";a:2:{s:3:"php";a:1:{s:3:"min";s:5:"5.2.4";}s:13:"pearinstaller";a:1:{s:3:"min";s:5:"1.4.0";}}}</d>
+        </deps>
+        <deps>
+            <v>0.0.5</v>
+            <d>a:1:{s:8:"required";a:2:{s:3:"php";a:1:{s:3:"min";s:5:"5.2.4";}s:13:"pearinstaller";a:1:{s:3:"min";s:5:"1.4.0";}}}</d>
+        </deps>
+        <deps>
+            <v>0.0.4</v>
+            <d>a:1:{s:8:"required";a:2:{s:3:"php";a:1:{s:3:"min";s:5:"5.2.4";}s:13:"pearinstaller";a:1:{s:3:"min";s:5:"1.4.0";}}}</d>
+        </deps>
+        <deps>
+            <v>0.0.3</v>
+            <d>a:1:{s:8:"required";a:2:{s:3:"php";a:1:{s:3:"min";s:5:"5.2.4";}s:13:"pearinstaller";a:1:{s:3:"min";s:5:"1.4.0";}}}</d>
+        </deps>
+        <deps>
+            <v>0.0.2</v>
+            <d>a:1:{s:8:"required";a:2:{s:3:"php";a:1:{s:3:"min";s:5:"5.2.4";}s:13:"pearinstaller";a:1:{s:3:"min";s:5:"1.4.0";}}}</d>
+        </deps>
+        <deps>
+            <v>0.0.1</v>
+            <d>a:1:{s:8:"required";a:2:{s:3:"php";a:1:{s:3:"min";s:5:"5.2.0";}s:13:"pearinstaller";a:1:{s:3:"min";s:5:"1.4.0";}}}</d>
+        </deps>
+
+    </pi>
+</f>
