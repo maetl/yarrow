@@ -58,7 +58,7 @@ class ClassModel extends CodeModel {
 	}
 	
 	function isInstantiable() {
-		return ($this->isInterface || $this->isAbstract);
+		return !($this->isInterface || $this->isAbstract);
 	}
 	
 	function isFinal() {
