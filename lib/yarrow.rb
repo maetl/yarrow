@@ -1,3 +1,3 @@
-module Yarrow
-  VERSION = "0.1.0"
-end
+require "yarrow/version"
+require "yarrow/console_runner"
+require "yarrow/generator"
