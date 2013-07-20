@@ -50,7 +50,7 @@ module Yarrow
         
         SUCCESS
       rescue Exception => e
-        raise e
+        print_error e
         FAILURE
       end
     end

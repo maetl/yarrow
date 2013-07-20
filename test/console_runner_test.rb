@@ -38,5 +38,12 @@ class ConsoleRunnerTest < Minitest::Test
     assert_includes output_buffer.string, "Yarrow 0.1.0\n"
     assert_includes output_buffer.string, "Path to the generated documentation"
   end
+
+  def test_invalid_option_failure
+    output_buffer = StringIO.new
+    app = Yarrow::ConsoleRunner.new ['yarrow', '-j'], output_buffer
+    assert_equal FAILURE, app.run_application
+    assert_includes output_buffer.string, "Unrecognized option: -j"
+  end
   
 end
