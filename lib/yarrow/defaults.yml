@@ -1,0 +1,5 @@
+# Default configuration settings for Yarrow.
+# This is loaded when the configuration is initialized.
+meta:
+  title: Default Project
+  author: Project Author

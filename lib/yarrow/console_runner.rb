@@ -22,7 +22,7 @@ module Yarrow
       @arguments = arguments
       @options = {}
       @targets = []
-      #@config = Configuration.new
+      @config = Configuration.load(File.dirname(__FILE__) + "/defaults.yml")
     end
     
     def run_application
@@ -65,7 +65,31 @@ module Yarrow
       end
     end
     
+    def load_configuration(path)
+      
+    end
+    
     def process_configuration
+      @config.merge load_configuration(Dir.pwd)
+      
+      @config.input_targets.each do |input_path|
+        @config.merge load_configuration(input_path)
+      end
+      
+      if has_option?(:config)
+        path = @options[:config]
+        @config.merge Load.config(path)
+      end
+      
+      @config.merge({ :options => @options })
+      
+      normalize_theme_path
+      
+      theme = @config.options.theme
+      @config.append load_configuration(theme)
+    end
+    
+    def normalize_theme_path
       
     end
     

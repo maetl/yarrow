@@ -1,0 +1,1 @@
+gem "recursive-open-struct"

@@ -3,7 +3,6 @@ require "minitest/autorun"
 require "stringio"
 require "yarrow"
 
-  
 class ConsoleRunnerTest < Minitest::Test  
   
   SUCCESS = 0
@@ -39,11 +38,35 @@ class ConsoleRunnerTest < Minitest::Test
     assert_includes output_buffer.string, "Path to the generated documentation"
   end
 
-  def test_invalid_option_failure
+  def test_invalid_short_option_message
     output_buffer = StringIO.new
     app = Yarrow::ConsoleRunner.new ['yarrow', '-j'], output_buffer
     assert_equal FAILURE, app.run_application
     assert_includes output_buffer.string, "Unrecognized option: -j"
   end
+  
+  def test_invalid_long_option_message
+    output_buffer = StringIO.new
+    app = Yarrow::ConsoleRunner.new ['yarrow', '--invalid'], output_buffer
+    assert_equal FAILURE, app.run_application
+    assert_includes output_buffer.string, "Unrecognized option: --invalid"
+  end
+
+  def test_invalid_long_option_message
+    output_buffer = StringIO.new
+    app = Yarrow::ConsoleRunner.new ['yarrow', '--invalid'], output_buffer
+    assert_equal FAILURE, app.run_application
+    assert_includes output_buffer.string, "Unrecognized option: --invalid"
+  end
+	
+	def test_config_loads_if_file_exists
+	  output_buffer = StringIO.new
+	  test_config = File.dirname(__FILE__) + '/fixtures/test.yml'
+	  
+	  # todo: stub the console runner
+    app = Yarrow::ConsoleRunner.new ['yarrow', '--config=' + test_config], output_buffer
+    assert_equal SUCCESS, app.run_application
+    puts output_buffer.string
+	end
   
 end
