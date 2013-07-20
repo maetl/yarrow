@@ -86,7 +86,7 @@ module Yarrow
           @options[name.to_sym] = value
           return
         end
-      else  
+      else
         if ENABLED_OPTIONS.has_key?(name.to_sym)
           @options[ENABLED_OPTIONS[name.to_sym]] = value
           return
