@@ -63,10 +63,18 @@ class ConsoleRunnerTest < Minitest::Test
 	  output_buffer = StringIO.new
 	  test_config = File.dirname(__FILE__) + '/fixtures/test.yml'
 	  
-	  # todo: stub the console runner
     app = Yarrow::ConsoleRunner.new ['yarrow', '--config=' + test_config], output_buffer
     assert_equal SUCCESS, app.run_application
-    puts output_buffer.string
+    assert_equal app.config.meta.title, "Test Project"
+	end
+	
+	def test_config_fails_if_file_is_missing
+	  output_buffer = StringIO.new
+	  test_config = File.dirname(__FILE__) + '/fixtures/missing.yml'
+	  
+    app = Yarrow::ConsoleRunner.new ['yarrow', '--config=' + test_config], output_buffer
+    assert_equal FAILURE, app.run_application
+    assert_includes output_buffer.string, "No such file or directory"
 	end
   
 end

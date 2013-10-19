@@ -25,6 +25,10 @@ module Yarrow
       @config = Configuration.load(File.dirname(__FILE__) + "/defaults.yml")
     end
     
+    def config
+      @config
+    end
+    
     def run_application
       print_header
       
@@ -65,33 +69,34 @@ module Yarrow
       end
     end
     
-    def load_configuration(path)
-      ALLOWED_CONFIG_FILES.each do |filename|
-        config_path = path + '/' + filename
-        if File.exists? config_path
-          return RecursiveOpenStruct.new(YAML.load_file(config_path))
-        end
-      end
-    end
+    # def load_configuration(path)
+    #   ALLOWED_CONFIG_FILES.each do |filename|
+    #     config_path = path + '/' + filename
+    #     if File.exists? config_path
+    #       @config.deep_merge! Configuration.load(config_path)
+    #       return
+    #     end
+    #   end
+    # end
     
     def process_configuration
-      @config.merge load_configuration(Dir.pwd)
+      #load_configuration(Dir.pwd)
       
-      @config.input_targets.each do |input_path|
-        @config.merge load_configuration(input_path)
-      end
+      # @targets.each do |input_path|
+      #   @config.deep_merge! load_configuration(input_path)
+      # end
       
       if has_option?(:config)
         path = @options[:config]
-        @config.merge Load.config(path)
+        @config.deep_merge! Configuration.load(path)
       end
       
-      @config.merge({ :options => @options })
+      @config.options = @options.to_hash
+
+      #normalize_theme_path
       
-      normalize_theme_path
-      
-      theme = @config.options.theme
-      @config.append load_configuration(theme)
+      #theme = @config.options.theme
+      #@config.append load_configuration(theme)
     end
     
     def normalize_theme_path
@@ -146,7 +151,7 @@ module Yarrow
     end
     
     def print_footer
-      @out.puts "Documenation generated at {path}!"
+      @out.puts "Content generated at {path}!"
     end
     
     def print_error(e)
