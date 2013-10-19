@@ -66,7 +66,12 @@ module Yarrow
     end
     
     def load_configuration(path)
-      
+      ALLOWED_CONFIG_FILES.each do |filename|
+        config_path = path + '/' + filename
+        if File.exists? config_path
+          return RecursiveOpenStruct.new(YAML.load_file(config_path))
+        end
+      end
     end
     
     def process_configuration

@@ -1,1 +1,1 @@
-gem "recursive-open-struct"
+gem "hashie"
