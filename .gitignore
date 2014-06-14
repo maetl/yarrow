@@ -2,3 +2,5 @@
 fabfile.py
 fabfile.pyc
 pirum.xml
+Gemfile.lock
+yarrow-*.gem
