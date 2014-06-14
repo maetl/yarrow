@@ -1,1 +1,3 @@
-gem "hashie"
+source "https://rubygems.org"
+
+gemspec

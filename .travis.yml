@@ -1,8 +1,10 @@
-language: php
+language: ruby
 
-php:
-  - 5.2
-  - 5.3
-  - 5.4
+cache: bundler
 
-script: phpunit Tests
+rvm:
+  - 2.1
+  - 2.0
+  - 1.9.3
+
+script: bundle exec rake test
