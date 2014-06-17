@@ -14,8 +14,13 @@ module Yarrow
           begin
             meta = YAML.load($1)
             return [content, meta]
-          rescue => e
-            puts "Parsing Exception: #{e.message}"
+          rescue Psych::SyntaxError => error
+            if defined? ::Logger
+              # todo: application wide logger
+              logger = ::Logger.new(STDOUT)
+              logger.error "#{error.message}"
+            end
+            return [content, nil]
           end
 
         end

@@ -24,5 +24,23 @@ class ToolsYfmTest < Minitest::Test
     assert_equal "page", meta['layout']
     assert_equal "YAML Front Matter", meta['title']
   end
+
+  def test_missing_delimiter
+    text = File.read(File.dirname(__FILE__) + "/fixtures/tools/front_matter/missing.yfm")
+
+    content, meta = extract_split_content(text)
+
+    assert_equal "<p>Page content only. No delimiter</p>", content
+    assert_nil meta
+  end
+
+  def test_malformed_yaml
+    text = File.read(File.dirname(__FILE__) + "/fixtures/tools/front_matter/malformed.yfm")
+
+    content, meta = extract_split_content(text)
+
+    assert_equal "<p>Page content.</p>", content
+    assert_nil meta
+  end
   
 end
