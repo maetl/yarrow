@@ -12,8 +12,9 @@ Gem::Specification.new do |s|
   s.files       = Dir.glob("{bin,lib}/**/*")
   s.executables << 'yarrow'
   s.add_runtime_dependency "hashie"
+  s.add_runtime_dependency "sprockets"
   s.add_development_dependency "bundler", "~> 1.3"
   s.add_development_dependency "rake"
-  s.add_development_dependency "minitest"
+  s.add_development_dependency "rspec"
   s.homepage = "http://rubygems.org/gems/yarrow"
 end
