@@ -9,11 +9,24 @@ module Yarrow
       attr_reader :input_dir, :output_dir, :bundles, :assets
 
       # TODO: handle configuration
-      def initialize(options = {})
-        @input_dir = Dir.pwd + "/assets"
-        @output_dir = Dir.pwd + "/web/ui"
+      def initialize(options)
+        raise "Missing asset configuration" unless options[:assets]
 
-        raise "#{@input_dir} is not a directory" unless File.directory? @input_dir
+        @input_dir = options[:assets][:input_dir] || default_input_dir
+        @output_dir = options[:assets][:input_dir] || default_output_dir
+
+        case options[:assets][:append_paths]
+        when Array
+          @append_paths = options[:assets][:append_paths]
+        when "*"
+          @append_paths = Dir[@input_dir + "/*"].select do |path|
+            File.directory?(path)
+          end.map do |path|
+            File.basename(path)
+          end
+        else
+          @append_paths = []
+        end
       end
 
       def compile(assets=[])
@@ -29,17 +42,26 @@ module Yarrow
 
       private
 
+      def default_input_dir
+        Dir.pwd + "/assets"
+      end
+
+      def default_output_dir
+        @output_dir = Dir.pwd + "/web/ui"
+      end
+
       def manifest_file_path
         "#{@output_dir}/manifest.json"
       end
 
       def create_environment
         environment = Sprockets::Environment.new(@input_dir)
-        # configure javascript
-        environment.append_path 'js'
+        
+        @append_paths.each do |path|
+          environment.append_path path
+        end
 
-        # configure stylesheets
-        environment.append_path 'css'
+        # configure css compressor
         environment.css_compressor = :scss
 
         environment
