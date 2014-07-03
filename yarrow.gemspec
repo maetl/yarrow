@@ -1,20 +1,22 @@
 $:.push File.expand_path("../lib", __FILE__)
+
 require "yarrow/version"
 
-Gem::Specification.new do |s|
-  s.name        = "yarrow"
-  s.version     = Yarrow::VERSION
-  s.platform    = Gem::Platform::RUBY
-  s.summary     = "Documentation generator"
-  s.description = "Documentation generator"
-  s.authors     = ["Mark Rickerby"]
-  s.email       = "me@maetl.net"
-  s.files       = Dir.glob("{bin,lib}/**/*")
-  s.executables << 'yarrow'
-  s.add_runtime_dependency "hashie"
-  s.add_runtime_dependency "sprockets"
-  s.add_development_dependency "bundler", "~> 1.3"
-  s.add_development_dependency "rake"
-  s.add_development_dependency "rspec"
-  s.homepage = "http://rubygems.org/gems/yarrow"
+Gem::Specification.new do |spec|
+  spec.name        = "yarrow"
+  spec.version     = Yarrow::VERSION
+  spec.platform    = Gem::Platform::RUBY
+  spec.summary     = "Documentation generator based on a fluent data model."
+  spec.description = "Yarrow is a tool for generating well structured documentation from a variety of input sourcespec."
+  spec.authors     = ["Mark Rickerby"]
+  spec.email       = "me@maetl.net"
+  spec.files       = Dir.glob("{bin,lib}/**/*")
+  spec.executables << "yarrow"
+  spec.add_runtime_dependency "hashie"
+  spec.add_runtime_dependency "sprockets"
+  spec.add_runtime_dependency "mementus"
+  spec.add_development_dependency "bundler", "~> 1.3"
+  spec.add_development_dependency "rake"
+  spec.add_development_dependency "rspec"
+  spec.homepage = "http://rubygemspec.org/gems/yarrow"
 end
