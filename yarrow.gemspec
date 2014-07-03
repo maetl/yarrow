@@ -19,4 +19,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec"
   spec.homepage = "http://rubygemspec.org/gems/yarrow"
+  spec.license = "MIT"
 end
