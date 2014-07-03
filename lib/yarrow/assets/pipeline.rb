@@ -7,7 +7,7 @@ module Yarrow
     # A framework for processing and compressing static assets using Sprockets.
     class Pipeline
 
-      attr_reader :input_dir, :output_dir, :bundles, :assets
+      attr_reader :input_dir, :output_dir, :append_paths, :bundles, :assets
 
       # @param options [Hash, Hashie::Mash, Yarrow::Configuration]
       def initialize(options)

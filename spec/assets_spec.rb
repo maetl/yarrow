@@ -41,4 +41,18 @@ describe Yarrow::Assets::Pipeline do
     expect(pipeline.environment.paths).to include(Dir.pwd + "/spec/fixtures/assets/js")
   end
 
+  it "can append paths to pipeline instance" do
+    config = {
+      :assets => {
+        :input_dir => "spec/fixtures/assets",
+        :output_dir => "web/ui"
+      }
+    }
+    pipeline = Yarrow::Assets::Pipeline.new(config)
+    pipeline.append_paths << "css"
+
+    expect(pipeline.environment.paths).to include(Dir.pwd + "/spec/fixtures/assets/css")
+    expect(pipeline.environment.paths).not_to include(Dir.pwd + "/spec/fixtures/assets/js")
+  end
+
 end
