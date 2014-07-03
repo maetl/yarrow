@@ -4,15 +4,17 @@ require 'sprockets'
 
 module Yarrow
   module Assets
+    # A framework for processing and compressing static assets using Sprockets.
     class Pipeline
 
       attr_reader :input_dir, :output_dir, :bundles, :assets
 
+      # @param options [Hash, Hashie::Mash, Yarrow::Configuration]
       def initialize(options)
         raise 'Missing asset configuration' unless options[:assets]
 
         @input_dir = options[:assets][:input_dir] || default_input_dir
-        @output_dir = options[:assets][:input_dir] || default_output_dir
+        @output_dir = options[:assets][:output_dir] || default_output_dir
 
         case options[:assets][:append_paths]
         when Array
