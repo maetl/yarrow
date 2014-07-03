@@ -1,6 +1,0 @@
-# These settings should load second, and overwrite
-# the primary settings.
-
-[meta]
-title:		Secondary Title
-author:		Erika Mustermann

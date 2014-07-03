@@ -1,5 +1,0 @@
-/**
- * @param  PHPUnit_Framework_Test $suite
- * @param  array                  $arguments
- * @return PHPUnit_Framework_TestResult
- */
