@@ -24,6 +24,16 @@ describe Yarrow::Assets::Pipeline do
       expect(pipeline.environment.paths).to include(Dir.pwd + "/assets/javascripts")
     end
 
+    it "can append string paths to the Sprockets environment" do
+      config = {
+        :input_dir => "spec/fixtures/assets",
+        :append_paths => "css"
+      }
+      pipeline = Yarrow::Assets::Pipeline.new(config)
+
+      expect(pipeline.environment.paths).to include(Dir.pwd + "/spec/fixtures/assets/css")
+    end
+
     it "can append glob paths to the Sprockets environment" do
       config = {
         :input_dir => "spec/fixtures/assets",
@@ -74,7 +84,7 @@ describe Yarrow::Assets::Pipeline do
       config = {
         :input_dir => "spec/fixtures/assets",
         :output_dir => "web/ui",
-        :append_paths => "*"
+        :append_paths => "css"
       }
       pipeline = Yarrow::Assets::Pipeline.new(config)
 

@@ -15,6 +15,8 @@ module Yarrow
         @input_dir = options[:input_dir] || default_input_dir
         @output_dir = options[:output_dir] || default_output_dir
 
+        @append_paths = []
+
         case options[:append_paths]
         when Array
           @append_paths = options[:append_paths]
@@ -24,8 +26,8 @@ module Yarrow
           end.map do |path|
             File.basename(path)
           end
-        else
-          @append_paths = []
+        when String
+          @append_paths << options[:append_paths]
         end
       end
 
