@@ -53,6 +53,7 @@ module Yarrow
         end
       end
 
+      # Access instance of the Sprockets environment.
       def environment
         @environment ||= create_environment
       end
@@ -77,9 +78,6 @@ module Yarrow
         @append_paths.each do |path|
           environment.append_path path
         end
-
-        # configure css compressor
-        environment.css_compressor = :scss
 
         environment
       end
