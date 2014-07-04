@@ -29,10 +29,27 @@ module Yarrow
         end
       end
 
-      def compile(assets = [])
+      # Compiles an asset manifest and processed output files from the given input bundles.
+      # Also generates a manifest linking each output bundle to its given input name.
+      # @param bundles [Array<String>]
+      def compile(bundles = [])
         manifest = Sprockets::Manifest.new(environment, manifest_file_path)
-        assets.each do |asset|
-          manifest.compile(asset)
+        bundles.each do |bundle|          
+          if bundle.include? '*'
+            Dir["#{@input_dir}/#{bundle}"].each do |asset|
+              manifest.compile(File.basename(asset))
+            end
+          else
+            manifest.compile(bundle)
+          end
+        end
+      end
+
+      # Copy the given files to the output path without processing or renaming.
+      # @param bundle [Array<String>]
+      def copy(bundles = [])
+        bundles.each do |bundle|
+          FileUtils.cp_r "#{@input_dir}/#{bundle}", "#{@output_dir}/#{bundle}"
         end
       end
 
