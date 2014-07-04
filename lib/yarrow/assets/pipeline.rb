@@ -71,7 +71,7 @@ module Yarrow
       end
 
       def default_output_dir
-        "#{Dir.pwd}/web/ui"
+        "#{Dir.pwd}/public/assets"
       end
 
       def manifest_file_path
