@@ -2,6 +2,7 @@ require "hashie"
 require "yaml"
 
 require_relative "yarrow/version"
+require_relative "yarrow/logging"
 require_relative "yarrow/configuration"
 require_relative "yarrow/console_runner"
 require_relative "yarrow/generator"

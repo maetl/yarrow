@@ -7,6 +7,8 @@ module Yarrow
     # A framework for processing and compressing static assets using Sprockets.
     class Pipeline
 
+      include Loggable
+
       attr_reader :input_dir, :output_dir, :append_paths, :bundles, :assets
 
       # @param options [Hash, Hashie::Mash, Yarrow::Configuration]
@@ -39,9 +41,11 @@ module Yarrow
         bundles.each do |bundle|          
           if bundle.include? '*'
             Dir["#{@input_dir}/#{bundle}"].each do |asset|
+              logger.info "Compiling: #{asset}"
               manifest.compile(File.basename(asset))
             end
           else
+            logger.info "Compiling: #{bundle}"
             manifest.compile(bundle)
           end
         end
