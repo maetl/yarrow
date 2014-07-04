@@ -11,14 +11,13 @@ module Yarrow
 
       # @param options [Hash, Hashie::Mash, Yarrow::Configuration]
       def initialize(options)
-        raise 'Missing asset configuration' unless options[:assets]
 
-        @input_dir = options[:assets][:input_dir] || default_input_dir
-        @output_dir = options[:assets][:output_dir] || default_output_dir
+        @input_dir = options[:input_dir] || default_input_dir
+        @output_dir = options[:output_dir] || default_output_dir
 
-        case options[:assets][:append_paths]
+        case options[:append_paths]
         when Array
-          @append_paths = options[:assets][:append_paths]
+          @append_paths = options[:append_paths]
         when '*'
           @append_paths = Dir[@input_dir + '/*'].select do |path|
             File.directory?(path)

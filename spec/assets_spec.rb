@@ -4,9 +4,7 @@ describe Yarrow::Assets::Pipeline do
 
   it "initializes with a base asset path" do
     config = {
-      :assets => {
-        :input_dir => "spec/fixtures/assets"
-      }
+      :input_dir => "spec/fixtures/assets"
     }
     pipeline = Yarrow::Assets::Pipeline.new(config)
 
@@ -15,11 +13,9 @@ describe Yarrow::Assets::Pipeline do
 
   it "can append paths to the Sprockets environment" do
     config = {
-      :assets => {
-        :input_dir => "assets",
-        :output_dir => "web/ui",
-        :append_paths => ["stylesheets", "javascripts"]
-      }
+      :input_dir => "assets",
+      :output_dir => "web/ui",
+      :append_paths => ["stylesheets", "javascripts"]
     }
     pipeline = Yarrow::Assets::Pipeline.new(config)
 
@@ -29,11 +25,9 @@ describe Yarrow::Assets::Pipeline do
 
   it "can append glob paths to the Sprockets environment" do
     config = {
-      :assets => {
-        :input_dir => "spec/fixtures/assets",
-        :output_dir => "web/ui",
-        :append_paths => "*"
-      }
+      :input_dir => "spec/fixtures/assets",
+      :output_dir => "web/ui",
+      :append_paths => "*"
     }
     pipeline = Yarrow::Assets::Pipeline.new(config)
 
@@ -43,10 +37,8 @@ describe Yarrow::Assets::Pipeline do
 
   it "can append paths to pipeline instance" do
     config = {
-      :assets => {
-        :input_dir => "spec/fixtures/assets",
-        :output_dir => "web/ui"
-      }
+      :input_dir => "spec/fixtures/assets",
+      :output_dir => "web/ui"
     }
     pipeline = Yarrow::Assets::Pipeline.new(config)
     pipeline.append_paths << "css"
