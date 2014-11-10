@@ -3,7 +3,7 @@ module Yarrow
     module FrontMatter
 
       def read_split_content(path)
-        extract_split_content(File.read(path))
+        extract_split_content(File.read(path, :encoding => 'utf-8'))
       end
 
       def extract_split_content(text)
