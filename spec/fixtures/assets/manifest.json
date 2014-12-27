@@ -1,0 +1,19 @@
+{
+	"files": {
+		"main-7051b3cd15b430b483c4266d0519edf2.js": {
+			"logical_path":"main.js",
+			"mtime":"2014-12-25T09:14:47+11:00",
+			"size":9817,
+			"digest":"7051b3cd15b430b483c4266d0519edf2"
+		},
+		"vendor-4362eea15558e73d3663de653cdeb81e.js": {
+			"logical_path":"vendor.js",
+			"mtime":"2014-12-22T16:40:34+11:00",
+			"size":302224,
+			"digest":"4362eea15558e73d3663de653cdeb81e"}
+		},
+	"assets": {
+		"main.js": "main-7051b3cd15b430b483c4266d0519edf2.js",
+		"vendor.js":"vendor-4362eea15558e73d3663de653cdeb81e.js"
+	}
+}
