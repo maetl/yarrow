@@ -12,6 +12,12 @@ describe Yarrow::Assets::Manifest do
     expect(manifest.exists?("main.js")).to eq false
   end
 
+  it "initializes with empty values if empty config given" do
+    config = {}
+    manifest = Yarrow::Assets::Manifest.new(config)
+
+    expect(manifest.exists?("main.js")).to eq false
+  end
 
   it "loads values from manifest file" do
     config = {
@@ -30,7 +36,7 @@ describe Yarrow::Assets::Manifest do
     }
     manifest = Yarrow::Assets::Manifest.new(config)
 
-    expect(manifest.digest_path("main.js")).to eq "main-7051b3cd15b430b483c4266d0519edf2.js"
+    expect(manifest.digest_path("main.js")).to eq "main-4362eea15558e73d3663de653cdeb81e.js"
   end
 
   it "maps logical path to file object" do
@@ -41,9 +47,9 @@ describe Yarrow::Assets::Manifest do
     manifest = Yarrow::Assets::Manifest.new(config)
 
     file = manifest.file("main.js")
-    expect(file['digest']).to eq "7051b3cd15b430b483c4266d0519edf2"
+    expect(file['digest']).to eq "4362eea15558e73d3663de653cdeb81e"
     expect(file['logical_path']).to eq "main.js"
-    expect(file['mtime']).to eq "2014-12-25T09:14:47+11:00"
+    expect(file['mtime']).to eq "2014-12-22T16:40:34+11:00"
   end
 
   it "maps logical paths" do
@@ -54,8 +60,8 @@ describe Yarrow::Assets::Manifest do
     manifest = Yarrow::Assets::Manifest.new(config)
 
     expect(manifest.logical_paths.size).to eq 2
-    expect(manifest.logical_paths.first).to eq "main.js"
-    expect(manifest.logical_paths.last).to eq "vendor.js"
+    expect(manifest.logical_paths.first).to eq "styles.css"
+    expect(manifest.logical_paths.last).to eq "main.js"
   end
 
   it "maps digest paths" do
@@ -66,8 +72,8 @@ describe Yarrow::Assets::Manifest do
     manifest = Yarrow::Assets::Manifest.new(config)
 
     expect(manifest.digest_paths.size).to eq 2
-    expect(manifest.digest_paths.first).to eq "main-7051b3cd15b430b483c4266d0519edf2.js"
-    expect(manifest.digest_paths.last).to eq "vendor-4362eea15558e73d3663de653cdeb81e.js"
+    expect(manifest.digest_paths.first).to eq "styles-7051b3cd15b430b483c4266d0519edf2.css"
+    expect(manifest.digest_paths.last).to eq "main-4362eea15558e73d3663de653cdeb81e.js"
   end
 
   it "maps asset files" do

@@ -3,10 +3,19 @@ require 'json'
 
 module Yarrow
   module Assets
+
+    ##
+    # Provides access to the bundle of compiled CSS and JS assets.
+    #
     class Manifest
 
       def initialize(config)
-        manifest_path = [config[:output_dir], config[:manifest_path]].join('/')
+        if config[:output_dir] && config[:manifest_path]
+          manifest_path = [config[:output_dir], config[:manifest_path]].join('/')
+        else
+          manifest_path = './manifest.json'
+        end
+
         if File.exists?(manifest_path)
           @manifest_index = JSON.parse(File.read(manifest_path))
         else

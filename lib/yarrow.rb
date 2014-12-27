@@ -12,6 +12,7 @@ require_relative "yarrow/output/mapper"
 require_relative "yarrow/output/generator"
 require_relative "yarrow/content_map"
 require_relative "yarrow/assets"
+require_relative "yarrow/html"
 require_relative "yarrow/tools/front_matter"
 
 # Dir[File.dirname(__FILE__) + "/yarrow/generators/*.rb"].each do |generator|
