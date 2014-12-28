@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.version     = Yarrow::VERSION
   spec.platform    = Gem::Platform::RUBY
   spec.summary     = "Documentation generator based on a fluent data model."
-  spec.description = "Yarrow is a tool for generating well structured documentation from a variety of input sourcespec."
+  spec.description = "Yarrow is a tool for generating well structured documentation from a variety of input sources."
   spec.authors     = ["Mark Rickerby"]
   spec.email       = "me@maetl.net"
   spec.files       = Dir.glob("{bin,lib}/**/*")
