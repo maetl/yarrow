@@ -2,24 +2,53 @@ require "spec_helper"
 
 describe Yarrow::Configuration do
   
-  it "test_load_from_file" do
-    config = Yarrow::Configuration.load(File.dirname(__FILE__) + "/fixtures/test.yml")
+  describe "#register" do
 
-    expect(config.meta.title).to eq "Test Project"
+    it "registers a global instance from local fixture" do
+      Yarrow::Configuration.register(File.dirname(__FILE__) + "/fixtures/test.yml")
+      config = Yarrow::Configuration.instance
+
+      expect(config.meta.title).to eq "Test Project"
+    end
+
   end
 
-  it "test_nested_property_access" do
-    config = Yarrow::Configuration.new({"meta" => { "title" => "Test Project" }})
+  describe "#load" do
 
-    expect(config.meta.title).to eq "Test Project"
+    it "loads from local fixture" do
+      config = Yarrow::Configuration.load(File.dirname(__FILE__) + "/fixtures/test.yml")
+
+      expect(config.meta.title).to eq "Test Project"
+    end
+
   end
 
-  it "test_deep_merge_precedence" do
-    config = Yarrow::Configuration.new({"one" => "one"})
-    config.deep_merge! Yarrow::Configuration.new({"one" => 1, "two" => 2})
+  describe "#new" do
 
-    expect(config.one).to eq 1
-    expect(config.two).to eq 2    
+    it "provides path traversal on nested properties" do
+      config = Yarrow::Configuration.new({"meta" => { "title" => "Test Project" }})
+
+      expect(config.meta.title).to eq "Test Project"
+    end
+
+    it "provides key lookups on nested properties" do
+      config = Yarrow::Configuration.new({"meta" => { "title" => "Test Project" }})
+
+      expect(config[:meta][:title]).to eq "Test Project"
+    end
+
+  end
+
+  describe "#deep_merge!" do
+
+    it "merges properties with last-in precedence" do
+      config = Yarrow::Configuration.new({"one" => "one"})
+      config.deep_merge! Yarrow::Configuration.new({"one" => 1, "two" => 2})
+
+      expect(config.one).to eq 1
+      expect(config.two).to eq 2    
+    end
+
   end
 
 end
