@@ -3,6 +3,18 @@ Yarrow
 
 [![Build Status](https://travis-ci.org/maetl/yarrow.svg?branch=master)](https://travis-ci.org/maetl/yarrow) [![Code Climate](https://codeclimate.com/github/maetl/yarrow/badges/gpa.svg)](https://codeclimate.com/github/maetl/yarrow) [![Test Coverage](https://codeclimate.com/github/maetl/yarrow/badges/coverage.svg)](https://codeclimate.com/github/maetl/yarrow)
 
+[![Gem Version](http://img.shields.io/gem/v/yarrow.svg)][gem]
+[![Build Status](http://img.shields.io/travis/maetl/yarrow.svg)][travis]
+[![Dependency Status](http://img.shields.io/gemnasium/maetl/yarrow.svg)][gemnasium]
+[![Code Climate](http://img.shields.io/codeclimate/github/maetl/yarrow.svg)][codeclimate]
+[![Coverage Status](http://img.shields.io/coveralls/maetl/yarrow.svg)][coveralls]
+
+[gem]: https://rubygems.org/gems/yarrow
+[travis]: https://travis-ci.org/maetl/yarrow
+[gemnasium]: https://gemnasium.com/maetl/yarrow
+[codeclimate]: https://codeclimate.com/github/maetl/yarrow
+[coveralls]: https://coveralls.io/r/maetl/yarrow
+
 Yarrow is a tool for generating well structured documentation from a variety of input sources.
 
 Unlike most static site generators and code documentation tools, Yarrow is written with design and content-strategy in mind. It does not impose its own structure on your content. This makes it appropriate for building static sites and blogs as well as style guides and API docs.
