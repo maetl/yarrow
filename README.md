@@ -1,8 +1,6 @@
 Yarrow
 ======
 
-[![Build Status](https://travis-ci.org/maetl/yarrow.svg?branch=master)](https://travis-ci.org/maetl/yarrow) [![Code Climate](https://codeclimate.com/github/maetl/yarrow/badges/gpa.svg)](https://codeclimate.com/github/maetl/yarrow) [![Test Coverage](https://codeclimate.com/github/maetl/yarrow/badges/coverage.svg)](https://codeclimate.com/github/maetl/yarrow)
-
 [![Gem Version](http://img.shields.io/gem/v/yarrow.svg)][gem]
 [![Build Status](http://img.shields.io/travis/maetl/yarrow.svg)][travis]
 [![Dependency Status](http://img.shields.io/gemnasium/maetl/yarrow.svg)][gemnasium]
