@@ -1,7 +1,7 @@
 Yarrow
 ======
 
-[![Build Status](https://travis-ci.org/maetl/yarrow.svg?branch=master)](https://travis-ci.org/maetl/yarrow)
+[![Build Status](https://travis-ci.org/maetl/yarrow.svg?branch=master)](https://travis-ci.org/maetl/yarrow) [![Code Climate](https://codeclimate.com/github/maetl/yarrow/badges/gpa.svg)](https://codeclimate.com/github/maetl/yarrow) [![Test Coverage](https://codeclimate.com/github/maetl/yarrow/badges/coverage.svg)](https://codeclimate.com/github/maetl/yarrow)
 
 Yarrow is a tool for generating well structured documentation from a variety of input sources.
 
