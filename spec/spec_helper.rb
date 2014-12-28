@@ -1,6 +1,9 @@
-require "rspec"
-require "yarrow"
+require 'rspec'
+require 'yarrow'
+require 'coveralls'
+
+Coveralls.wear!
 
 RSpec.configure do |config|
-  config.formatter = "documentation"
+  config.formatter = 'documentation'
 end
