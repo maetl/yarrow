@@ -2,6 +2,19 @@ require "spec_helper"
 
 describe Yarrow::Configuration do
   
+  describe "#instance" do
+
+    it "provides an empty default" do
+      expect(Yarrow::Configuration.instance).to eq Yarrow::Configuration.new
+    end
+
+    it "provides an empty default when cleared" do
+      Yarrow::Configuration.clear
+      expect(Yarrow::Configuration.instance).to eq Yarrow::Configuration.new
+    end
+
+  end
+
   describe "#register" do
 
     it "registers a global instance from local fixture" do
@@ -9,6 +22,8 @@ describe Yarrow::Configuration do
       config = Yarrow::Configuration.instance
 
       expect(config.meta.title).to eq "Test Project"
+
+      Yarrow::Configuration.clear
     end
 
   end
