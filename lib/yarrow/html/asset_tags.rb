@@ -2,6 +2,10 @@ module Yarrow
   module HTML
     module AssetTags
       
+      def config
+        Yarrow::Configuration.instance
+      end
+
       # TODO: make sprockets manifest optional/pluggable
       def manifest
         Yarrow::Assets::Manifest.new(config || {})
