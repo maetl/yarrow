@@ -4,3 +4,4 @@ fabfile.pyc
 pirum.xml
 Gemfile.lock
 yarrow-*.gem
+coverage
