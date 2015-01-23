@@ -1,7 +1,6 @@
 module Yarrow
   module HTML
-    module AssetTags
-      
+    module AssetTags     
       include Yarrow::Configurable
 
       # TODO: make sprockets manifest optional/pluggable
@@ -9,12 +8,8 @@ module Yarrow
         Yarrow::Assets::Manifest.new(config || {})
       end
 
-      def all_script_tags
-        out = []
-        manifest.digest_paths.each do |asset|
-          out << script_tag(:asset => asset)
-        end
-        out.join["\n"]
+      def script_tags
+        manifest.js_logical_paths.map { |asset_path| script_tag(asset: asset_path) }.join("\n")
       end
 
       # TODO: support asset path option?

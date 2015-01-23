@@ -50,6 +50,28 @@ module Yarrow
       	@manifest_index['files'].values
       end
 
+      def css_logical_paths
+        select_by_extension(logical_paths, '.css')
+      end
+
+      def js_logical_paths
+        select_by_extension(logical_paths, '.js')
+      end
+
+      def css_digest_paths
+        select_by_extension(digest_paths, '.css')
+      end
+
+      def js_digest_paths
+        select_by_extension(digest_paths, '.js')
+      end
+
+      private
+
+      def select_by_extension(collection, ext)
+        collection.select { |asset| asset.end_with?(ext) }
+      end
+
     end
   end
 end

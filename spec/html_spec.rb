@@ -16,6 +16,17 @@ describe Yarrow::HTML::AssetTags do
 
   end
 
+  describe "#script_tags" do
+
+    it "generates script tags for all JS assets in the manifest" do
+      context = TemplateContext.new
+
+      result = '<script src="/main-4362eea15558e73d3663de653cdeb81e.js"></script>'
+      expect(context.script_tags).to eq result
+    end
+
+  end
+
   describe "#script_tag" do
 
     it "generates a JS script tag with a digest URL" do

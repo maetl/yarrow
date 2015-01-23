@@ -88,6 +88,28 @@ describe Yarrow::Assets::Manifest do
     expect(manifest.files.last['digest']).to eq "4362eea15558e73d3663de653cdeb81e"
   end
 
+  it "filters digest paths by extension" do
+    config = {
+      :output_dir => "spec/fixtures/assets",
+      :manifest_path => "manifest.json"
+    }
+    manifest = Yarrow::Assets::Manifest.new(config)
+
+    expect(manifest.css_digest_paths.first).to eq "styles-7051b3cd15b430b483c4266d0519edf2.css"
+    expect(manifest.js_digest_paths.first).to eq "main-4362eea15558e73d3663de653cdeb81e.js"
+  end
+
+  it "filters logical paths by extension" do
+    config = {
+      :output_dir => "spec/fixtures/assets",
+      :manifest_path => "manifest.json"
+    }
+    manifest = Yarrow::Assets::Manifest.new(config)
+
+    expect(manifest.css_logical_paths.first).to eq "styles.css"
+    expect(manifest.js_logical_paths.first).to eq "main.js"
+  end
+
 end
 
 describe Yarrow::Assets::Pipeline do
