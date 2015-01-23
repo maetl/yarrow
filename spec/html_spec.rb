@@ -7,10 +7,11 @@ describe Yarrow::HTML::AssetTags do
     include Yarrow::HTML::AssetTags
 
     def config
-      {
+      Hashie::Mash.new({
         :output_dir => 'spec/fixtures/assets',
-        :manifest_path => 'manifest.json'
-      }
+        :manifest_path => 'manifest.json',
+        :assets_path => ''
+      })
     end
 
   end
@@ -20,7 +21,7 @@ describe Yarrow::HTML::AssetTags do
     it "generates a JS script tag with a digest URL" do
       context = TemplateContext.new
 
-      result = '<script src="main-4362eea15558e73d3663de653cdeb81e.js"></script>'
+      result = '<script src="/main-4362eea15558e73d3663de653cdeb81e.js"></script>'
       expect(context.script_tag(:asset => 'main.js')).to eq result
     end
 
@@ -38,7 +39,7 @@ describe Yarrow::HTML::AssetTags do
     it "generates a CSS link tag with a digest url" do
       context = TemplateContext.new
 
-      result = '<link href="styles-7051b3cd15b430b483c4266d0519edf2.css" rel="stylesheet" type="text/css">'
+      result = '<link href="/styles-7051b3cd15b430b483c4266d0519edf2.css" rel="stylesheet" type="text/css">'
       expect(context.link_tag(:asset => 'styles.css')).to eq result
     end
 
