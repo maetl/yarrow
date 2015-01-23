@@ -1,20 +1,22 @@
-require "hashie"
-require "yaml"
+require 'hashie'
+require 'yaml'
 
-require_relative "yarrow/version"
-require_relative "yarrow/logging"
-require_relative "yarrow/configuration"
-require_relative "yarrow/console_runner"
-require_relative "yarrow/generator"
-require_relative "yarrow/model/index"
-require_relative "yarrow/model/base"
-require_relative "yarrow/output/mapper"
-require_relative "yarrow/output/generator"
-require_relative "yarrow/content_map"
-require_relative "yarrow/assets"
-require_relative "yarrow/html"
-require_relative "yarrow/tools/front_matter"
+require 'yarrow/version'
+require 'yarrow/logging'
+require 'yarrow/configuration'
+require 'yarrow/console_runner'
+require 'yarrow/generator'
+require 'yarrow/model/index'
+require 'yarrow/model/base'
+require 'yarrow/html/asset_tags'
+require 'yarrow/output/mapper'
+require 'yarrow/output/generator'
+require 'yarrow/output/context'
+require 'yarrow/content_map'
+require 'yarrow/assets'
+require 'yarrow/html'
+require 'yarrow/tools/front_matter'
 
-# Dir[File.dirname(__FILE__) + "/yarrow/generators/*.rb"].each do |generator|
+# Dir[File.dirname(__FILE__) + '/yarrow/generators/*.rb'].each do |generator|
 #   require generator
 # end
