@@ -37,7 +37,6 @@ module Yarrow
       # Also generates a manifest linking each output bundle to its given input name.
       # @param bundles [Array<String>]
       def compile(bundles = [])
-        manifest = Sprockets::Manifest.new(environment, manifest_file_path)
         bundles.each do |bundle|          
           if bundle.include? '*'
             Dir["#{@input_dir}/#{bundle}"].each do |asset|
@@ -59,7 +58,21 @@ module Yarrow
         end
       end
 
+      ##
+      # Purges redundant compiled assets from the output path.
+      #
+      # @example Purge all assets except those created in the last 10 minutes
+      #   pipeline.purge(0, )
+      #
+      # @param keep [Integer] Number of previous revisions to keep. Defaults to 2.
+      # @param age [Integer] Purge all assets older than this date. Defaults to 1 hour.
+      def purge(keep = 2, age = 3600)
+        # TODO: upgrade to Sprockets 3.0 to support the age arg
+        manifest.clean(keep)
+      end
+
       # Access instance of the Sprockets environment.
+      # TODO: make this private to avoid forcing a dependency on Sprockets
       def environment
         @environment ||= create_environment
       end
@@ -76,6 +89,10 @@ module Yarrow
 
       def manifest_file_path
         "#{@output_dir}/manifest.json"
+      end
+
+      def manifest
+        Sprockets::Manifest.new(environment, manifest_file_path)
       end
 
       def create_environment
