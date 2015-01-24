@@ -15,7 +15,16 @@ module Yarrow
       def initialize(options)
 
         @input_dir = options[:input_dir] || default_input_dir
-        @output_dir = options[:output_dir] || default_output_dir
+
+        # TODO: improve organisation of these path names in default config
+        # TODO: use object deferences rather than hash keys
+        if options.has_key? :assets_path
+          output_dir = [options[:output_dir], options[:assets_path]].join("\n")
+        else
+          output_dir = options[:output_dir] || default_output_dir
+        end
+
+        @output_dir = output_dir
 
         @append_paths = []
 
