@@ -16,8 +16,8 @@ module Yarrow
       def script_tag(options)
         if options.has_key? :asset and manifest.exists? options[:asset]
           script_path = manifest.digest_path(options[:asset])
-          assets_path = config.assets_path || ''
-          src_path = [assets_path, script_path].join('/')
+          assets_path = config.assets_dir || "#{config.output_dir}/assets"
+          src_path = [assets_path.delete(config.output_dir), script_path].join('/')
         else
           src_path = options[:src]
         end
@@ -29,8 +29,8 @@ module Yarrow
       def link_tag(options)
         if options.has_key? :asset and manifest.exists? options[:asset]
           stylesheet_path = manifest.digest_path(options[:asset])
-          assets_path = config.assets_path || ''
-          href_path = [assets_path, stylesheet_path].join('/')      
+          assets_path = config.assets_dir || "#{config.output_dir}/assets"
+          href_path = [assets_path.delete(config.output_dir), stylesheet_path].join('/')      
         else
           href_path = options[:href]
         end
