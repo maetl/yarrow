@@ -6,14 +6,17 @@ module Yarrow
 
     ##
     # Provides access to the bundle of compiled CSS and JS assets.
-    #
     class Manifest
 
+      ##
+      # @param config [Yarrow::Configuration]
       def initialize(config)
-        if config[:output_dir] && config[:manifest_path]
-          manifest_path = [config[:output_dir], config[:manifest_path]].join('/')
+        raise Yarrow::ConfigurationError if config.assets.nil?
+
+        if config.assets.output_dir
+          manifest_path = Pathname.new(config.assets.output_dir) + config.assets.manifest_file
         else
-          manifest_path = './manifest.json'
+          manifest_path = Pathname.new(config.output_dir) + config.assets.manifest_file
         end
 
         if File.exists?(manifest_path)

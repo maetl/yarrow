@@ -4,6 +4,7 @@ require 'sprockets'
 
 module Yarrow
   module Assets
+    ##
     # A framework for processing and compressing static assets using Sprockets.
     class Pipeline
 
@@ -11,26 +12,24 @@ module Yarrow
 
       attr_reader :input_dir, :output_dir, :append_paths, :bundles, :assets
 
-      # @param options [Hash, Hashie::Mash, Yarrow::Configuration]
-      def initialize(options)
+      ##
+      # @param config [Yarrow::Configuration]
+      def initialize(config)
+        raise Yarrow::ConfigurationError if config.assets.nil?
 
-        @input_dir = options[:input_dir] || default_input_dir
+        @input_dir = config.assets.input_dir || default_input_dir
 
-        # TODO: improve organisation of these path names in default config
-        # TODO: use object deferences rather than hash keys
-        if options.has_key? :assets_path
-          output_dir = [options[:output_dir], options[:assets_path]].join("\n")
+        if config.assets.output_dir
+          @output_dir = config.assets.output_dir
         else
-          output_dir = options[:output_dir] || default_output_dir
+          @output_dir = config.output_dir || default_output_dir
         end
-
-        @output_dir = output_dir
 
         @append_paths = []
 
-        case options[:append_paths]
+        case config.assets.append_paths
         when Array
-          @append_paths = options[:append_paths]
+          @append_paths = config.assets.append_paths
         when '*'
           @append_paths = Dir[@input_dir + '/*'].select do |path|
             File.directory?(path)
@@ -38,7 +37,7 @@ module Yarrow
             File.basename(path)
           end
         when String
-          @append_paths << options[:append_paths]
+          @append_paths << config.assets.append_paths
         end
       end
 

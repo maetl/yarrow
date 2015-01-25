@@ -5,7 +5,20 @@ module Yarrow
 
       # TODO: make sprockets manifest optional/pluggable
       def manifest
-        Yarrow::Assets::Manifest.new(config || {})
+        Yarrow::Assets::Manifest.new(config)
+      end
+
+      ##
+      # Computes the base URL path to assets in the public web directory.
+      def base_url_path
+        raise Yarrow::ConfigurationError if config.assets.nil?
+        raise Yarrow::ConfigurationError if config.output_dir.nil?
+
+        # TODO: prepend configurable CDN URL for host path
+        # TODO: dev/production mode switch
+
+        assets_path = config.assets.output_dir
+        assets_path.gsub(config.output_dir, '')
       end
 
       def script_tags
@@ -16,8 +29,7 @@ module Yarrow
       def script_tag(options)
         if options.has_key? :asset and manifest.exists? options[:asset]
           script_path = manifest.digest_path(options[:asset])
-          assets_path = config.assets_dir || "#{config.output_dir}/assets"
-          src_path = [assets_path.delete(config.output_dir), script_path].join('/')
+          src_path = "#{base_url_path}/#{script_path}"
         else
           src_path = options[:src]
         end
@@ -29,8 +41,7 @@ module Yarrow
       def link_tag(options)
         if options.has_key? :asset and manifest.exists? options[:asset]
           stylesheet_path = manifest.digest_path(options[:asset])
-          assets_path = config.assets_dir || "#{config.output_dir}/assets"
-          href_path = [assets_path.delete(config.output_dir), stylesheet_path].join('/')      
+          href_path = "#{base_url_path}/#{stylesheet_path}"      
         else
           href_path = options[:href]
         end

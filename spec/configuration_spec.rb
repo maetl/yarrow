@@ -40,14 +40,26 @@ describe Yarrow::Configuration do
 
   describe "#new" do
 
-    it "provides path traversal on nested properties" do
+    it "provides path traversal on nested string keys" do
       config = Yarrow::Configuration.new({"meta" => { "title" => "Test Project" }})
 
       expect(config.meta.title).to eq "Test Project"
     end
 
-    it "provides key lookups on nested properties" do
+    it "provides path traversal on nested symbol keys" do
+      config = Yarrow::Configuration.new({:meta => { :title => "Test Project" }})
+
+      expect(config.meta.title).to eq "Test Project"
+    end
+
+    it "provides hash lookups on nested string keys" do
       config = Yarrow::Configuration.new({"meta" => { "title" => "Test Project" }})
+
+      expect(config[:meta][:title]).to eq "Test Project"
+    end
+
+    it "provides hash lookups on nested symbol keys" do
+      config = Yarrow::Configuration.new({:meta => { :title => "Test Project" }})
 
       expect(config[:meta][:title]).to eq "Test Project"
     end

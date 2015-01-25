@@ -1,5 +1,19 @@
 # Default configuration settings for Yarrow.
 # This is loaded when the configuration is initialized.
+input_dir: content
+output_dir: public
 meta:
   title: Default Project
-  author: Project Author
+  author: Default Name
+output:
+  target_dir: public
+  template_dir: templates
+  object_map:
+    page: Yarrow::Model::Site.pages
+assets:
+  input_dir: assets
+  output_dir: public/assets
+  append_paths:
+    - css
+    - js
+  manifest_file: manifest.json

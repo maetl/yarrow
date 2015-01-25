@@ -58,7 +58,7 @@ module Yarrow
       end
 
     end
-    
+
   end
 
   ##
@@ -76,6 +76,11 @@ module Yarrow
       Configuration.instance
     end
 
+  end
+
+  ##
+  # Raised when a required config section or property is missing.
+  class ConfigurationError < StandardError
   end
 
 end
