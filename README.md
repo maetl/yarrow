@@ -17,27 +17,39 @@ Yarrow is a tool for generating well structured documentation from a variety of 
 
 Unlike most static site generators and code documentation tools, Yarrow is written with design and content-strategy in mind. It does not impose its own structure on your content. This makes it appropriate for building static sites and blogs as well as style guides and API docs.
 
-Install
--------
+Installation
+------------
 
-Get it from RubyGems:
+To install the Yarrow command line tool:
 
 ```
 gem install yarrow
 ```
 
-Alternatively, you can reference it from a `Gemfile` and run `bundle install`:
+To embed Yarrow in an existing Ruby project, reference it from a `Gemfile` and run `bundle install`:
 
 ```
-source "https://rubygems.org"
-
-gem "yarrow"
+gem 'yarrow'
 ```
 
-Usage Instructions
-------------------
+Status
+------
 
 Yarrow is an extraction from several existing private projects. This repo is in pre-alpha state, which means that most of the useful features are not yet folded into this codebase. 
+
+## Roadmap
+
+A rough sketch of the project direction.
+
+| Version | Features                                            |
+|:-------:|-----------------------------------------------------|
+| `0.3`   | Asset pipeline and local dev server                 |
+| `0.4`   | Content model/object mapping, template/site context |
+| `0.5`   | Media type mapping, default markup converters       |
+| `0.6`   | HTML tag helpers, default layout templates          |
+| `0.7`   | Rake integration, task library                      |
+| `0.8`   | Generic command line runner                         |
+| `0.9`   | Refactoring, performance fixes, lock down API       |
 
 Contact
 -------
