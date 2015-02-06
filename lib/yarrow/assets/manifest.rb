@@ -46,7 +46,7 @@ module Yarrow
       # @param logical_path [String]
       # @return Boolean
       def exists?(logical_path)
-      	@manifest_index['assets'].key? logical_path
+        @manifest_index['assets'].key? logical_path
       end
 
       ##
@@ -55,7 +55,7 @@ module Yarrow
       # @param logical_path [String]
       # @return [String]
       def digest_path(logical_path)
-      	@manifest_index['assets'][logical_path]
+        @manifest_index['assets'][logical_path]
       end
 
       ##
@@ -64,7 +64,7 @@ module Yarrow
       # @param logical_path [String]
       # @return [Hash]
       def file(logical_path)
-      	@manifest_index['files'][digest_path(logical_path)]
+        @manifest_index['files'][digest_path(logical_path)]
       end
 
       ##
@@ -72,7 +72,7 @@ module Yarrow
       #
       # @return [Array<String>]
       def logical_paths
-      	@manifest_index['assets'].keys
+        @manifest_index['assets'].keys
       end
 
       ##
@@ -80,7 +80,7 @@ module Yarrow
       #
       # @return [Array<String>]
       def digest_paths
-      	@manifest_index['files'].keys
+        @manifest_index['files'].keys
       end
 
       ##
@@ -88,7 +88,7 @@ module Yarrow
       #
       # @return [Array<Hash>]
       def files
-      	@manifest_index['files'].values
+        @manifest_index['files'].values
       end
 
       ##
