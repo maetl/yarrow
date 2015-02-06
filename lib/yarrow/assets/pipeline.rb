@@ -5,7 +5,7 @@ require 'sprockets'
 module Yarrow
   module Assets
     ##
-    # A framework for processing and compressing static assets using Sprockets.
+    # Processes static assets using Sprockets.
     class Pipeline
 
       include Loggable
@@ -41,8 +41,10 @@ module Yarrow
         end
       end
 
+      ##
       # Compiles an asset manifest and processed output files from the given input bundles.
       # Also generates a manifest linking each output bundle to its given input name.
+      #
       # @param bundles [Array<String>]
       def compile(bundles = [])
         bundles.each do |bundle|          
@@ -58,7 +60,9 @@ module Yarrow
         end
       end
 
+      ##
       # Copy the given files to the output path without processing or renaming.
+      #
       # @param bundle [Array<String>]
       def copy(bundles = [])
         bundles.each do |bundle|
@@ -79,9 +83,12 @@ module Yarrow
         manifest.clean(keep)
       end
 
+      ##
       # Access instance of the Sprockets environment.
-      # TODO: make this private to avoid forcing a dependency on Sprockets
+      #
+      # @return [Sprockets::Environment]
       def environment
+        # TODO: decouple dependency on Sprockets
         @environment ||= create_environment
       end
 
