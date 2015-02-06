@@ -43,7 +43,7 @@ A rough sketch of the project direction.
 
 | Version | Features                                            |
 |:-------:|-----------------------------------------------------|
-| `0.3`   | Asset pipeline and local dev server                 |
+| `0.3`   | **Asset pipeline and local dev server**             |
 | `0.4`   | Content model/object mapping, template/site context |
 | `0.5`   | Media type mapping, default markup converters       |
 | `0.6`   | HTML tag helpers, default layout templates          |
