@@ -20,13 +20,13 @@ Unlike most static site generators and code documentation tools, Yarrow is writt
 Installation
 ------------
 
-To install the Yarrow command line tool:
+Install the library and command line tool via RubyGems:
 
 ```
 gem install yarrow
 ```
 
-To embed Yarrow in an existing Ruby project, reference it from a `Gemfile` and run `bundle install`:
+Or embed it in an existing Ruby project by adding the following line to the `Gemfile` and running `bundle`:
 
 ```
 gem 'yarrow'
@@ -35,21 +35,29 @@ gem 'yarrow'
 Status
 ------
 
-Yarrow is an extraction from several existing private projects. This repo is in pre-alpha state, which means that most of the useful features are not yet folded into this codebase. 
+Yarrow is an extraction from several existing private projects. This repo is in alpha state, which means that most of the useful features are not yet folded into this codebase.
 
-## Roadmap
+This is being developed as a part-time project to scratch a few itches. New features and bugfixes are pushed straight to master, and releases of the Gem are kept more or less in sync with the roadmap.
+
+Roadmap
+-------
 
 A rough sketch of the project direction.
 
-| Version | Features                                            |
-|:-------:|-----------------------------------------------------|
-| `0.3`   | **Asset pipeline and local dev server**             |
+| Version | Features                                                           |
+|:-------:|--------------------------------------------------------------------|
+| `0.3`   | **[Asset pipeline and local dev server](https://github.com/maetl/yarrow/issues/48)** |
 | `0.4`   | Content model/object mapping, template/site context |
 | `0.5`   | Media type mapping, default markup converters       |
 | `0.6`   | HTML tag helpers, default layout templates          |
 | `0.7`   | Rake integration, task library                      |
 | `0.8`   | Generic command line runner                         |
 | `0.9`   | Refactoring, performance fixes, lock down API       |
+
+License
+-------
+
+MIT. See the `LICENSE` file in the source distribution.
 
 Contact
 -------
