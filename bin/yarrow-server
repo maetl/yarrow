@@ -8,6 +8,6 @@ end
 $:.unshift(File.join(File.dirname(File.expand_path(path)), '..', 'lib'))
 
 require 'yarrow'
-require 'yarrow/server'
 
-Yarrow::Server.run
+server = Yarrow::Server.new
+server.run

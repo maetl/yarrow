@@ -3,7 +3,17 @@ require 'spec_helper'
 describe Yarrow::Server do
   include Rack::Test::Methods
 
-  let(:app) { Yarrow::Server.app }
+  class PwdServer < Yarrow::Server
+
+    def config
+      Yarrow::Configuration.new(
+        
+      )
+    end
+
+  end
+
+  let(:app) { PwdServer.new.app }
 
   it 'serves text files from pwd' do
     get '/LICENSE'
