@@ -16,6 +16,7 @@ require 'yarrow/content_map'
 require 'yarrow/assets'
 require 'yarrow/html'
 require 'yarrow/tools/front_matter'
+require 'yarrow/server'
 
 # Dir[File.dirname(__FILE__) + '/yarrow/generators/*.rb'].each do |generator|
 #   require generator
