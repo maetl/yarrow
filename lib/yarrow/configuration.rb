@@ -35,7 +35,6 @@ module Yarrow
         @@configuration = self.new
       end
 
-
       ##
       # Merges the given configuration or hash-like object with the
       # registered global configuration.

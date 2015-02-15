@@ -7,7 +7,7 @@ module Yarrow
     include Configurable
 
     def initialize
-      unless config.server
+      if config.server.nil?
         config.server = default_server_config
       end
     end
@@ -34,7 +34,7 @@ module Yarrow
         orig_path = env['PATH_INFO']
         found = nil
         @try.each do |path|
-          resp = @static.call(env.merge!({'PATH_INFO' => orig_path + path}))
+          resp = @static.call(env.merge!({ 'PATH_INFO' => orig_path + path }))
           break if !(403..405).include?(resp[0]) && found = resp
         end
         found or @app.call(env.merge!('PATH_INFO' => orig_path))

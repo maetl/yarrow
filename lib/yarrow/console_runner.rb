@@ -1,22 +1,22 @@
 module Yarrow
-  
+
   class ConsoleRunner
-    
+
     SUCCESS = 0
     FAILURE = 1
-    
+
     ENABLED_OPTIONS = {
       :h => :help,
       :v => :version,
       :c => :config,
       :t => :theme,
     }
-    
+
     ALLOWED_CONFIG_FILES = [
       '.yarrowdoc',
       'Yarrowdoc'
     ]
-    
+
     def initialize(arguments, io=STDOUT)
       @out = io
       @arguments = arguments
@@ -24,11 +24,11 @@ module Yarrow
       @targets = []
       @config = Configuration.load(File.dirname(__FILE__) + "/defaults.yml")
     end
-    
+
     def config
       @config
     end
-    
+
     def run_application
       print_header
       
@@ -58,7 +58,7 @@ module Yarrow
         FAILURE
       end
     end
-    
+
     def process_arguments
       @arguments.each do |arg|
         if is_option?(arg)
@@ -68,7 +68,7 @@ module Yarrow
         end
       end
     end
-    
+
     # def load_configuration(path)
     #   ALLOWED_CONFIG_FILES.each do |filename|
     #     config_path = path + '/' + filename
@@ -78,9 +78,9 @@ module Yarrow
     #     end
     #   end
     # end
-    
+
     def process_configuration
-      #load_configuration(Dir.pwd)
+      # load_configuration(Dir.pwd)
       
       # @targets.each do |input_path|
       #   @config.deep_merge! load_configuration(input_path)
@@ -93,16 +93,17 @@ module Yarrow
       
       @config.options = @options.to_hash
 
-      #normalize_theme_path
+      # normalize_theme_path
       
-      #theme = @config.options.theme
-      #@config.append load_configuration(theme)
+      # theme = @config.options.theme
+      # @config.append load_configuration(theme)
     end
-    
+
     def normalize_theme_path
-      
+
+      # noop
     end
-    
+
     def register_option(raw_option)
       option = raw_option.gsub(":", "=")
       if option.include? "="
@@ -129,35 +130,35 @@ module Yarrow
       
       raise "Unrecognized option: #{raw_option}"
     end
-    
+
     def is_option?(argument)
       argument[0] == "-"
     end
-    
+
     def has_option?(option)
       @options.has_key? option
     end
-    
+
     def run_input_process
-      
+      # noop
     end
     
     def run_output_process
-      
+      # noop
     end
-    
+
     def print_header
       @out.puts Yarrow::APP_NAME + " " + Yarrow::VERSION
     end
-    
+
     def print_footer
       @out.puts "Content generated at {path}!"
     end
-    
+
     def print_error(e)
       @out.puts "Error! " + e.to_s
     end
-    
+
     def print_help
       help = <<HELP
   See http://yarrowdoc.org for more information.
