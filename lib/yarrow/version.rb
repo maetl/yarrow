@@ -1,4 +1,4 @@
 module Yarrow
-  APP_NAME = 'Yarrow'
-  VERSION = '0.3.0'
+  APP_NAME = 'Yarrow'.freeze
+  VERSION = '0.3.1'.freeze
 end
