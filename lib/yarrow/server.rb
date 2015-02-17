@@ -13,33 +13,25 @@ module Yarrow
     end
 
     ##
-    # Tries to match the request path against a list of file extensions
-    # and delegates requests to Rack::Static middleware.
+    # Rack Middleware for detecting and serving an 'index.html' file
+    # instead of a directory index.
     #
-    # @example
-    #   use Yarrow::Server::StaticFiles,
-    #     root: 'build',
-    #     urls: %[/],
-    #     try: ['.html', 'index.html', '/index.html']
-    #
-    class StaticFiles
-
+    # TODO: Add configurable mapping and media types for README files as an alternative
+    class DirectoryIndex
       def initialize(app, options={})
         @app = app
-        @try = ['', *options[:try]]
-        @static = ::Rack::Static.new(lambda { |_| [404, {}, []] }, options)
+        @root = options[:root]
+        @index_file = options[:index]
       end
 
       def call(env)
-        orig_path = env['PATH_INFO']
-        found = nil
-        @try.each do |path|
-          resp = @static.call(env.merge!({ 'PATH_INFO' => orig_path + path }))
-          break if !(403..405).include?(resp[0]) && found = resp
+        index_path =  ::File.join(@root, Rack::Request.new(env).path.split('/'), @index_file)
+        if ::File.exists?(index_path)
+          return [200, {"Content-Type" => "text/html"}, [::File.read(index_path)]]
+        else
+          @app.call(env)
         end
-        found or @app.call(env.merge!('PATH_INFO' => orig_path))
       end
-
     end
 
     ##
@@ -50,13 +42,13 @@ module Yarrow
     #
     # @return [Yarrow::Server::StaticFiles]
     def app
-      options = static_files_options
       root = docroot
+
       Rack::Builder.new do
         use Rack::ShowExceptions
         use Rack::CommonLogger
         use Rack::ContentLength
-        use StaticFiles, options
+        use DirectoryIndex, root: root, index: 'index.html'
         run Rack::Directory.new(root)
       end
     end
@@ -73,16 +65,6 @@ module Yarrow
     end
 
     private
-
-    ##
-    # @return [Array]
-    def static_files_options
-      {
-        root: docroot,
-        urls: %[/],
-        try: ['.html', 'index.html', '/index.html']
-      }
-    end
 
     ##
     # @return [String]
@@ -116,6 +98,5 @@ module Yarrow
         :debug => true,
       }
     end
-
   end
 end
