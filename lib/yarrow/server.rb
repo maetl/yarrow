@@ -43,12 +43,13 @@ module Yarrow
     # @return [Yarrow::Server::StaticFiles]
     def app
       root = docroot
+      index = @index_file || 'index.html'
 
       Rack::Builder.new do
         use Rack::ShowExceptions
         use Rack::CommonLogger
         use Rack::ContentLength
-        use DirectoryIndex, root: root, index: 'index.html'
+        use DirectoryIndex, root: root, index: index
         run Rack::Directory.new(root)
       end
     end
