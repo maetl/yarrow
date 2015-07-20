@@ -25,9 +25,9 @@ module Yarrow
       end
 
       def call(env)
-        index_path =  ::File.join(@root, Rack::Request.new(env).path.split('/'), @index_file)
-        if ::File.exists?(index_path)
-          return [200, {"Content-Type" => "text/html"}, [::File.read(index_path)]]
+        index_path = File.join(@root, Rack::Request.new(env).path.split('/'), @index_file)
+        if File.exists?(index_path)
+          return [200, {"Content-Type" => "text/html"}, [File.read(index_path)]]
         else
           @app.call(env)
         end
@@ -92,7 +92,7 @@ module Yarrow
       rack_options = {
         :Port => config.server.port,
         :Host => config.server.port,
-        :server => config.server.handler,
+        :server => config.server.handler.to_sym,
         :daemonize => false,
         :quiet => false,
         :warn => true,
