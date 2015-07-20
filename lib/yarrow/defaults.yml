@@ -17,3 +17,8 @@ assets:
     - css
     - js
   manifest_file: manifest.json
+server:
+  port: 8888
+  host: localhost
+  handler: thin
+

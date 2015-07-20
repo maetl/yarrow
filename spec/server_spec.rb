@@ -3,11 +3,29 @@ require 'spec_helper'
 describe Yarrow::Server do
   include Rack::Test::Methods
 
+  context 'Server configuration is missing' do
+    class MisconfiguredServer < Yarrow::Server
+      def config
+        Yarrow::Configuration.new
+      end
+    end
+
+    it 'raises configuration error' do
+      expect {
+        MisconfiguredServer.new 
+      }.to raise_error(Yarrow::ConfigurationError)
+    end
+  end
+
   context 'Serves current working directory when config is empty' do
 
     class PwdServer < Yarrow::Server
       def config
-        Yarrow::Configuration.new
+        Yarrow::Configuration.new(server: {
+          port: 8888,
+          host: 'localhost',
+          handler: :thin
+        })
       end
     end
 
@@ -33,7 +51,11 @@ describe Yarrow::Server do
 
     class DirectoryServer < Yarrow::Server
       def config
-        Yarrow::Configuration.new(output_dir: 'spec/fixtures/server/directory')
+        Yarrow::Configuration.new(server: {
+          port: 8888,
+          host: 'localhost',
+          handler: :thin
+        }, output_dir: 'spec/fixtures/server/directory')
       end
     end
 
@@ -58,7 +80,11 @@ describe Yarrow::Server do
 
     class DirectoryIndexServer < Yarrow::Server
       def config
-        Yarrow::Configuration.new(output_dir: 'spec/fixtures/server/index')
+        Yarrow::Configuration.new(server: {
+          port: 8888,
+          host: 'localhost',
+          handler: :thin
+        }, output_dir: 'spec/fixtures/server/index')
       end
     end
 

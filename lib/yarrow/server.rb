@@ -8,7 +8,7 @@ module Yarrow
 
     def initialize
       if config.server.nil?
-        config.server = default_server_config
+        raise ConfigurationError.new('Missing server entry')
       end
     end
 
@@ -71,16 +71,6 @@ module Yarrow
     # @return [String]
     def docroot
       config.output_dir || Dir.pwd
-    end
-
-    ##
-    # @return [Hash]
-    def default_server_config
-      {
-        port: 8888,
-        host: 'localhost',
-        handler: :thin
-      }
     end
 
     ##
