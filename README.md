@@ -35,24 +35,24 @@ gem 'yarrow'
 Status
 ------
 
-Yarrow is an extraction from several existing private projects. This repo is in alpha state, which means that most of the useful features are not yet folded into this codebase.
+Yarrow is an extraction from several existing private projects. This repo is in alpha state, which means that many of the useful features are not yet folded into this codebase.
 
-This is being developed as a part-time project to scratch a few itches. New features and bugfixes are pushed straight to master, and releases of the Gem are kept more or less in sync with the roadmap.
+Yarrow is being slowly developed as a part-time project to scratch a few itches. New features and bugfixes are pushed straight to master, and releases of the Gem are kept more or less in sync with the planned roadmap.
 
 Roadmap
 -------
 
 A rough sketch of the project direction.
 
-| Version | Features                                                           |
-|:-------:|--------------------------------------------------------------------|
+| Version | Features |
+|---------|----------|
 | `0.3`   | **[Asset pipeline and local dev server](https://github.com/maetl/yarrow/issues/48)** |
-| `0.4`   | Content model/object mapping, template/site context |
-| `0.5`   | Media type mapping, default markup converters       |
-| `0.6`   | HTML tag helpers, default layout templates          |
-| `0.7`   | Rake integration, task library                      |
-| `0.8`   | Generic command line runner                         |
-| `0.9`   | Refactoring, performance fixes, lock down API       |
+| `0.4`   | Default media type mapping, collector, markup converters |
+| `0.5`   | Content model/object mapping, template/site context |
+| `0.6`   | HTML tag helpers, default layout templates |
+| `0.7`   | Rake integration, task library |
+| `0.8`   | Generic command line runner |
+| `0.9`   | Refactoring, performance fixes, lock down API |
 
 License
 -------
