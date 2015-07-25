@@ -26,6 +26,14 @@ describe Yarrow::Configuration do
       Yarrow::Configuration.clear
     end
 
+    it "registers library-provided defaults" do
+      Yarrow::Configuration.register_defaults
+      config = Yarrow::Configuration.instance
+
+      expect(config.meta.author).to eq "Default Name"
+
+      Yarrow::Configuration.clear
+    end
   end
 
   describe "#load" do
@@ -36,6 +44,11 @@ describe Yarrow::Configuration do
       expect(config.meta.title).to eq "Test Project"
     end
 
+    it "loads from defaults" do
+      config = Yarrow::Configuration.load_defaults
+
+      expect(config.meta.author).to eq "Default Name"
+    end
   end
 
   describe "#new" do

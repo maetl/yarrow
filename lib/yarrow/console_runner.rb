@@ -22,7 +22,7 @@ module Yarrow
       @arguments = arguments
       @options = {}
       @targets = []
-      @config = Configuration.load(File.dirname(__FILE__) + "/defaults.yml")
+      @config = Configuration.load_defaults
     end
 
     def config
