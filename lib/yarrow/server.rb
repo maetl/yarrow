@@ -44,11 +44,13 @@ module Yarrow
     def app
       root = docroot
       index = @index_file || 'index.html'
+      plugins = middleware || []
 
       Rack::Builder.new do
-        use Rack::ShowExceptions
-        use Rack::CommonLogger
-        use Rack::ContentLength
+        plugins.each do |plugin|
+          puts plugin
+          use plugin
+        end
         use DirectoryIndex, root: root, index: index
         run Rack::Directory.new(root)
       end
@@ -74,12 +76,19 @@ module Yarrow
     end
 
     ##
+    # @return [Array<Class>]
+    def middleware
+      plugins = config.server.middleware || []
+      plugins.map { |plugin| Kernel.const_get(plugin) }
+    end
+
+    ##
     # Stub to fill in default Rack options that will eventually be
     # provided by config.
     #
     # TODO: remove this and use config.merge to build a single access point
     def rack_options
-      rack_options = {
+      {
         :Port => config.server.port,
         :Host => config.server.port,
         :server => config.server.handler.to_sym,

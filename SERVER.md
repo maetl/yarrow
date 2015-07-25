@@ -19,6 +19,7 @@ The following options are available under the `server` entry in the main configu
 |**port**|Integer|Local port for the server to listen on|`8888`|
 |**host**|String|Local host for the server to listen on|`localhost`|
 |**handler**|Symbol (one of `:thin`, `:webrick`, etc)|Specifies the webserver implementation that handles requests|`:thin`|
+|**middleware**|Array|List of Rack middleware to be injected as plugins|
 
 Additional configuration options that are relevant:
 

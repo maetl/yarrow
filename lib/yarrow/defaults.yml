@@ -1,7 +1,7 @@
 # Default configuration settings for Yarrow.
 # This is loaded when the configuration is initialized.
 input_dir: content
-output_dir: public
+output_dir: .
 meta:
   title: Default Project
   author: Default Name
@@ -21,4 +21,8 @@ server:
   port: 8888
   host: localhost
   handler: thin
+  middleware:
+    - Rack::ShowExceptions
+    - Rack::CommonLogger
+    - Rack::ContentLength
 
