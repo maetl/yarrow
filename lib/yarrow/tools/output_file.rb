@@ -2,7 +2,7 @@ module Yarrow
   module Tools
     # TODO: consider renaming this to OutputDocument.
     class OutputFile
-      include ::Configurable
+      include Yarrow::Configurable
 
       WRITE_MODE = 'w+:UTF-8'.freeze
 
@@ -13,7 +13,7 @@ module Yarrow
 
       # @return [String] Docroot of the output target
       def docroot
-        @docroot ||= config.output_dir
+        @docroot ||= config.output_dir || 'public'
       end
 
       # Write an output file to the specified path under the docroot.
@@ -27,7 +27,7 @@ module Yarrow
           path = "#{path}#{index_name}"
         end
 
-        target_path = Pathname.new("docroot#{path}")
+        target_path = Pathname.new("#{docroot}#{path}")
 
         FileUtils.mkdir_p(target_path.dirname)
 
