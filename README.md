@@ -46,7 +46,7 @@ A rough sketch of the project direction.
 
 | Version | Features |
 |---------|----------|
-| `0.3`   | **[Asset pipeline and local dev server](https://github.com/maetl/yarrow/issues/48)** |
+| `0.3`   | **[Local dev server and asset pipeline](https://github.com/maetl/yarrow/issues/48)** |
 | `0.4`   | Default media type mapping, collector, markup converters |
 | `0.5`   | Content model/object mapping, template/site context |
 | `0.6`   | HTML tag helpers, default layout templates |
