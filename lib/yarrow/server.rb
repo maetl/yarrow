@@ -35,6 +35,27 @@ module Yarrow
     end
 
     ##
+    # Sets a default content type for files without an extension. Everything else
+    # falls through according to the implementations of Rack::File and Rack::Mime.
+    #
+    class DefaultContentType
+      def initialize(app, content_type)
+        @app = app
+        @content_type = content_type
+      end
+
+      def call(env)
+        request = Rack::Request.new(env)
+
+        if File.basename(File.extname(request.path)).empty?
+
+        end
+
+        @app.call(env)
+      end
+    end
+
+    ##
     # Builds a Rack application to serve files in the output directory.
     #
     # If no output directory is specified, defaults to the current working
@@ -43,15 +64,27 @@ module Yarrow
     # @return [Yarrow::Server::StaticFiles]
     def app
       root = docroot
-      index = @index_file || 'index.html'
-      plugins = middleware || []
+      index = default_index
+      middleware_stack = middleware_map
+      auto_index = auto_index?
+      mime_type = default_type
 
       Rack::Builder.new do
-        plugins.each do |plugin|
-          use plugin
+        middleware_stack.each do |middleware|
+          use middleware
         end
+
+        #use DefaultContentType, 'text/html'
         use DirectoryIndex, root: root, index: index
-        run Rack::Directory.new(root)
+
+        app_args = [root, {}].tap { |args| args.push(mime_type) if mime_type }
+        static_app = Rack::File.new(*app_args)
+
+        if auto_index
+          run Rack::Directory.new(root, static_app)
+        else
+          run static_app
+        end
       end
     end
 
@@ -62,8 +95,8 @@ module Yarrow
     # provided in the config.
     #
     def run
-      server = Rack::Handler.get(rack_options[:server])
-      server.run(app, rack_options)
+      server = Rack::Handler.get(run_options[:server])
+      server.run(app, run_options)
     end
 
     private
@@ -75,18 +108,36 @@ module Yarrow
     end
 
     ##
-    # @return [Array<Class>]
-    def middleware
-      plugins = config.server.middleware || []
-      plugins.map { |plugin| Kernel.const_get(plugin) }
+    # @return [String]
+    def default_index
+      config.server.default_index || 'index.html'
     end
 
     ##
-    # Stub to fill in default Rack options that will eventually be
-    # provided by config.
+    # @return [TrueClass, FalseClass]
+    def auto_index?
+      return true if config.server.auto_index.nil?
+      config.server.auto_index
+    end
+
+    ##
+    # @return [String]
+    def default_type
+      config.server.default_type
+    end
+
+    ##
+    # @return [Array<Class>]
+    def middleware_map
+      middleware = config.server.middleware || []
+      middleware.map { |class_name| Kernel.const_get(class_name) }
+    end
+
+    ##
+    # Provides options required by the Rack server on startup.
     #
-    # TODO: remove this and use config.merge to build a single access point
-    def rack_options
+    # @return [Hash]
+    def run_options
       {
         :Port => config.server.port,
         :Host => config.server.port,

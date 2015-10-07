@@ -12,7 +12,7 @@ describe Yarrow::Server do
 
     it 'raises configuration error' do
       expect {
-        MisconfiguredServer.new 
+        MisconfiguredServer.new
       }.to raise_error(Yarrow::ConfigurationError)
     end
   end
@@ -102,6 +102,37 @@ describe Yarrow::Server do
       expect(last_response).to be_ok
       expect(last_response.content_type).to include('text/html')
       expect(last_response.body).to include('<h1>/nested/</h1>')
+    end
+  end
+
+  context "Serves text/html files without explicit extensions" do
+    class ExtensionlessServer < Yarrow::Server
+      def config
+        Yarrow::Configuration.new(server: {
+          port: 8888,
+          host: 'localhost',
+          handler: :thin,
+          auto_index: false,
+          default_index: 'index',
+          default_type: 'text/html'
+        }, output_dir: 'spec/fixtures/server/extensionless')
+      end
+    end
+
+    let(:app) { ExtensionlessServer.new.app }
+
+    it 'serves index file without an extension' do
+      get '/'
+      expect(last_response).to be_ok
+      expect(last_response.content_type).to include('text/html')
+      expect(last_response.body).to include('<h1>extensionless/index</h1>')
+    end
+
+    it 'serves plain file without an extension' do
+      get '/home'
+      expect(last_response).to be_ok
+      expect(last_response.content_type).to include('text/html')
+      expect(last_response.body).to include('<h1>extensionless/home</h1>')
     end
   end
 end
