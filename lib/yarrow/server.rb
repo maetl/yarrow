@@ -48,7 +48,6 @@ module Yarrow
 
       Rack::Builder.new do
         plugins.each do |plugin|
-          puts plugin
           use plugin
         end
         use DirectoryIndex, root: root, index: index
