@@ -35,27 +35,6 @@ module Yarrow
     end
 
     ##
-    # Sets a default content type for files without an extension. Everything else
-    # falls through according to the implementations of Rack::File and Rack::Mime.
-    #
-    class DefaultContentType
-      def initialize(app, content_type)
-        @app = app
-        @content_type = content_type
-      end
-
-      def call(env)
-        request = Rack::Request.new(env)
-
-        if File.basename(File.extname(request.path)).empty?
-
-        end
-
-        @app.call(env)
-      end
-    end
-
-    ##
     # Builds a Rack application to serve files in the output directory.
     #
     # If no output directory is specified, defaults to the current working
@@ -74,7 +53,6 @@ module Yarrow
           use middleware
         end
 
-        #use DefaultContentType, 'text/html'
         use DirectoryIndex, root: root, index: index
 
         app_args = [root, {}].tap { |args| args.push(mime_type) if mime_type }
