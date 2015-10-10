@@ -58,6 +58,11 @@ module Yarrow
       else
         app.run(static_app)
       end
+      
+      if live_reload?
+        require 'rack-livereload'
+        app.use(Rack::LiveReload)
+      end
 
       app
     end
@@ -65,7 +70,7 @@ module Yarrow
     ##
     # Starts the server.
     #
-    # Listens on `localhost:8888` unless `server.host` and `server.port` are
+    # Listens on `localhost:4000` unless `server.host` and `server.port` are
     # provided in the config.
     #
     def run
@@ -92,6 +97,12 @@ module Yarrow
     def auto_index?
       return true if config.server.auto_index.nil?
       config.server.auto_index
+    end
+
+    ##
+    # @return [TrueClass, FalseClass]
+    def live_reload?
+      if config.server.live_reload then true else false; end
     end
 
     ##

@@ -18,6 +18,7 @@ assets:
     - js
   manifest_file: manifest.json
 server:
+  live_reload: true
   auto_index: true
   default_index: index.html
   default_type: text/plain
