@@ -42,25 +42,19 @@ module Yarrow
     #
     # @return [Yarrow::Server::StaticFiles]
     def app
-      root = docroot
-      index = default_index
-      middleware_stack = middleware_map
-      auto_index = auto_index?
-      mime_type = default_type
-
       app = Rack::Builder.new
 
       middleware_stack.each do |middleware|
         app.use(middleware)
       end
 
-      app.use(DirectoryIndex, root: root, index: index)
+      app.use(DirectoryIndex, root: docroot, index: default_index)
 
-      app_args = [root, {}].tap { |args| args.push(mime_type) if mime_type }
+      app_args = [docroot, {}].tap { |args| args.push(default_type) if default_type }
       static_app = Rack::File.new(*app_args)
 
-      if auto_index
-        app.run(Rack::Directory.new(root, static_app))
+      if auto_index?
+        app.run(Rack::Directory.new(docroot, static_app))
       else
         app.run(static_app)
       end
@@ -108,7 +102,7 @@ module Yarrow
 
     ##
     # @return [Array<Class>]
-    def middleware_map
+    def middleware_stack
       middleware = config.server.middleware || []
       middleware.map { |class_name| Kernel.const_get(class_name) }
     end
