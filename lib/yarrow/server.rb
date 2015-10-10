@@ -48,22 +48,24 @@ module Yarrow
       auto_index = auto_index?
       mime_type = default_type
 
-      Rack::Builder.new do
-        middleware_stack.each do |middleware|
-          use middleware
-        end
+      app = Rack::Builder.new
 
-        use DirectoryIndex, root: root, index: index
-
-        app_args = [root, {}].tap { |args| args.push(mime_type) if mime_type }
-        static_app = Rack::File.new(*app_args)
-
-        if auto_index
-          run Rack::Directory.new(root, static_app)
-        else
-          run static_app
-        end
+      middleware_stack.each do |middleware|
+        app.use(middleware)
       end
+
+      app.use(DirectoryIndex, root: root, index: index)
+
+      app_args = [root, {}].tap { |args| args.push(mime_type) if mime_type }
+      static_app = Rack::File.new(*app_args)
+
+      if auto_index
+        app.run(Rack::Directory.new(root, static_app))
+      else
+        app.run(static_app)
+      end
+
+      app
     end
 
     ##
