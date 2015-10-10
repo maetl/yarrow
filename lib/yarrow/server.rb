@@ -118,7 +118,7 @@ module Yarrow
     def run_options
       {
         :Port => config.server.port,
-        :Host => config.server.port,
+        :Host => config.server.host,
         :server => config.server.handler.to_sym,
         :daemonize => false,
         :quiet => false,

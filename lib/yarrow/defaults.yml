@@ -21,9 +21,9 @@ server:
   auto_index: true
   default_index: index.html
   default_type: text/plain
-  port: 8888
+  port: 4000
   host: localhost
-  handler: thin
+  handler: webrick
   middleware:
     - Rack::ShowExceptions
     - Rack::CommonLogger
