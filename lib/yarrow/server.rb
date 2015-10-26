@@ -58,7 +58,7 @@ module Yarrow
       else
         app.run(static_app)
       end
-      
+
       if live_reload?
         require 'rack-livereload'
         app.use(Rack::LiveReload)
@@ -74,8 +74,7 @@ module Yarrow
     # provided in the config.
     #
     def run
-      server = Rack::Handler.get(run_options[:server])
-      server.run(app, run_options)
+      Rack::Server.start(run_options.merge(app: app))
     end
 
     private
@@ -130,7 +129,7 @@ module Yarrow
         :daemonize => false,
         :quiet => false,
         :warn => true,
-        :debug => true,
+        :debug => false,
       }
     end
   end
