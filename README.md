@@ -35,7 +35,7 @@ gem 'yarrow'
 Status
 ------
 
-Yarrow is an extraction from several existing private projects. This repo is in alpha state, which means that many of the useful features are not yet folded into this codebase.
+Yarrow is an extraction from several existing private documentation projects. This repo is in alpha state, which means that many of the useful features are not yet folded into this codebase.
 
 Yarrow is being slowly developed as a part-time project to scratch a few itches. New features and bugfixes are pushed straight to master, and releases of the Gem are kept more or less in sync with the planned roadmap.
 
