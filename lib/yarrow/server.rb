@@ -26,7 +26,7 @@ module Yarrow
 
       def call(env)
         index_path = File.join(@root, Rack::Request.new(env).path.split('/'), @index_file)
-        if File.exists?(index_path)
+        if File.exist?(index_path)
           return [200, {"Content-Type" => "text/html"}, [File.read(index_path)]]
         else
           @app.call(env)
