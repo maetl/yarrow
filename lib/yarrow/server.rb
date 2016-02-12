@@ -40,6 +40,9 @@ module Yarrow
     # If no output directory is specified, defaults to the current working
     # directory.
     #
+    # `auto_index` and `live_reload` middleware needs to run in the specific order
+    # which is hardcoded here.
+    #
     # @return [Yarrow::Server::StaticFiles]
     def app
       app = Rack::Builder.new
@@ -53,15 +56,15 @@ module Yarrow
       app_args = [docroot, {}].tap { |args| args.push(default_type) if default_type }
       static_app = Rack::File.new(*app_args)
 
+      if live_reload?
+        require 'rack-livereload'
+        app.use(Rack::LiveReload)
+      end
+
       if auto_index?
         app.run(Rack::Directory.new(docroot, static_app))
       else
         app.run(static_app)
-      end
-
-      if live_reload?
-        require 'rack-livereload'
-        app.use(Rack::LiveReload)
       end
 
       app
