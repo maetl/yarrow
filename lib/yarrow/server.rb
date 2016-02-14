@@ -58,7 +58,7 @@ module Yarrow
 
       if live_reload?
         require 'rack-livereload'
-        app.use(Rack::LiveReload)
+        app.use(Rack::LiveReload, no_swf: true)
       end
 
       if auto_index?
