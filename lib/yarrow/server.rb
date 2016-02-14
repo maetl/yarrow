@@ -77,7 +77,19 @@ module Yarrow
     # provided in the config.
     #
     def run
-      Rack::Server.start(run_options.merge(app: app))
+      if live_reload?
+        reactor = Livereload::Reactor.new
+        reactor.start
+      end
+
+      handler = Rack::Handler.get(run_options[:server])
+
+      trap(:INT) do
+        handler.shutdown if handler.respond_to?(:shutdown)
+        reactor.stop
+      end
+
+      handler.run(app, run_options)
     end
 
     private
