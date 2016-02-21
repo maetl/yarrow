@@ -16,7 +16,7 @@ module Yarrow
           end
         end
 
-        def shutdown
+        def stop
           puts 'Shutting down Livereload'
           @thread.kill
         end
