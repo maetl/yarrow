@@ -11,5 +11,7 @@ require 'yarrow'
 
 Yarrow::Configuration.register_defaults
 
+Yarrow.logger = Logger.new(STDOUT)
+
 server = Yarrow::Server.new
 server.run

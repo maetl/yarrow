@@ -6,6 +6,8 @@ module Yarrow
   class Server
     module Livereload
       class Reactor
+        include Yarrow::Loggable
+
         def initialize
           @sockets = []
         end
@@ -17,7 +19,7 @@ module Yarrow
         end
 
         def stop
-          puts 'Shutting down Livereload'
+          logger.info 'Shutting down Livereload'
           @thread.kill
         end
 
@@ -39,21 +41,22 @@ module Yarrow
 
         def run_loop
           EventMachine.run do
-            puts 'Starting Livereload reactor on port: 35729'
+            logger.info 'Starting Livereload reactor on port: 35729'
+
             EventMachine::WebSocket.start(:host => 'localhost', :port => 35729) do |socket|
               socket.onopen do
                 socket.send "!!ver:1.6"
                 @sockets << socket
-                puts 'Livereload connected'
+                logger.info 'Livereload connected'
               end
 
               socket.onmessage do |message|
-                puts "Receiving message: #{message}"
+                logger.info "Receiving message: #{message}"
               end
 
               socket.onclose do
                 @sockets.delete(socket)
-                puts 'Livereload disconnected'
+                logger.info 'Livereload disconnected'
               end
             end
           end
