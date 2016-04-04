@@ -10,17 +10,24 @@ module Yarrow
 
         def initialize
           @sockets = []
+          @running = false
+        end
+
+        def running?
+          @running
         end
 
         def start
           @thread = Thread.new do
             run_loop
           end
+          @running = true
         end
 
         def stop
           logger.info 'Shutting down Livereload'
           @thread.kill
+          @running = false
         end
 
         def refresh_payload(path)
