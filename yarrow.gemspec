@@ -15,7 +15,7 @@ Gem::Specification.new do |spec|
   spec.executables << 'yarrow-server'
   spec.add_runtime_dependency 'hashie'
   spec.add_runtime_dependency 'sprockets'
-  spec.add_runtime_dependency 'mementus', '< 0.2.0'
+  spec.add_runtime_dependency 'mementus'
   spec.add_runtime_dependency 'activesupport'
   spec.add_runtime_dependency 'rack'
   spec.add_runtime_dependency 'rack-livereload'
