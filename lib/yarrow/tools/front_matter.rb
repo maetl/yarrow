@@ -6,13 +6,17 @@ module Yarrow
         extract_split_content(File.read(path, :encoding => 'utf-8'))
       end
 
-      def extract_split_content(text)
+      def extract_split_content(text, options={})
         pattern = /^(---\s*\n.*?\n?)^(---\s*$\n?)/m
         if text =~ pattern
           content = text.sub(pattern, "")
 
           begin
-            meta = YAML.load($1)
+            if options.key?(:symbolize_keys)
+              meta = symbolize_keys(YAML.load($1))
+            else
+              meta = YAML.load($1)
+            end
             return [content, meta]
           rescue Psych::SyntaxError => error
             if defined? ::Logger
@@ -22,12 +26,25 @@ module Yarrow
             end
             return [content, nil]
           end
-
         end
 
         [text, nil]
       end
 
+      def symbolize_keys(hash)
+        hash.inject({}) do |result, (key, value)|
+          new_key = case key
+                    when String then key.to_sym
+                    else key
+                    end
+          new_value = case value
+                      when Hash then symbolize_keys(value)
+                      else value
+                      end
+          result[new_key] = new_value
+          result
+        end
+      end
     end
   end
 end
