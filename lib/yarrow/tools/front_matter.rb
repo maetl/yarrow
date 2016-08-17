@@ -2,8 +2,8 @@ module Yarrow
   module Tools
     module FrontMatter
 
-      def read_split_content(path)
-        extract_split_content(File.read(path, :encoding => 'utf-8'))
+      def read_split_content(path, options={})
+        extract_split_content(File.read(path, :encoding => 'utf-8'), options)
       end
 
       def extract_split_content(text, options={})
