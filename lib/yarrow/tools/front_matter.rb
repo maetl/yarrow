@@ -39,6 +39,7 @@ module Yarrow
                     end
           new_value = case value
                       when Hash then symbolize_keys(value)
+                      when Array then value.map { |entry| symbolize_keys(entry) }
                       else value
                       end
           result[new_key] = new_value
