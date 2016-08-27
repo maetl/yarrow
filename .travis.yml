@@ -6,7 +6,7 @@ rvm:
   - 2.2.5
   - 2.3.1
   - ruby-head
-  - rbx-3.42
+  - rbx
 
 script: bundle exec rspec
 
