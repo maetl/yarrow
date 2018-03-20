@@ -30,11 +30,15 @@ module Yarrow
         end
 
         if File.exists?(manifest_path)
-          @manifest_index = JSON.parse(File.read(manifest_path))
+          manifest_data = JSON.parse(File.read(manifest_path))
+
+          @manifest_index = if manifest_data.key?('assets')
+            manifest_data['assets']
+          else
+            manifest_data
+          end
         else
-          @manifest_index = {
-            'assets' => {}
-          }
+          @manifest_index = {}
         end
       end
 
@@ -42,9 +46,9 @@ module Yarrow
       # True if the named asset exists.
       #
       # @param logical_path [String]
-      # @return Boolean
+      # @return [Boolean]
       def exists?(logical_path)
-        @manifest_index['assets'].key? logical_path
+        @manifest_index.key? logical_path
       end
 
       ##
@@ -53,16 +57,7 @@ module Yarrow
       # @param logical_path [String]
       # @return [String]
       def digest_path(logical_path)
-        @manifest_index['assets'][logical_path]
-      end
-
-      ##
-      # Returns a hash of file information for a generated asset.
-      #
-      # @param logical_path [String]
-      # @return [Hash]
-      def file(logical_path)
-        @manifest_index['files'][digest_path(logical_path)]
+        @manifest_index[logical_path]
       end
 
       ##
@@ -70,7 +65,7 @@ module Yarrow
       #
       # @return [Array<String>]
       def logical_paths
-        @manifest_index['assets'].keys
+        @manifest_index.keys
       end
 
       ##
@@ -78,7 +73,7 @@ module Yarrow
       #
       # @return [Array<String>]
       def digest_paths
-        @manifest_index['assets'].values
+        @manifest_index.values
       end
 
       ##
