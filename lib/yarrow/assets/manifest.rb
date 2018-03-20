@@ -14,7 +14,6 @@ module Yarrow
     # - `digest_path` represents the versioned instance of an asset with associated digest,
     #    eg: `main-4362eea15558e73d3663de653cdeb81e.css`
     class Manifest
-
       ##
       # Initializes the manifest from a Sprockets-style JSON file.
       #
@@ -34,8 +33,7 @@ module Yarrow
           @manifest_index = JSON.parse(File.read(manifest_path))
         else
           @manifest_index = {
-            'assets' => {},
-            'files' => {}
+            'assets' => {}
           }
         end
       end
@@ -80,15 +78,7 @@ module Yarrow
       #
       # @return [Array<String>]
       def digest_paths
-        @manifest_index['files'].keys
-      end
-
-      ##
-      # Returns the list of generated files in the manifest.
-      #
-      # @return [Array<Hash>]
-      def files
-        @manifest_index['files'].values
+        @manifest_index['assets'].values
       end
 
       ##
@@ -128,7 +118,6 @@ module Yarrow
       def select_by_extension(collection, ext)
         collection.select { |asset| asset.end_with?(ext) }
       end
-
     end
   end
 end

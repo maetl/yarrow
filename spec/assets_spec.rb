@@ -18,8 +18,8 @@ describe Yarrow::Assets::Manifest do
   it "raises error if missing asset config" do
     config = Yarrow::Configuration.new
 
-    expect { 
-      Yarrow::Assets::Manifest.new(config) 
+    expect {
+      Yarrow::Assets::Manifest.new(config)
     }.to raise_error(Yarrow::ConfigurationError)
   end
 
@@ -44,15 +44,6 @@ describe Yarrow::Assets::Manifest do
     expect(manifest.digest_path("main.js")).to eq "main-4362eea15558e73d3663de653cdeb81e.js"
   end
 
-  it "maps logical path to file object" do
-    manifest = Yarrow::Assets::Manifest.new(manifest_config)
-
-    file = manifest.file("main.js")
-    expect(file['digest']).to eq "4362eea15558e73d3663de653cdeb81e"
-    expect(file['logical_path']).to eq "main.js"
-    expect(file['mtime']).to eq "2014-12-22T16:40:34+11:00"
-  end
-
   it "maps logical paths" do
     manifest = Yarrow::Assets::Manifest.new(manifest_config)
 
@@ -67,14 +58,6 @@ describe Yarrow::Assets::Manifest do
     expect(manifest.digest_paths.size).to eq 2
     expect(manifest.digest_paths.first).to eq "styles-7051b3cd15b430b483c4266d0519edf2.css"
     expect(manifest.digest_paths.last).to eq "main-4362eea15558e73d3663de653cdeb81e.js"
-  end
-
-  it "maps asset files" do
-    manifest = Yarrow::Assets::Manifest.new(manifest_config)
-
-    expect(manifest.files.size).to eq 2
-    expect(manifest.files.first['digest']).to eq "7051b3cd15b430b483c4266d0519edf2"
-    expect(manifest.files.last['digest']).to eq "4362eea15558e73d3663de653cdeb81e"
   end
 
   it "filters digest paths by extension" do
