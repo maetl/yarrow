@@ -13,7 +13,7 @@ module Yarrow
 
           begin
             if options.key?(:symbolize_keys)
-              meta = symbolize_keys(YAML.load($1))
+              meta = YAML.load($1, symbolize_names: true)
             else
               meta = YAML.load($1)
             end
@@ -29,22 +29,6 @@ module Yarrow
         end
 
         [text, nil]
-      end
-
-      def symbolize_keys(hash)
-        hash.inject({}) do |result, (key, value)|
-          new_key = case key
-                    when String then key.to_sym
-                    else key
-                    end
-          new_value = case value
-                      when Hash then symbolize_keys(value)
-                      when Array then value.map { |entry| symbolize_keys(entry) }
-                      else value
-                      end
-          result[new_key] = new_value
-          result
-        end
       end
     end
   end

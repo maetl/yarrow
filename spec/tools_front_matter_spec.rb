@@ -39,10 +39,4 @@ describe Yarrow::Tools::FrontMatter do
     expect(content).to eq "<p>Page content.</p>"
     expect(meta).to eq nil
   end
-
-  it "test_symbolized_keys" do
-    expect(symbolize_keys({'key' => 'value'})).to eq({key: 'value'})
-    expect(symbolize_keys({'key' => { 'nested' => 'value'}})).to eq({key: { nested: 'value'}})
-    expect(symbolize_keys({'key' => [{'first' => 'value'}, {'second' => 'value'}]})).to eq({key: [{ first: 'value'}, { second: 'value'}]})
-  end
 end
