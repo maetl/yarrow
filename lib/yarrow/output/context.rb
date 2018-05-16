@@ -1,15 +1,12 @@
 module Yarrow
   module Output
-
-    ##
     # Provides a data context for rendering a template.
     #
-    # Methods provided by this class become available as named variables in Mustache templates.
-    # 
-    # Includes the library of helpers for dynamically generating HTML tags.
+    # Methods provided by this class become available as named variables in
+    # Mustache templates.
     #
+    # Includes the library of helpers for dynamically generating HTML tags.
     class Context
-
       include Yarrow::HTML::AssetTags
 
       def initialize(attributes)
@@ -19,6 +16,5 @@ module Yarrow
         end
       end
     end
-
   end
 end
