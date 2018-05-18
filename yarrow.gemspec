@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.description = 'Yarrow is a tool for generating well structured documentation from a variety of input sources.'
   spec.authors     = ['Mark Rickerby']
   spec.email       = 'me@maetl.net'
-  spec.files       = Dir.glob("{bin,lib}/**/*")
+  spec.files       = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.executables << 'yarrow'
   spec.executables << 'yarrow-server'
   spec.add_runtime_dependency 'hashie', '~> 3.5'
