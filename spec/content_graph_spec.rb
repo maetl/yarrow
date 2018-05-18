@@ -27,7 +27,7 @@ describe Yarrow::Content::Graph do
       config = load_config_fixture("collections")
       content = Yarrow::Content::Graph.from_source(config)
 
-      expect(content.files.count).to eq(4)
+      expect(content.files.count).to eq(5)
       expect(content.directories.count).to eq(3)
 
       expect(
