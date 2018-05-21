@@ -20,6 +20,16 @@ describe Yarrow::Content::Graph do
         Set.new(content.files.map { |f| f.props[:slug] })
       ).to eq(Set.new(['about', 'index', 'one', 'two']))
     end
+
+    it "expands source files into collections" do
+      class Page
+        def initialize(props)
+          @props = props
+        end
+      end
+
+      content.expand_pages
+    end
   end
 
   describe "collections" do
