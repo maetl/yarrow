@@ -1,3 +1,5 @@
+puts "CollectionExpander!!!"
+
 module Yarrow
   module Content
     class CollectionExpander
