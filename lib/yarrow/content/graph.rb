@@ -32,6 +32,13 @@ module Yarrow
         new(SourceCollector.collect(config.input_dir), config)
       end
 
+      attr_reader :graph, :config
+
+      def initialize(graph, config)
+        @graph = graph
+        @config = config
+      end
+
       def expand_pages
         expander = Yarrow::Content::CollectionExpander.new(config.content_types)
         expander.expand(graph)
@@ -46,15 +53,6 @@ module Yarrow
       def directories
         graph.nodes(:directory)
       end
-
-      private
-
-      def initialize(graph, config)
-        @graph = graph
-        @config = config
-      end
-
-      attr_reader :graph, :config
     end
   end
 end

@@ -5,7 +5,7 @@ module Yarrow
     class CollectionExpander
       include Yarrow::Tools::FrontMatter
 
-      def initialize(content_types)
+      def initialize(content_types=nil)
         @content_types = content_types || [
           Yarrow::Content::ContentType.from_name(:pages)
         ]
@@ -164,15 +164,22 @@ module Yarrow
               end
             end
 
-            # TODO: consider whether to provide `body` on the item/document or at
-            # the custom content type level.
-            content_struct = Object.const_get(ActiveSupport::Inflector.classify(content_type))
-
             # For now, we are storing title, url, etc on the top-level item.
             node.props[:title] = meta[:title]
 
             # TODO: What belongs on the entity and what belongs on the item?
             entity_props = meta.merge(body: content, name: meta[:id], url: node.props[:url])
+
+
+            # TODO: consider whether to provide `body` on the item/document or at
+            # the custom content type level.
+            begin
+              content_struct = Object.const_get(ActiveSupport::Inflector.classify(content_type))
+            rescue
+              require "ostruct"
+              content_struct = OpenStruct
+            end
+
             node.props[:entity] = content_struct.new(entity_props)
           end
 

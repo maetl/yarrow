@@ -7,6 +7,23 @@ describe Yarrow::Content::Graph do
     )
   end
 
+  describe "expansion" do
+    let(:content) do
+      Yarrow::Content::Graph.from_source(load_config_fixture("pages"))
+    end
+
+    it "expands :pages by default" do
+      expander = Yarrow::Content::CollectionExpander.new
+      expander.expand(content.graph)
+
+      content.graph.nodes.each do |node|
+        puts
+        puts node.label
+        puts node.props
+      end
+    end
+  end
+
   describe "pages" do
     let(:content) do
       Yarrow::Content::Graph.from_source(load_config_fixture("pages"))
