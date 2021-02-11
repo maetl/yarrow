@@ -5,3 +5,4 @@ pirum.xml
 Gemfile.lock
 yarrow-*.gem
 coverage
+bin/scripts
