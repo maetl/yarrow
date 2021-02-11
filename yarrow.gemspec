@@ -21,7 +21,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'eventmachine', '~> 1.2'
   spec.add_runtime_dependency 'em-websocket', '~> 0.5.1'
   spec.add_runtime_dependency 'sprockets', '~> 3.7'
-  spec.add_development_dependency 'bundler', '~> 2.2.9'
+  spec.add_development_dependency 'bundler', '~> 2.3.0.dev'
   spec.add_development_dependency 'rake', '~> 13.0'
   spec.add_development_dependency 'rspec', '~> 3.10'
   spec.add_development_dependency 'coveralls', '~> 0.8.23'
