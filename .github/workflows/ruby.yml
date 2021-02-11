@@ -10,9 +10,9 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
-        ruby:
-    runs-on: ubuntu-latest${{ matrix.os }}
-    steps: [2.7, '3.0', head, jruby, truffleruby]
+        ruby: [2.7, '3.0', head, jruby, truffleruby]
+    runs-on: ${{ matrix.os }}
+    steps:
     - uses: actions/checkout@v2
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
