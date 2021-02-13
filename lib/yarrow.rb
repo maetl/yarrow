@@ -23,6 +23,12 @@ require 'yarrow/html'
 require 'yarrow/server'
 require 'yarrow/server/livereload'
 
+require 'yarrow/process/workflow'
+require 'yarrow/process/step_processor'
+require 'yarrow/process/expand_content'
+require 'yarrow/process/extract_source'
+require 'yarrow/process/project_manifest'
+
 # Dir[File.dirname(__FILE__) + '/yarrow/generators/*.rb'].each do |generator|
 #   require generator
 # end
