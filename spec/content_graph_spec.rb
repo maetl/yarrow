@@ -16,11 +16,9 @@ describe Yarrow::Content::Graph do
       expander = Yarrow::Content::CollectionExpander.new
       expander.expand(content.graph)
 
-      content.graph.nodes.each do |node|
-        puts
-        puts node.label
-        puts node.props
-      end
+      expect(
+        Set.new(content.graph.nodes.map { |n| n.label })
+      ).to eq(Set.new([:root, :collection, :item, :file, :directory]))
     end
   end
 
