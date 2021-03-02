@@ -16,6 +16,7 @@ module Yarrow
     # Rack Middleware for detecting and serving an 'index.html' file
     # instead of a directory index.
     #
+    # TODO: Fix bug where a directory /index.html/ causes this to crash
     # TODO: Add configurable mapping and media types for README files as an alternative
     class DirectoryIndex
       def initialize(app, options={})
