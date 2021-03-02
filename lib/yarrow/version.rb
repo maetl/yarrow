@@ -1,4 +1,5 @@
+# frozen_string_literal: true
 module Yarrow
-  APP_NAME = 'Yarrow'.freeze
-  VERSION = '0.5.1'.freeze
+  APP_NAME = 'Yarrow'
+  VERSION = '0.6.0'
 end
