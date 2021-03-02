@@ -22,6 +22,7 @@ require 'yarrow/content_map'
 require 'yarrow/html'
 require 'yarrow/server'
 require 'yarrow/server/livereload'
+require 'yarrow/schema'
 
 require 'yarrow/process/workflow'
 require 'yarrow/process/step_processor'
