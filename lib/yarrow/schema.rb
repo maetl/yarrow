@@ -11,24 +11,16 @@ module Yarrow
     #
     # Current design throws on error rather than returns a boolean result.
     class Validator
-      # @param slots [Array<Symbol>, <Hash>] defines the slots in the schema to validate against
-      def initialize(slots)
-        @keys = slots.reduce({}) do |keys, slot|
-          if slot.is_a?(Array)
-            keys[slot[0]] = slot[1]
-          else
-            keys[slot.to_sym] = Type::Any
-          end
-
-          keys
-        end
+      # @param fields_spec [Hash] defines the slots in the schema to validate against
+      def initialize(fields_spec)
+        @spec = fields_spec
       end
 
       def check(fields)
-        raise "wrong number of args" unless fields.keys.length == @keys.keys.length
+        raise "wrong number of args" unless fields.keys.length == @spec.keys.length
 
         fields.keys.each do |key|
-          raise "key does not exist" unless @keys.key?(key)
+          raise "key does not exist" unless @spec.key?(key)
         end
       end
     end
@@ -38,19 +30,38 @@ module Yarrow
     # Ruby struct but wraps the constructor with method advice that handles
     # validation (and eventually type coercion if !yagni).
     class Value
-      def self.new(*slots, &block)
-        factory(*slots, &block)
+      def self.new(*slots, **fields, &block)
+        factory(*slots, **fields, &block)
       end
 
-      def self.factory(*slots, &block)
-        validator = Validator.new(slots)
+      def self.factory(*slots, **fields, &block)
+        if slots.empty? && fields.empty?
+          raise ArgumentError.new("missing attribute definition")
+        end
 
-        struct = Struct.new(*slots, keyword_init: true, &block)
+        slots_spec, fields_spec = if fields.any?
+          raise ArgumentError.new("cannot use slots when field map is supplied") if slots.any?
+          [fields.keys, fields]
+        else
+          [slots, Hash[slots.map { |s| [s, Type::Any]}]]
+        end
 
-        struct.define_method :initialize do |kwargs|
-          validator.check(kwargs)
+        validator = Validator.new(fields_spec)
+
+        struct = Struct.new(*slots_spec, keyword_init: true, &block)
+
+        struct.define_method :initialize do |*args, **kwargs|
+          attr_values = if args.any?
+            raise ArgumentError.new("cannot mix slots and kwargs") if kwargs.any?
+            Hash[slots.zip(args)]
+          else
+            kwargs
+          end
+
+          validator.check(attr_values)
           # TODO: type coercion or mapping decision goes here
-          super(**kwargs)
+          super(**attr_values)
+
           freeze
         end
 
