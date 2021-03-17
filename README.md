@@ -1,13 +1,11 @@
 Yarrow
 ======
 
-[![Gem Version](http://img.shields.io/gem/v/yarrow.svg)][gem]
-[![Build Status](http://img.shields.io/github/workflow/status/maetl/yarrow/workflow)][github]
-[![Coverage Status](http://img.shields.io/coveralls/maetl/yarrow.svg)][coveralls]
+[![Gem Version](https://img.shields.io/gem/v/yarrow.svg)][gem]
+[![Build Status](https://img.shields.io/github/workflow/status/maetl/yarrow/ruby/main)][github]
 
 [gem]: https://rubygems.org/gems/yarrow
 [github]: https://github.com/maetl/yarrow
-[coveralls]: https://coveralls.io/r/maetl/yarrow
 
 Yarrow is a framework for generating well structured publishing outputs from a variety of input sources.
 
