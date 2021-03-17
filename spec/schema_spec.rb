@@ -1,10 +1,10 @@
 describe Yarrow::Schema::Validator do
   Type = Yarrow::Schema::Type
 
-  describe "any type schema" do
+  describe "schema with optional fields using any type" do
     let(:anchor) do
       Yarrow::Schema::Validator.new({
-        :href => Type::Any,
+        :href => String,
         :title => Type::Any,
         :target => Type::Any
       })
@@ -16,15 +16,19 @@ describe Yarrow::Schema::Validator do
       ).to be_truthy
     end
 
+    specify "skip any type attributes when not provided" do
+      expect(anchor.check({:href => "https://maetl.net"})).to be_truthy
+    end
+
     specify "missing attribute error" do
       expect {
-        anchor.check({:href => "https://maetl.net"})
+        anchor.check({})
       }.to raise_error("wrong number of args")
     end
 
-    specify "bad key error" do
+    specify "mismatching attribute error" do
       expect {
-        anchor.check({:src => "https://maetl.net", :title => "maetl", :target => "_blank"})
+        anchor.check({:href => "https://maetl.net", :src => "https://maetl.net"})
       }.to raise_error("key does not exist")
     end
   end
@@ -54,15 +58,15 @@ describe Yarrow::Schema::Validator do
 
     specify "bad key error" do
       expect {
-        rect.check({:mishape => "rect", :x => 10, :y => 10, :w => 64, :h => 48})
+        rect.check({:mishape => "rect", :shape => "rect", :x => 10, :y => 10, :w => 64, :h => 48})
       }.to raise_error("key does not exist")
     end
 
-    # specify "mismatching type error" do
-    #   expect {
-    #     rect.check({:shape => "rect", :x => "1", :y => "1", :w => "1", :h => "1"})
-    #   }.to raise_error("")
-    # end
+    specify "mismatching type error" do
+      expect {
+        rect.check({:shape => "rect", :x => "1", :y => "1", :w => "1", :h => "1"})
+      }.to raise_error("wrong data type")
+    end
   end
 end
 

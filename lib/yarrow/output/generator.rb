@@ -8,12 +8,12 @@ module Yarrow
 
       # Mapping between template types and provided object model
       def object_map
-        @config.output.object_map
+        @config[:output][:object_map]
       end
 
       # Mapping between template types and provided output templates.
       def template_map
-        
+
       end
 
       # Template converter used by this generator instance.

@@ -3,10 +3,12 @@ gem "strings-inflection"
 module Yarrow
   module Content
     class ContentType
+      Value = Yarrow::Schema::Value.new(:collection, :entity, :extensions)
+
       DEFAULT_EXTENSIONS = [".md", ".yml", ".htm"]
 
       def self.from_name(name)
-        new(Yarrow::Configuration.new(collection: name.to_sym))
+        new(Value.new(collection: name.to_sym))
       end
 
       def initialize(properties)
@@ -18,17 +20,17 @@ module Yarrow
       end
 
       def collection
-        return @properties.collection if @properties.respond_to?(:collection)
+        return @properties.collection if @properties.collection
         Yarrow::Symbols.to_plural(@properties.entity)
       end
 
       def entity
-        return @properties.entity if @properties.respond_to?(:entity)
+        return @properties.entity if @properties.entity
         Yarrow::Symbols.to_singular(@properties.collection)
       end
 
       def extensions
-        return @properties.extensions if @properties.respond_to?(:extensions)
+        return @properties.extensions if @properties.extensions
         DEFAULT_EXTENSIONS
       end
 

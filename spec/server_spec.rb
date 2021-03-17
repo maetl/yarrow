@@ -1,12 +1,18 @@
 require 'spec_helper'
 
+$fake_path = Pathname.new("~/fake-path")
+
 describe Yarrow::Server do
   include Rack::Test::Methods
 
   context 'Server configuration is missing' do
     class MisconfiguredServer < Yarrow::Server
-      def config
-        Yarrow::Configuration.new
+      def initialize
+        super(Yarrow::Config::Instance.new(
+          output_dir: $fake_path,
+          content: $fake_path,
+          source: $fake_path
+        ))
       end
     end
 
@@ -17,16 +23,21 @@ describe Yarrow::Server do
     end
   end
 
-  context 'Serves current working directory when config is empty' do
-
+  context 'Serves current working directory' do
     class PwdServer < Yarrow::Server
-      def config
-        Yarrow::Configuration.new(server: {
-          port: 8888,
-          host: 'localhost',
-          handler: :thin
-        })
+      def initialize
+        super(Yarrow::Config::Instance.new(
+          output_dir: Pathname.new(File.expand_path(".")),
+          content: $fake_path,
+          source: $fake_path,
+          server: Yarrow::Config::Server.new(
+            port: 8888,
+            host: 'localhost',
+            handler: :thin
+          )
+        ))
       end
+
     end
 
     let(:app) { PwdServer.new.app }
@@ -50,12 +61,17 @@ describe Yarrow::Server do
   context 'Serves directory specified in config' do
 
     class DirectoryServer < Yarrow::Server
-      def config
-        Yarrow::Configuration.new(server: {
-          port: 8888,
-          host: 'localhost',
-          handler: :thin
-        }, output_dir: 'spec/fixtures/server/directory')
+      def initialize
+        super(Yarrow::Config::Instance.new(
+          output_dir: Pathname.new("spec/fixtures/server/directory"),
+          content: $fake_path,
+          source: $fake_path,
+          server: Yarrow::Config::Server.new(
+            port: 8888,
+            host: 'localhost',
+            handler: :thin
+          )
+        ))
       end
     end
 
@@ -79,12 +95,17 @@ describe Yarrow::Server do
   context 'Serves index files as directory indexes' do
 
     class DirectoryIndexServer < Yarrow::Server
-      def config
-        Yarrow::Configuration.new(server: {
-          port: 8888,
-          host: 'localhost',
-          handler: :thin
-        }, output_dir: 'spec/fixtures/server/index')
+      def initialize
+        super(Yarrow::Config::Instance.new(
+          output_dir: Pathname.new("spec/fixtures/server/index"),
+          content: $fake_path,
+          source: $fake_path,
+          server: Yarrow::Config::Server.new(
+            port: 8888,
+            host: 'localhost',
+            handler: :thin
+          )
+        ))
       end
     end
 
@@ -107,15 +128,20 @@ describe Yarrow::Server do
 
   context "Serves text/html files without explicit extensions" do
     class ExtensionlessServer < Yarrow::Server
-      def config
-        Yarrow::Configuration.new(server: {
-          port: 8888,
-          host: 'localhost',
-          handler: :thin,
-          auto_index: false,
-          default_index: 'index',
-          default_type: 'text/html'
-        }, output_dir: 'spec/fixtures/server/extensionless')
+      def initialize
+        super(Yarrow::Config::Instance.new(
+          output_dir: Pathname.new("spec/fixtures/server/extensionless"),
+          content: $fake_path,
+          source: $fake_path,
+          server: Yarrow::Config::Server.new(
+            port: 8888,
+            host: 'localhost',
+            handler: :thin,
+            auto_index: false,
+            default_index: 'index',
+            default_type: 'text/html'
+          )
+        ))
       end
     end
 

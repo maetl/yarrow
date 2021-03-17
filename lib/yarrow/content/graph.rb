@@ -4,7 +4,7 @@ module Yarrow
     class Graph
       # Construct a graph collected from source content files.
       def self.from_source(config)
-        new(SourceCollector.collect(config.input_dir), config)
+        new(SourceCollector.collect(config.source), config)
       end
 
       attr_reader :graph, :config
@@ -15,7 +15,7 @@ module Yarrow
       end
 
       def expand_pages
-        expander = Yarrow::Content::CollectionExpander.new(config.content_types)
+        expander = Yarrow::Content::CollectionExpander.new
         expander.expand(graph)
       end
 

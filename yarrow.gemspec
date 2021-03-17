@@ -13,13 +13,11 @@ Gem::Specification.new do |spec|
   spec.files       = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.executables << 'yarrow'
   spec.executables << 'yarrow-server'
-  spec.add_runtime_dependency 'hashie', '~> 3.5'
   spec.add_runtime_dependency 'mementus', '~> 0.8'
   spec.add_runtime_dependency 'rack', '~> 2.0'
   spec.add_runtime_dependency 'rack-livereload', '~> 0.3'
   spec.add_runtime_dependency 'eventmachine', '~> 1.2'
   spec.add_runtime_dependency 'em-websocket', '~> 0.5.1'
-  spec.add_runtime_dependency 'sprockets', '~> 3.7'
   spec.add_runtime_dependency 'strings-inflection', '~> 0.1'
   spec.add_runtime_dependency 'strings-case', '~> 0.3'
   spec.add_development_dependency 'bundler', '~> 2.2.9'

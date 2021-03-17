@@ -4,12 +4,14 @@ module Yarrow
   ##
   # Little web server for browsing local files.
   class Server
-    include Configurable
+    attr_reader :config
 
-    def initialize
-      if config.server.nil?
-        raise ConfigurationError.new('Missing server entry')
+    def initialize(instance_config)
+      if instance_config.server.nil?
+        raise ConfigurationError.new("Missing server entry")
       end
+
+      @config = instance_config
     end
 
     ##
@@ -98,7 +100,7 @@ module Yarrow
     ##
     # @return [String]
     def docroot
-      config.output_dir || Dir.pwd
+      config.output_dir
     end
 
     ##

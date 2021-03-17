@@ -4,11 +4,7 @@ module Yarrow
     #
     # Methods provided by this class become available as named variables in
     # Mustache templates.
-    #
-    # Includes the library of helpers for dynamically generating HTML tags.
     class Context
-      include Yarrow::HTML::AssetTags
-
       def initialize(attributes)
         metaclass = class << self; self; end
         attributes.each do |name, value|

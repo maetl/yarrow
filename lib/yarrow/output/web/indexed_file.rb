@@ -2,8 +2,6 @@ module Yarrow
   module Output
     module Web
       class IndexedFile
-        include Yarrow::Configurable
-
         WRITE_MODE = 'w+:UTF-8'.freeze
 
         # @return [String] Basename reflecting the server convention (usually: index.html)

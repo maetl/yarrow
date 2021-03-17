@@ -1,50 +1,6 @@
 module Yarrow
-  ##
-  # Hash-like object containing runtime configuration values. Can be accessed indifferently
-  # via object style lookups or symbol keys.
-  #
-  class Configuration < Hashie::Mash
+  class Configuration
     class << self
-      ##
-      # Provides access to the registered global configuration.
-      #
-      # If no configuration is registered, returns a blank object.
-      #
-      # @return [Yarrow::Configuration]
-      #
-      def instance
-        @@configuration ||= self.new
-      end
-
-      ##
-      # Loads and registers a global configuration instance.
-      #
-      # This will reset any previously initialized configuration.
-      #
-      # @param [String] path to YAML file
-      #
-      def register(file)
-        @@configuration = load(file)
-      end
-
-      ##
-      # Loads and registers a global configuration instance with
-      # library-provided defaults.
-      #
-      # This will reset any previously initialized configuration.
-      #
-      def register_defaults
-        @@configuration = load_defaults
-      end
-
-      ##
-      # Clears the global configuration to the empty default.
-      #
-      def clear
-        @@configuration = self.new
-      end
-
-      ##
       # Merges the given configuration or hash-like object with the
       # registered global configuration.
       #
@@ -54,18 +10,16 @@ module Yarrow
         instance.deep_merge!(config)
       end
 
-      ##
       # Loads a configuration object from the given YAML file.
       #
       # @param [String] path to YAML file
       #
-      # @return [Yarrow::Configuration]
+      # @return [Yarrow::Config]
       #
       def load(file)
-        self.new(YAML.load_file(file))
+        coerce_config_struct(YAML.load(File.read(file), symbolize_names: true))
       end
 
-      ##
       # Yarrow is distributed with a `defaults.yml` which provides minimum
       # boostrap configuration and default settings for various internal
       # classes. Use this method to automatically load these defaults.
@@ -74,21 +28,39 @@ module Yarrow
       def load_defaults
         load(File.join(File.dirname(__FILE__), 'defaults.yml'))
       end
-    end
-  end
 
-  ##
-  # Embeds global configuration access in a client object.
-  #
-  module Configurable
-    ##
-    # Provides access to the registered global configuration. This can
-    # be overriden by subclasses to customize behaviour (eg: in test cases).
-    #
-    # @return [Yarrow::Configuration]
-    #
-    def config
-      Configuration.instance
+      private
+
+      # TODO: this should be folded into the schema machinery with type coercions
+      def coerce_config_struct(config)
+        meta_obj = if config.key?(:meta)
+          Yarrow::Config::Meta.new(
+            title: config[:meta][:title],
+            author: config[:meta][:author]
+          )
+        else
+          nil
+        end
+
+        server_obj = if config.key?(:server)
+          Yarrow::Config::Server.new(**config[:server])
+        else
+          nil
+        end
+
+        # TODO: messy hack to get rid of Hashie::Mash, this should either be
+        # automated as part of the schema types or a default value should be
+        # generated here (eg: `"#{Dir.pwd}/docs"`)
+        out_dir_or_string = config[:output_dir] || ""
+
+        Yarrow::Config::Instance.new(
+          output_dir: Pathname.new(File.expand_path(out_dir_or_string)),
+          source: Pathname.new(File.expand_path(out_dir_or_string)),
+          content: Pathname.new(File.expand_path(out_dir_or_string)),
+          meta: meta_obj,
+          server: server_obj
+        )
+      end
     end
   end
 

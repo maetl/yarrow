@@ -21,8 +21,8 @@ module Yarrow
           rescue Psych::SyntaxError => error
             if defined? ::Logger
               # todo: application wide logger
-              logger = ::Logger.new(STDOUT)
-              logger.error "#{error.message}"
+              #logger = ::Logger.new(STDOUT)
+              #logger.error "#{error.message}"
             end
             return [content, nil]
           end

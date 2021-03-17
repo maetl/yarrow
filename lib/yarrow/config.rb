@@ -20,6 +20,10 @@ module Yarrow
     # chain of Rack middleware and handlers. If you don’t care about default
     # directory indexes or port handling, you can completely ignore this.
     #
+    # There are many better live reloading options available in JS, so the Rack
+    # infrastructure here should be ignored for UI-heavy jobs. It’s otherwise
+    # fine for slower-paced general purpose web publishing.
+    #
     # The default index config could possibly move into a dedicated namespace
     # in future if it makes sense to use the underlying graph infrastructure
     # as a live lookup rather than a compiler-generated artifact. This would
@@ -33,20 +37,23 @@ module Yarrow
       :port,
       :host,
       :handler,
-      :middleware
+      :middleware,
+      :root_dir
     )
 
     # Top level root config namespace. Source, content and output are directory
     # paths and should be the only required defaults for a complete batch run.
     #
     # Additional server config is optional and only needed if running the dev
-    # server locally. There are many better live reloading options available in
-    # JS, so the Rack infrastructure here should be ignored for UI-heavy jobs.
-    # It’s otherwise fine for slower-paced general purpose web publishing.
+    # server locally.
+    #
+    # TODO: meta should be union of Type::Optional and Config::Meta
     Instance = Yarrow::Schema::Value.new(
       source: Pathname,
       content: Pathname,
-      output: Pathname
+      output_dir: Pathname,
+      meta: Yarrow::Schema::Type::Any,
+      server: Yarrow::Schema::Type::Any
     )
   end
 end

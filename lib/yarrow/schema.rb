@@ -17,11 +17,23 @@ module Yarrow
       end
 
       def check(fields)
-        raise "wrong number of args" unless fields.keys.length == @spec.keys.length
+        missing_fields = @spec.keys.difference(fields.keys)
 
-        fields.keys.each do |key|
-          raise "key does not exist" unless @spec.key?(key)
+        if missing_fields.any?
+          missing_fields.each do |field|
+            raise "wrong number of args" unless @spec[field].eql?(Type::Any)
+          end
         end
+
+        mismatching_fields = fields.keys.difference(@spec.keys)
+
+        raise "key does not exist" if mismatching_fields.any?
+
+        fields.each do |(field, value)|
+          raise "wrong data type" unless value.is_a?(@spec[field]) || @spec[field].eql?(Type::Any)
+        end
+
+        true
       end
     end
 
