@@ -1,6 +1,6 @@
 describe "indexed file" do
   let(:output_dir) do
-    Pathname.new(File.expand_path(ENV["TMPDIR"] + "/docroot"))
+    Pathname.new(File.expand_path("#{ENV['TMPDIR']}/docroot"))
   end
 
   let(:raw_fixture) do
@@ -12,7 +12,7 @@ describe "indexed file" do
   end
 
   it "writes permalinks with trailing slashes to standard index" do
-    puts raw_fixture
+    expect(raw_fixture.output).to eq(output_dir) 
     #writer = Yarrow::Output::Web::IndexedFile.new(io_obj, output_dir)
     #writer.write(Pathname.new("/collection/topic/"), "<h1>Index</h1>")
   end
