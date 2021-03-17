@@ -1,3 +1,5 @@
+gem "strings-inflection"
+
 module Yarrow
   module Content
     class ContentType
@@ -17,12 +19,12 @@ module Yarrow
 
       def collection
         return @properties.collection if @properties.respond_to?(:collection)
-        ActiveSupport::Inflector.pluralize(@properties.entity).to_sym
+        Yarrow::Symbols.to_plural(@properties.entity)
       end
 
       def entity
         return @properties.entity if @properties.respond_to?(:entity)
-        ActiveSupport::Inflector.singularize(@properties.collection).to_sym
+        Yarrow::Symbols.to_singular(@properties.collection)
       end
 
       def extensions

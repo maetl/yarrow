@@ -125,7 +125,7 @@ module Yarrow
 
       def build_content_nodes(graph, objects, type, parent_index)
         # TODO: this may need to use a strategy that can be overriden
-        content_type = ActiveSupport::Inflector.singularize(type).to_sym
+        content_type = Yarrow::Symbols.to_singular(type)
 
         # Process collected content objects and generate entity nodes
         objects.each do |name, sources|
@@ -172,8 +172,9 @@ module Yarrow
             # TODO: consider whether to provide `body` on the item/document or at
             # the custom content type level.
             begin
-              content_struct = Object.const_get(ActiveSupport::Inflector.classify(content_type))
+              content_struct = Yarrow::Symbols.to_const(content_type)
             rescue
+              # No immutable struct found: fall back to slower dynamically typed open struct
               require "ostruct"
               content_struct = OpenStruct
             end

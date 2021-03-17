@@ -1,10 +1,12 @@
 describe Yarrow::Schema::Validator do
+  Type = Yarrow::Schema::Type
+
   describe "any type schema" do
     let(:anchor) do
       Yarrow::Schema::Validator.new({
-        :href => Yarrow::Schema::Type::Any,
-        :title => Yarrow::Schema::Type::Any,
-        :target => Yarrow::Schema::Type::Any
+        :href => Type::Any,
+        :title => Type::Any,
+        :target => Type::Any
       })
     end
 
