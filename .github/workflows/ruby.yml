@@ -10,7 +10,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
-        ruby: [2.7, '3.0', jruby]
+        ruby: [2.7, '3.0', jruby-9.2.16.0]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
