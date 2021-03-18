@@ -6,7 +6,6 @@ Gem::Specification.new do |spec|
   spec.name        = 'yarrow'
   spec.version     = Yarrow::VERSION
   spec.platform    = Gem::Platform::RUBY
-  spec.required_ruby_version = '>= 2.6'
   spec.summary     = 'Documentation generator based on a fluent data model.'
   spec.description = 'Yarrow is a tool for generating well structured documentation from a variety of input sources.'
   spec.authors     = ['Mark Rickerby']
