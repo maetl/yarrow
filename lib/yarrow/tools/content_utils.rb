@@ -15,10 +15,18 @@ module Yarrow
       #
       # Works around meta and content source in multiple files or a single
       # file with front matter.
-      def read_content(path)
+      def read(name)
+        path = if name.is_a?(Pathname)
+          name
+        else
+          Pathname.new(name)
+        end
+
+        text = File.read(path, :encoding => 'utf-8')
+
         case path.extname
-        when '.htm', '.md', '.txt'
-          read_split_content(path.to_s, symbolize_keys: true)
+        when '.htm', '.md', '.txt', '.yfm'
+          extract_yfm(text, symbolize_keys: true)
         # when '.md'
         #   body, data = read_split_content(path.to_s, symbolize_keys: true)
         #   [Kramdown::Document.new(body).to_html, data]
@@ -27,6 +35,31 @@ module Yarrow
         when '.json'
           [nil, JSON.parse(File.read(path.to_s))]
         end
+      end
+
+      def extract_yfm(text, options={})
+        pattern = /^(---\s*\n.*?\n?)^(---\s*$\n?)/m
+        if text =~ pattern
+          content = text.sub(pattern, "")
+
+          begin
+            if options.key?(:symbolize_keys)
+              meta = YAML.load($1, symbolize_names: true)
+            else
+              meta = YAML.load($1)
+            end
+            return [content, meta]
+          rescue Psych::SyntaxError => error
+            if defined? ::Logger
+              # todo: application wide logger
+              #logger = ::Logger.new(STDOUT)
+              #logger.error "#{error.message}"
+            end
+            return [content, nil]
+          end
+        end
+
+        [text, nil]
       end
     end
   end

@@ -1,5 +1,7 @@
 module Yarrow
   module Tools
+    # @deprecated
+    # Maintained here as it is still used in a number of places but needs to be removed soon
     module FrontMatter
 
       def read_split_content(path, options={})
