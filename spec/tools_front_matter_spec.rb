@@ -5,7 +5,7 @@ describe Yarrow::Tools::FrontMatter do
   include Yarrow::Tools::ContentUtils
 
   it "test_read_split_content" do
-    content, meta = read(File.dirname(__FILE__) + "/fixtures/tools/front_matter/page.yfm")
+    content, meta = read_yfm(File.dirname(__FILE__) + "/fixtures/tools/front_matter/page.yfm")
 
     expect(content).to eq "<p>Split page content.</p>"
     expect(meta[:layout]).to eq "page"
