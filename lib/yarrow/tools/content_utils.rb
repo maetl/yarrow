@@ -15,7 +15,7 @@ module Yarrow
       #
       # Works around meta and content source in multiple files or a single
       # file with front matter.
-      def read(name)
+      def read_yfm(name)
         path = if name.is_a?(Pathname)
           name
         else
@@ -60,6 +60,14 @@ module Yarrow
         end
 
         [text, nil]
+      end
+
+      def write_yfm(name, text, meta)
+        # Symbolized keys are better to deal with when manipulating data in
+        # Ruby but are an interop nightmare when serialized so here we do a
+        # round-trip through JSON encoding to ensure all keys are string
+        # encoded before dumping them to the front matter format.
+        File.write(name, [YAML.dump(meta.to_json), "---", text].join("\n"))
       end
     end
   end

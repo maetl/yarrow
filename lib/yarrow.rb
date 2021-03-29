@@ -1,3 +1,4 @@
+require 'pathname'
 require 'yaml'
 
 require 'yarrow/version'
