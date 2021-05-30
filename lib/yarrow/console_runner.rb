@@ -31,27 +31,27 @@ module Yarrow
 
     def run_application
       print_header
-      
+
       begin
         process_arguments
-      
+
         if has_option?(:version)
           return SUCCESS
         end
-      
+
         if has_option?(:help)
           print_help
           return SUCCESS
         end
-        
+
         process_configuration
-        
+
         run_input_process
-        
+
         run_output_process
-        
+
         print_footer
-        
+
         SUCCESS
       rescue Exception => e
         print_error e
@@ -81,20 +81,20 @@ module Yarrow
 
     def process_configuration
       # load_configuration(Dir.pwd)
-      
+
       # @targets.each do |input_path|
       #   @config.deep_merge! load_configuration(input_path)
       # end
-      
+
       if has_option?(:config)
         path = @options[:config]
         @config.deep_merge! Configuration.load(path)
       end
-      
+
       @config.options = @options.to_hash
 
       # normalize_theme_path
-      
+
       # theme = @config.options.theme
       # @config.append load_configuration(theme)
     end
@@ -113,9 +113,9 @@ module Yarrow
       else
         value = true
       end
-      
+
       name = option.gsub("-", "")
-      
+
       if option[0..1] == "--"
         if ENABLED_OPTIONS.has_value?(name.to_sym)
           @options[name.to_sym] = value
@@ -127,7 +127,7 @@ module Yarrow
           return
         end
       end
-      
+
       raise "Unrecognized option: #{raw_option}"
     end
 
@@ -142,7 +142,7 @@ module Yarrow
     def run_input_process
       # noop
     end
-    
+
     def run_output_process
       # noop
     end
@@ -161,7 +161,7 @@ module Yarrow
 
     def print_help
       help = <<HELP
-  See http://yarrowdoc.org for more information.
+  See http://yarrow.maetl.net for more information.
 
   Usage:
 
