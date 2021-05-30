@@ -13,7 +13,6 @@ describe Yarrow::Server do
           content: $fake_path,
           source: $fake_path
         )
-        p configuration_obj
         super(configuration_obj)
       end
     end
