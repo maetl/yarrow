@@ -8,11 +8,13 @@ describe Yarrow::Server do
   context 'Server configuration is missing' do
     class MisconfiguredServer < Yarrow::Server
       def initialize
-        super(Yarrow::Config::Instance.new(
+        configuration_obj = Yarrow::Config::Instance.new(
           output_dir: $fake_path,
           content: $fake_path,
           source: $fake_path
-        ))
+        )
+        p configuration_obj
+        super(configuration_obj)
       end
     end
 

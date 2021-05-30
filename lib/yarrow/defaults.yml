@@ -22,7 +22,7 @@ server:
   auto_index: true
   default_index: index.html
   default_type: text/plain
-  port: 4000
+  port: 5005
   host: localhost
   handler: webrick
   middleware:

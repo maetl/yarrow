@@ -69,5 +69,8 @@ module Yarrow
   ##
   # Raised when a required config section or property is missing.
   class ConfigurationError < StandardError
+    def self.missing_section(name)
+      new("Missing config section #{name.to_sym}")
+    end
   end
 end

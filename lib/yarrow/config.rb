@@ -37,6 +37,7 @@ module Yarrow
       :port,
       :host,
       :handler,
+      :docroot,
       :middleware,
       :root_dir
     )

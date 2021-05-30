@@ -6,9 +6,13 @@ module Yarrow
   class Server
     attr_reader :config
 
+    def self.default
+      new(Yarrow::Configuration.load_defaults)
+    end
+
     def initialize(instance_config)
       if instance_config.server.nil?
-        raise ConfigurationError.new("Missing server entry")
+        raise ConfigurationError.missing_section(:server)
       end
 
       @config = instance_config
@@ -57,6 +61,9 @@ module Yarrow
       app.use(DirectoryIndex, root: docroot, index: default_index)
 
       app_args = [docroot, {}].tap { |args| args.push(default_type) if default_type }
+
+      p app_args
+
       static_app = Rack::File.new(*app_args)
 
       if live_reload?
@@ -89,7 +96,7 @@ module Yarrow
 
       trap(:INT) do
         handler.shutdown if handler.respond_to?(:shutdown)
-        reactor.stop
+        reactor.stop if live_reload?
       end
 
       handler.run(app, run_options)
@@ -97,7 +104,10 @@ module Yarrow
 
     private
 
-    ##
+    # Host directory of the mounted web server.
+    #
+    # Fallback to `config.output_dir`.
+    #
     # @return [String]
     def docroot
       config.output_dir
