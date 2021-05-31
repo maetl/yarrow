@@ -41,6 +41,38 @@ module Yarrow
       end
     end
 
+    # Rack Middleware for rewriting extensionless URLs
+    #
+    # See surge.sh rewrite rules, that seems like a good starting point for
+    # generic behaviour that can be put in place without needing large amounts
+    # of config each time.
+    class ResourceRewriter
+      def initialize(app)
+        # No options enabled
+        @app = app
+      end
+
+      def should_try_rewrite(path)
+        !request_path.ends_with(".html") || !request_path.ends_with("/")
+      end
+
+      def call(env)
+        # TODO: document and disambiguate usage of Rack::Request vs env PATH_INFO
+        request_path = env["PATH_INFO"]
+
+        try_response = @app.call(env)
+
+        # TODO: reproduces default Netlify behaviour—should be a 301 instead?
+        if try_response[0] == 404 and should_try_rewrite(request_path)
+          try_response = @app.call(env.merge!({
+            "PATH_INFO" => "#{request_path}.html"
+          }))
+        end
+
+        try_response
+      end
+    end
+
     ##
     # Builds a Rack application to serve files in the output directory.
     #
@@ -58,6 +90,7 @@ module Yarrow
         app.use(middleware)
       end
 
+      app.use(ResourceRewriter)
       app.use(DirectoryIndex, root: docroot, index: default_index)
 
       app_args = [docroot, {}].tap { |args| args.push(default_type) if default_type }
