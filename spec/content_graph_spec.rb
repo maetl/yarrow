@@ -1,14 +1,6 @@
 require "spec_helper"
 
 describe Yarrow::Content::Graph do
-  def load_config_fixture(input_dir)
-    Yarrow::Config::Instance.new(
-      source: Pathname.new("#{__dir__}/fixtures/sources/#{input_dir}"),
-      content: Pathname.new("#{__dir__}/fixtures/sources/content_dir"),
-      output_dir: Pathname.new("#{__dir__}/fixtures/sources/output_dir"),
-    )
-  end
-
   describe "expansion" do
     let(:content) do
       Yarrow::Content::Graph.from_source(load_config_fixture("pages"))
