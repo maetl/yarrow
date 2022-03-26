@@ -3,15 +3,15 @@ module Yarrow
     class CollectionExpander
       include Yarrow::Tools::FrontMatter
 
-      def initialize(content_types=nil)
-        @content_types = content_types || [
-          Yarrow::Content::ContentType.from_name(:pages)
+      def initialize(object_types=nil)
+        @object_types = object_types || [
+          Yarrow::Content::ObjectType.from_name(:pages)
         ]
       end
 
       def expand(graph)
-        @content_types.each do |content_type|
-          expand_nested(graph, content_type)
+        @object_types.each do |object_type|
+          expand_nested(graph, object_type)
         end
       end
 

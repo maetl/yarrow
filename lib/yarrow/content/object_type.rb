@@ -2,7 +2,7 @@ gem "strings-inflection"
 
 module Yarrow
   module Content
-    class ContentType
+    class ObjectType
       Value = Yarrow::Schema::Value.new(:collection, :entity, :extensions)
 
       DEFAULT_EXTENSIONS = [".md", ".yml", ".htm"]
