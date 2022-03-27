@@ -3,6 +3,8 @@ module Yarrow
     class CollectionExpander
       include Yarrow::Tools::FrontMatter
 
+      # If a list of object types is not provided, a default `pages` type is
+      # created.
       def initialize(object_types=nil)
         @object_types = object_types || [
           Yarrow::Content::ObjectType.from_name(:pages)
@@ -87,6 +89,60 @@ module Yarrow
           end
         end
 
+        # If there are no subcollections then we need to look at the start node
+        # TODO: test to verify if this could be used in all cases, not just
+        # the situation where there are subfolders to be mapped.
+        if subcollections.empty?
+          # Collect files that match the content type extension and group them
+          # under a common key for each slug (this is so we can merge multiple
+          # files with the same name together into a single content type, a
+          # specific pattern found in some legacy content folders).
+          #
+          # Ideally, this code should be deleted once we have a clean workflow
+          # and can experiment with decoupling different strategies for
+          # expansion/enrichment of content objects.
+          objects = start_node.out(:file).all.select do |file|
+            file.props[:name].end_with?(*exts)
+          end.group_by do |file|
+            file.props[:slug]
+          end
+
+          # This is a massive hack to deal with situations where we don’t
+          # recurse down the list of directories. The best way to clean it up
+          # will be to document the different supported mapping formats and
+          # URL generation strategies and break these up into separate
+          # traversal objects for each particular style of content organisation.
+          if index.nil?
+            index = graph.create_node do |collection_node|
+              collection_node.label = :collection
+              collection_node.props[:type] = type
+              collection_node.props[:name] = type
+              collection_node.props[:slug] = type.to_s
+              collection_node.props[:title] = metadata[:title]
+
+              # Override default status so that mapped index collections always show
+              # up in the resulting document manifest, when they don’t have
+              # associated metadata. This is the opposite of how individual pieces
+              # of content behave (default to draft status if one isn’t supplied).
+              collection_node.props[:status] = if data[:status]
+                data[:status]
+              else
+                "published"
+              end
+
+              # TODO: URL generation might need to happen elsewhere
+              collection_node.props[:url] = if data[:url]
+                data[:url]
+              else
+                "/#{type}/"
+              end
+            end
+          end
+
+          build_content_nodes(graph, objects, type, index)
+        end
+
+        # Go through each subcollection and expand content nodes step by step.
         subcollections.each do |path, index|
           # Group files matching the same slug under a common key
           objects = graph.n(path: path).out(:file).all.select do |file|

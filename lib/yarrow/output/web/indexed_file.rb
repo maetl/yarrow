@@ -27,10 +27,16 @@ module Yarrow
 
           target_path = Pathname.new("#{docroot}#{path}")
 
-          FileUtils.mkdir_p(target_path.dirname)
+          ensure_dir_exists!(target_path.dirname)
 
           File.open(target_path.to_s, WRITE_MODE) do |file|
             file.puts(content)
+          end
+        end
+
+        def ensure_dir_exists!(target)
+          unless File.directory?(target)
+            FileUtils.mkdir_p(target)
           end
         end
       end

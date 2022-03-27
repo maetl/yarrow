@@ -6,7 +6,7 @@ describe Yarrow::Configuration do
     it "loads from local fixture" do
       config = Yarrow::Configuration.load(File.dirname(__FILE__) + "/fixtures/test.yml")
 
-      expect(config.meta.title).to eq "Test Project"
+      expect(config.meta.title).to eq "Doctest"
     end
 
     it "loads from defaults" do

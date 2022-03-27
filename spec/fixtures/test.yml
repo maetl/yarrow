@@ -1,2 +1,5 @@
+project_dir: "."
+content_dir: "./spec/fixtures/sources/doctest"
+output_dir: "./docs"
 meta:
-  title: "Test Project"
+  title: "Doctest"

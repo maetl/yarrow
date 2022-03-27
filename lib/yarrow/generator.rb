@@ -1,27 +1,52 @@
 module Yarrow
+  class ScanSource < Process::StepProcessor
+    accepts Config::Instance
+    provides Content::Graph
 
-  # Generates documentation from a model.
-  #
-  # Subclasses of Generator need to override the template methods,
-  # to specify a particular file structure to output.
-  class Generator
-  
-    def initialize(target, site_tree)
-      ensure_dir_exists! target
-      @target = target
-      @site_tree = site_tree
+    def step(config)
+      Yarrow::Content::Graph.from_source(config)
     end
-  
-    def ensure_dir_exists!(target)
-      unless File.directory? target
-        Dir.mkdir target
-      end
-    end
-    
-    def build_docs
-      
-    end
-  
   end
 
+  class ExpandCollections < Process::StepProcessor
+    accepts Content::Graph
+    provides Content::Graph
+
+    def step(content)
+      expander = Content::CollectionExpander.new
+      expander.expand(content.graph)
+      content
+    end
+  end
+
+  class FlattenManifest < Process::StepProcessor
+    accepts Content::Graph
+    provides Content::Manifest
+
+    def step(content)
+      Content::Manifest.build(content.graph)
+    end
+  end
+
+  # Generates documentation from a model.
+  class Generator
+    def initialize(config)
+      @config = config
+      @workflow = Process::Workflow.new(config)
+    end
+
+    def process(&block)
+      workflow.connect(ScanSource.new)
+      workflow.connect(ExpandCollections.new)
+      workflow.connect(FlattenManifest.new)
+
+      workflow.process do |result|
+        block.call(result)
+      end
+    end
+
+    private
+
+    attr_reader :config, :workflow
+  end
 end

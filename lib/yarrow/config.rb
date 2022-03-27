@@ -42,16 +42,18 @@ module Yarrow
       :root_dir
     )
 
-    # Top level root config namespace. Source, content and output are directory
-    # paths and should be the only required defaults for a complete batch run.
+    # Top level root config namespace.
+    #
+    # `content_dir` and `output_dir` are placeholders and should be overriden
+    # with more fine-grained config for web and book outputs in future.
     #
     # Additional server config is optional and only needed if running the dev
     # server locally.
     #
     # TODO: meta should be union of Type::Optional and Config::Meta
     Instance = Yarrow::Schema::Value.new(
-      source: Pathname,
-      content: Pathname,
+      project_dir: Pathname,
+      content_dir: Pathname,
       output_dir: Pathname,
       meta: Yarrow::Schema::Type::Any,
       server: Yarrow::Schema::Type::Any

@@ -7,7 +7,7 @@ describe Yarrow::Content::SourceCollector do
     end
 
     specify "descriptor labels" do
-      local_file_source = Yarrow::Content::SourceCollector.collect(config.source)
+      local_file_source = Yarrow::Content::SourceCollector.collect(config.content_dir)
 
       expect(
         Set.new(local_file_source.nodes.map { |n| n.label })
@@ -19,7 +19,7 @@ describe Yarrow::Content::SourceCollector do
     end
 
     specify "directory schema" do
-      local_file_source = Yarrow::Content::SourceCollector.collect(config.source)
+      local_file_source = Yarrow::Content::SourceCollector.collect(config.content_dir)
       dir_props = local_file_source.n(:directory).first.props
       # TODO: collapse path and entry, consider place for stat/mtime
       expect(dir_props).to have_key(:name)
@@ -29,7 +29,7 @@ describe Yarrow::Content::SourceCollector do
     end
 
     specify "file schema" do
-      local_file_source = Yarrow::Content::SourceCollector.collect(config.source)
+      local_file_source = Yarrow::Content::SourceCollector.collect(config.content_dir)
       file_props = local_file_source.n(:file).first.props
       # TODO: collapse path and entry, consider place for stat/mtime
       expect(file_props).to have_key(:name)

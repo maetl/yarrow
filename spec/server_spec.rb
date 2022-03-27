@@ -10,8 +10,8 @@ describe Yarrow::Server do
       def initialize
         configuration_obj = Yarrow::Config::Instance.new(
           output_dir: $fake_path,
-          content: $fake_path,
-          source: $fake_path
+          content_dir: $fake_path,
+          project_dir: $fake_path
         )
         super(configuration_obj)
       end
@@ -29,8 +29,8 @@ describe Yarrow::Server do
       def initialize
         super(Yarrow::Config::Instance.new(
           output_dir: Pathname.new(File.expand_path(".")),
-          content: $fake_path,
-          source: $fake_path,
+          content_dir: $fake_path,
+          project_dir: $fake_path,
           server: Yarrow::Config::Server.new(
             port: 8888,
             host: 'localhost',
@@ -65,8 +65,8 @@ describe Yarrow::Server do
       def initialize
         super(Yarrow::Config::Instance.new(
           output_dir: Pathname.new("spec/fixtures/server/directory"),
-          content: $fake_path,
-          source: $fake_path,
+          content_dir: $fake_path,
+          project_dir: $fake_path,
           server: Yarrow::Config::Server.new(
             port: 8888,
             host: 'localhost',
@@ -99,8 +99,8 @@ describe Yarrow::Server do
       def initialize
         super(Yarrow::Config::Instance.new(
           output_dir: Pathname.new("spec/fixtures/server/index"),
-          content: $fake_path,
-          source: $fake_path,
+          content_dir: $fake_path,
+          project_dir: $fake_path,
           server: Yarrow::Config::Server.new(
             port: 8888,
             host: 'localhost',
@@ -132,8 +132,8 @@ describe Yarrow::Server do
       def initialize
         super(Yarrow::Config::Instance.new(
           output_dir: Pathname.new("spec/fixtures/server/extensionless"),
-          content: $fake_path,
-          source: $fake_path,
+          content_dir: $fake_path,
+          project_dir: $fake_path,
           server: Yarrow::Config::Server.new(
             port: 8888,
             host: 'localhost',
