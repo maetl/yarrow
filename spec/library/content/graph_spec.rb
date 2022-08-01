@@ -23,11 +23,11 @@ describe Yarrow::Content::Graph do
 
     it "reads a source graph from files" do
       expect(content.files.count).to eq(4)
-      expect(content.directories.count).to eq(1)
+      expect(content.directories.count).to eq(2)
 
       expect(
-        Set.new(content.files.map { |f| f.props[:slug] })
-      ).to eq(Set.new(['about', 'index', 'one', 'two']))
+        Set.new(content.files.map { |f| f.props[:name] })
+      ).to eq(Set.new(['about.htm', 'index.htm', 'one.htm', 'two.htm']))
     end
 
     it "expands source files into collections" do
@@ -47,11 +47,11 @@ describe Yarrow::Content::Graph do
       content = Yarrow::Content::Graph.from_source(config)
 
       expect(content.files.count).to eq(5)
-      expect(content.directories.count).to eq(3)
+      expect(content.directories.count).to eq(4)
 
       expect(
-        Set.new(content.directories.map { |f| f.props[:slug] })
-      ).to eq(Set.new(['articles', 'photos', 'posts']))
+        Set.new(content.directories.map { |f| f.props[:name] })
+      ).to eq(Set.new(["collections", "articles", "photos", "posts"]))
     end
   end
 end

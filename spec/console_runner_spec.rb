@@ -2,7 +2,6 @@ require "spec_helper"
 require "stringio"
 
 describe Yarrow::ConsoleRunner do
-
   SUCCESS = 0
   FAILURE = 1
 

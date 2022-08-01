@@ -1,5 +1,4 @@
 module Yarrow
-
   class ConsoleRunner
 
     SUCCESS = 0
@@ -100,7 +99,6 @@ module Yarrow
     end
 
     def normalize_theme_path
-
       # noop
     end
 
@@ -139,12 +137,11 @@ module Yarrow
       @options.has_key? option
     end
 
-    def run_input_process
-      # noop
-    end
-
-    def run_output_process
-      # noop
+    def run_generation_process
+      generator = Generator.new(@config)
+      generator.process do |manifest|
+        p manifest
+      end
     end
 
     def print_header

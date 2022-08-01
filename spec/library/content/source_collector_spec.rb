@@ -23,7 +23,6 @@ describe Yarrow::Content::SourceCollector do
       dir_props = local_file_source.n(:directory).first.props
       # TODO: collapse path and entry, consider place for stat/mtime
       expect(dir_props).to have_key(:name)
-      expect(dir_props).to have_key(:slug)
       expect(dir_props).to have_key(:path)
       expect(dir_props).to have_key(:entry)
     end
@@ -33,7 +32,6 @@ describe Yarrow::Content::SourceCollector do
       file_props = local_file_source.n(:file).first.props
       # TODO: collapse path and entry, consider place for stat/mtime
       expect(file_props).to have_key(:name)
-      expect(file_props).to have_key(:slug)
       expect(file_props).to have_key(:path)
       expect(file_props).to have_key(:entry)
     end
