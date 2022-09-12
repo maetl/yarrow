@@ -109,13 +109,13 @@ describe Yarrow::Schema::Value do
 end
 
 describe Yarrow::Schema::Entity do
-  it "defines attribute accessors" do
-    class DateType < Yarrow::Schema::Entity
-      attribute :year, Integer
-      attribute :month, Integer
-      attribute :day, Integer
-    end
+  class DateType < Yarrow::Schema::Entity
+    attribute :year, Integer
+    attribute :month, Integer
+    attribute :day, Integer
+  end
 
+  it "defines attribute accessors" do
     data = {
       :year =>  2021,
       :month => 2,
@@ -126,5 +126,29 @@ describe Yarrow::Schema::Entity do
     expect(dt.year).to eq(data[:year])
     expect(dt.month).to eq(data[:month])
     expect(dt.day).to eq(data[:day])
+  end
+
+  it "raises error when missing required attribute" do
+    data = {
+      :year =>  2021,
+      :month => 2
+    }
+
+    expect { DateType.new(data) }.to raise_error(
+      "missing declared attribute day"
+    )
+  end
+
+  it "raises error when given unregistered attribute" do
+    data = {
+      :year =>  2021,
+      :month => 2,
+      :day => 22,
+      :iso8601 => "2021-02-22"
+    }
+
+    expect { DateType.new(data) }.to raise_error(
+      "iso8601 not a declared attribute"
+    )
   end
 end

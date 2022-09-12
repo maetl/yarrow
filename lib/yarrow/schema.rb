@@ -106,7 +106,7 @@ module Yarrow
 
       def initialize(config)
         dictionary.each_key do |name|
-          raise "missing declared attribute #{name}" unless dictionary.key?(name)
+          raise "missing declared attribute #{name}" unless config.key?(name)
         end
 
         config.each_pair do |key, value|
