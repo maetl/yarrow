@@ -121,11 +121,12 @@ module Yarrow
           instance_variable_set("@#{key}", value)
         end
       end
-    end
 
-    def to_h
-      dictionary.keys.reduce({}) do |h, name|
-        h[name] = instance_variable_get("@#{name}")
+      def to_h
+        dictionary.keys.reduce({}) do |attr_dict, name|
+          attr_dict[name] = instance_variable_get("@#{name}")
+          attr_dict
+        end
       end
     end
   end

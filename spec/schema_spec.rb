@@ -128,6 +128,17 @@ describe Yarrow::Schema::Entity do
     expect(dt.day).to eq(data[:day])
   end
 
+  it "converts attributes to hash" do
+    data = {
+      :year =>  2021,
+      :month => 2,
+      :day => 22
+    }
+
+    dt = DateType.new(data)
+    expect(dt.to_h).to eq(data)
+  end
+
   it "raises error when missing required attribute" do
     data = {
       :year =>  2021,
