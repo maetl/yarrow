@@ -1,4 +1,4 @@
-describe Yarrow::Content::CollectionExpander do
+describe Yarrow::Content::Expansion do
   # TODO: rename to Content::Expansion and introduce expansion strategy concept
   describe "doctest fixture" do
     let(:doctest_source) do
@@ -9,7 +9,7 @@ describe Yarrow::Content::CollectionExpander do
     it "generates a set of pages from markdown files" do
       # If a list of object types is not provided
       # a default `pages` type is created.
-      expander = Yarrow::Content::CollectionExpander.new
+      expander = Yarrow::Content::Expansion.new
       expander.expand(doctest_source.graph)
 
       expect(doctest_source.collections.length).to be(1)

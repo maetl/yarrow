@@ -7,7 +7,7 @@ module Yarrow
       #
       # @return [Yarrow::Content::Graph]
       def self.from_source(config)
-        new(SourceCollector.collect(config.content_dir), config)
+        new(Source.collect(config.content_dir), config)
       end
 
       attr_reader :graph, :config
@@ -18,7 +18,7 @@ module Yarrow
       end
 
       def expand_pages
-        expander = Yarrow::Content::CollectionExpander.new
+        expander = Yarrow::Content::Expansion.new
         expander.expand(graph)
       end
 

@@ -145,8 +145,9 @@ describe Yarrow::Schema::Entity do
       :month => 2
     }
 
+    # TODO: "missing declared attribute `day`"
     expect { DateType.new(data) }.to raise_error(
-      "missing declared attribute day"
+      "wrong number of args"
     )
   end
 
@@ -158,8 +159,9 @@ describe Yarrow::Schema::Entity do
       :iso8601 => "2021-02-22"
     }
 
+    # TODO: "iso8601 not a declared attribute"
     expect { DateType.new(data) }.to raise_error(
-      "iso8601 not a declared attribute"
+      "key does not exist"
     )
   end
 end

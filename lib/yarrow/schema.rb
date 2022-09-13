@@ -12,8 +12,12 @@ module Yarrow
     # Current design throws on error rather than returns a boolean result.
     class Validator
       # @param fields_spec [Hash] defines the slots in the schema to validate against
-      def initialize(fields_spec)
+      def initialize(fields_spec={})
         @spec = fields_spec
+      end
+
+      def define_attribute(spec_key, spec_type)
+        @spec[spec_key] = spec_type
       end
 
       def check(fields)
@@ -92,31 +96,33 @@ module Yarrow
           #   value_type.coerce(input)
           # end
           dictionary[name] = value_type
+          validator.define_attribute(name, value_type)
           attr_reader(name)
         end
 
         def dictionary
           @dictionary ||= Hash.new
         end
-      end
 
-      def dictionary
-        self.class.dictionary
+        def validator
+          @validator ||= Validator.new({})
+        end
       end
 
       def initialize(config)
-        dictionary.each_key do |name|
-          raise "missing declared attribute #{name}" unless config.key?(name)
-        end
-
+        validator.check(config)
+        # dictionary.each_key do |name|
+        #   raise "missing declared attribute #{name}" unless config.key?(name)
+        # end
+        #
         config.each_pair do |key, value|
-          raise "#{key} not a declared attribute" unless dictionary.key?(key)
-
-          defined_type = dictionary[key]
-
-          unless value.is_a?(defined_type)
-            raise "#{key} accepts #{defined_type} but #{value.class} given"
-          end
+          # raise "#{key} not a declared attribute" unless dictionary.key?(key)
+          #
+          # defined_type = dictionary[key]
+          #
+          # unless value.is_a?(defined_type)
+          #   raise "#{key} accepts #{defined_type} but #{value.class} given"
+          # end
 
           instance_variable_set("@#{key}", value)
         end
@@ -127,6 +133,16 @@ module Yarrow
           attr_dict[name] = instance_variable_get("@#{name}")
           attr_dict
         end
+      end
+
+      private
+
+      def dictionary
+        self.class.dictionary
+      end
+
+      def validator
+        self.class.validator
       end
     end
   end

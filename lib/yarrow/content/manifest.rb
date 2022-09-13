@@ -22,11 +22,11 @@ module Yarrow
         manifest
       end
 
-      attr_reader :documents, :resources
+      attr_reader :documents, :assets
 
       def initialize
         @documents = []
-        @resources = []
+        @assets = []
       end
 
       def self.collection_context(collection)
@@ -53,8 +53,8 @@ module Yarrow
         @documents << document
       end
 
-      def add_resource(resource)
-        @resources << resource
+      def add_asset(asset)
+        @assets << asset
       end
     end
   end

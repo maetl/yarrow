@@ -2,31 +2,31 @@ gem "strings-inflection"
 
 module Yarrow
   module Content
-    class ObjectType
-      Value = Yarrow::Schema::Value.new(:collection, :entity, :extensions)
+    class Policy
+      Options = Yarrow::Schema::Value.new(:container, :entity, :extensions)
 
       DEFAULT_EXTENSIONS = [".md", ".yml", ".htm"]
 
       def self.from_name(name)
-        new(Value.new(collection: name.to_sym))
+        new(Options.new(container: name.to_sym))
       end
 
       def initialize(properties)
-        unless properties.respond_to?(:collection) || properties.respond_to?(:entity)
-          raise "Must provide a collection name or entity name"
+        unless properties.respond_to?(:container) || properties.respond_to?(:entity)
+          raise "Must provide a container name or entity name"
         end
 
         @properties = properties
       end
 
-      def collection
-        return @properties.collection if @properties.collection
+      def container
+        return @properties.container if @properties.container
         Yarrow::Symbols.to_plural(@properties.entity)
       end
 
       def entity
         return @properties.entity if @properties.entity
-        Yarrow::Symbols.to_singular(@properties.collection)
+        Yarrow::Symbols.to_singular(@properties.container)
       end
 
       def extensions
