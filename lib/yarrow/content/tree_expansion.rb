@@ -2,6 +2,15 @@ module Yarrow
   module Content
     class TreeExpansion < ExpansionStrategy
       def expand(policy)
+        #p graph.n(:root).out(:directory).to_a.count
+        #policy.match()
+
+        #p graph.n(:root).out(:directory).first.props[:name]
+
+        expand_impl(policy)
+      end
+
+      def expand_impl(policy)
         type = policy.container
         exts = policy.extensions
 
