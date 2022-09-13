@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'em-websocket', '~> 0.5.1'
   spec.add_runtime_dependency 'strings-inflection', '~> 0.1'
   spec.add_runtime_dependency 'strings-case', '~> 0.3'
-  spec.add_development_dependency 'bundler'
+  spec.add_development_dependency 'bundler', "~> 2.3.22"
   spec.add_development_dependency 'rake', '~> 13.0'
   spec.add_development_dependency 'rspec', '~> 3.11'
   spec.add_development_dependency 'coveralls', '~> 0.8.23'
