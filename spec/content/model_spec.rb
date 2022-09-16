@@ -1,20 +1,30 @@
 describe "yarrow content model" do
   it "loads a policy from explicit catch-all config" do
-    config_spec = Yarrow::ContentConfig::ContentSpec.new(
+    config_spec = Yarrow::Content::ContentSpec.new(
       namespace: "Site",
       model: {
-        root: Yarrow::ContentConfig::ContentPolicy.new(
+        root: Yarrow::Content::ContentPolicy.new(
           expansion: :tree,
-          folder: "*",
+          dir: "*",
           file: "*.md",
-          :container => "IndexPage",
-          :entity => "ContentPage"
+          :container => :pages,
+          :record => :page
         )
       }
     )
 
-    model = Yarrow::ContentConfig::Model.new(config_spec)
+    model = Yarrow::Content::Model.new(config_spec)
 
     expect(model.policy_for(:root).expansion).to eq(:tree)
+  end
+
+  xit "loads a model from minimal default config" do
+    config_spec = Yarrow::Content::ContentSpec.new(
+      model: {
+        root: Yarrow::Content::ContentPolicy.new(
+          expansion:
+        )
+      }
+    )
   end
 end

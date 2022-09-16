@@ -6,10 +6,26 @@ describe Yarrow::Content::Expansion do
       Yarrow::Content::Graph.from_source(config)
     end
 
+    let(:content_spec) do
+      content_spec = Yarrow::Content::ContentSpec.new(
+        namespace: "Site",
+        model: {
+          root: Yarrow::Content::ContentPolicy.new(
+            expansion: :tree,
+            dir: "*",
+            file: "*.md",
+            :container => :pages,
+            :record => :page
+          )
+        }
+      )
+      Yarrow::Content::Model.new(content_spec)
+    end
+
     it "generates a set of pages from markdown files" do
       # If a list of object types is not provided
       # a default `pages` type is created.
-      expander = Yarrow::Content::Expansion.new
+      expander = Yarrow::Content::Expansion.new(content_spec)
       expander.expand(doctest_source.graph)
 
       expect(doctest_source.collections.length).to be(1)

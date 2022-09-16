@@ -7,7 +7,7 @@ describe Yarrow::Content::Graph do
     end
 
     it "expands :pages by default" do
-      expander = Yarrow::Content::Expansion.new
+      expander = Yarrow::Content::Expansion.new(Yarrow::Content::Model.new)
       expander.expand(content.graph)
 
       expect(

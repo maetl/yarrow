@@ -18,7 +18,7 @@ module Yarrow
       end
 
       def expand_pages
-        expander = Yarrow::Content::Expansion.new
+        expander = Yarrow::Content::Expansion.new(Yarrow::Content::Model.new)
         expander.expand(graph)
       end
 

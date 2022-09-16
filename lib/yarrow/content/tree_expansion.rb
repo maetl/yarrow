@@ -12,12 +12,12 @@ module Yarrow
 
       def expand_impl(policy)
         type = policy.container
-        exts = policy.extensions
 
         # If match path represents entire content dir, then include the entire
         # content dir instead of scanning from a subfolder matching the name of
         # the collection.
-        start_node = if policy.match_path == "."
+        #start_node = if policy.match_path == "."
+        start_node = if true
           graph.n(:root)
         else
           graph.n(:root).out(name: type.to_s)
@@ -61,7 +61,7 @@ module Yarrow
             # Create an item node representing a file mapped to a unique content object
             item = graph.create_node do |item_node|
               item_node.label = :item
-              item_node.props[:type] = policy.entity
+              item_node.props[:type] = policy.record
               item_node.props[:name] = node.props[:entry].basename(node.props[:entry].extname).to_s
               item_node.props[:body] = body if body
               item_node.props[:title] = meta[:title] if meta

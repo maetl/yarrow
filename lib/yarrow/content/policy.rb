@@ -1,43 +1,4 @@
 module Yarrow
-  module ContentConfig
-    ContentSpec = Yarrow::Schema::Value.new(
-      :namespace,
-      :model
-    )
-
-    ContentPolicy = Yarrow::Schema::Value.new(
-      :folder,
-      :file,
-      :expansion,
-      :container,
-      :entity
-    )
-
-    class Model
-      def initialize(spec)
-        @namespace = []
-        @namespace << spec.namespace if spec.respond_to?(:namespace)
-
-        unless spec.respond_to?(:model)
-          raise "Missing content model definition"
-        end
-
-        unless spec.model.is_a?(Hash)
-          raise "Invalid content model definition"
-        end
-
-        @policies = {}
-
-        spec.model.each do |policy_key, policy_spec|
-          @policies[policy_key.to_sym] = policy_spec
-        end
-      end
-
-      def policy_for(policy_key)
-        @policies[policy_key]
-      end
-    end
-  end
   module Content
     class Policy
       Options = Yarrow::Schema::Value.new(

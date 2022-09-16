@@ -108,6 +108,12 @@ describe Yarrow::Schema::Value do
   end
 end
 
+describe Yarrow::Schema::Type do
+  # it "performs" do
+  #   union = Yarrow::Schema::Type::Checked[]
+  # end
+end
+
 describe Yarrow::Schema::Entity do
   class DateType < Yarrow::Schema::Entity
     attribute :year, Integer
