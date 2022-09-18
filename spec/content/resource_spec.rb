@@ -6,7 +6,7 @@ describe Yarrow::Content::Resource do
   # end
 
   it "requires `id` attribute" do
-    expect { described_class.new({}) }.to raise_error("wrong number of args")
+    expect { described_class.new({}) }.to raise_error("wrong number of attributes")
   end
 
   it "builds resource.url from frontmatter :url" do

@@ -1,11 +1,11 @@
 module Yarrow
   module Content
     class Resource < Schema::Entity
-      attribute :id, String
-      attribute :name, String
-      attribute :title, String
-      attribute :url, String
-      attribute :content, String
+      attribute :id, :string
+      attribute :name, :string
+      attribute :title, :string
+      attribute :url, :string
+      attribute :content, :string
 
       def self.from_frontmatter_url(data, url_field)
         new({

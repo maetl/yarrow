@@ -52,11 +52,11 @@ module Yarrow
     #
     # TODO: meta should be union of Type::Optional and Config::Meta
     Instance = Yarrow::Schema::Value.new(
-      project_dir: Pathname,
-      content_dir: Pathname,
-      output_dir: Pathname,
-      meta: Yarrow::Schema::Type::Any,
-      server: Yarrow::Schema::Type::Any
+      project_dir: :path,
+      content_dir: :path,
+      output_dir: :path,
+      meta: :any,
+      server: :any
     )
   end
 end
