@@ -2,7 +2,7 @@ module Yarrow
   module Schema
     # Value object (with comparison by value equality). This just chucks back a
     # Ruby struct but wraps the constructor with method advice that handles
-    # validation (and eventually type coercion if !yagni).
+    # type checking and conversion.
     class Value
       def self.new(*slots, **fields, &block)
         factory(*slots, **fields, &block)

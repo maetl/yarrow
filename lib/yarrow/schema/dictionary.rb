@@ -7,7 +7,7 @@ module Yarrow
     class Dictionary
       include Definitions
 
-      # @param fields_spec [Hash] defines the slots in the schema to validate against
+      # @param attrs_spec [Hash] defines the slots in the schema to validate against
       def initialize(attrs_spec={})
         @attrs_spec = attrs_spec.reduce({}) do |spec, (name, type_identifier)|
           spec[name] = resolve_type(type_identifier)
