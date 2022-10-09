@@ -1,6 +1,4 @@
 describe Yarrow::Schema::Dictionary do
-  Type = Yarrow::Schema::Type
-
   describe "schema with optional fields using any type" do
     let(:anchor) do
       Yarrow::Schema::Dictionary.new({
@@ -12,23 +10,23 @@ describe Yarrow::Schema::Dictionary do
 
     specify "hash of attributes" do
       expect(
-        anchor.check({:href => "https://maetl.net", :title => "maetl", :target => "_blank"})
+        anchor.cast({:href => "https://maetl.net", :title => "maetl", :target => "_blank"})
       ).to be_truthy
     end
 
     specify "skip any type attributes when not provided" do
-      expect(anchor.check({:href => "https://maetl.net"})).to be_truthy
+      expect(anchor.cast({:href => "https://maetl.net"})).to be_truthy
     end
 
     specify "missing attribute error" do
       expect {
-        anchor.check({})
+        anchor.cast({})
       }.to raise_error("wrong number of attributes")
     end
 
     specify "mismatching attribute error" do
       expect {
-        anchor.check({:href => "https://maetl.net", :src => "https://maetl.net"})
+        anchor.cast({:href => "https://maetl.net", :src => "https://maetl.net"})
       }.to raise_error("attribute does not exist")
     end
   end
@@ -46,26 +44,26 @@ describe Yarrow::Schema::Dictionary do
 
     specify "checks a flat set of attributes" do
       expect(
-        rect.check({:shape => "rect", :x => 10, :y => 10, :w => 64, :h => 48})
+        rect.cast({:shape => "rect", :x => 10, :y => 10, :w => 64, :h => 48})
       ).to be_truthy
     end
 
     specify "missing attribute error" do
       expect {
-        rect.check({:shape => "rect"})
+        rect.cast({:shape => "rect"})
       }.to raise_error("wrong number of attributes")
     end
 
     specify "bad key error" do
       expect {
-        rect.check({:mishape => "rect", :shape => "rect", :x => 10, :y => 10, :w => 64, :h => 48})
+        rect.cast({:mishape => "rect", :shape => "rect", :x => 10, :y => 10, :w => 64, :h => 48})
       }.to raise_error("attribute does not exist")
     end
 
     specify "mismatching type error" do
       expect {
-        rect.check({:shape => "rect", :x => "1", :y => "1", :w => "1", :h => "1"})
-      }.to raise_error("wrong data type")
+        rect.cast({:shape => "rect", :x => "1", :y => "1", :w => "1", :h => "1"})
+      }.to raise_error("String is not an instance of Integer")
     end
   end
 end

@@ -111,6 +111,18 @@ describe Yarrow::Schema::Types do
         expect{ int_type.cast(4.34) }.to raise_error("Float is not an instance of Integer")
       end
     end
+
+    describe :datetime do
+      let :datetime_type do
+        Yarrow::Schema::Types::Instance.of(DateTime).accept(String, :parse)
+      end
+
+      specify :cast do
+        expect(datetime_type.cast(DateTime.new)).to be_a(DateTime)
+        expect(datetime_type.cast("2022-10-10")).to be_a(DateTime)
+        expect{ datetime_type.cast(2022) }.to raise_error("Integer is not an instance of DateTime")
+      end
+    end
   end
 
   describe Yarrow::Schema::Types::Interface do

@@ -43,9 +43,9 @@ module Yarrow
             kwargs
           end
 
-          validator.check(attr_values)
-          # TODO: type coercion or mapping decision goes here
-          super(**attr_values)
+          converted_values = validator.cast(attr_values)
+
+          super(**converted_values)
 
           freeze
         end

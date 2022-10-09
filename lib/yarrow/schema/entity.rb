@@ -16,12 +16,9 @@ module Yarrow
       end
 
       def initialize(config)
-        dictionary.check(config)
-        # dictionary.each_key do |name|
-        #   raise "missing declared attribute #{name}" unless config.key?(name)
-        # end
-        #
-        config.each_pair do |key, value|
+        converted = dictionary.cast(config)
+
+        converted.each_pair do |key, value|
           # raise "#{key} not a declared attribute" unless dictionary.key?(key)
           #
           # defined_type = dictionary[key]

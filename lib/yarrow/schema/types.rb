@@ -24,10 +24,25 @@ module Yarrow
           new(unit_type)
         end
 
-        attr_reader :unit
+        attr_reader :unit, :accepts
   
         def initialize(unit_type=nil)
           @unit = unit_type
+          @accepts = {}
+        end
+
+        def accept(type, constructor)
+          accepts[type] = constructor
+          self
+        end
+
+        def should_coerce?(input)
+          accepts.key?(input.class)
+        end
+
+        def coerce(input)
+          constructor = accepts[input.class]
+          unit.send(constructor, input)
         end
   
         def check_instance_of!(input)
@@ -54,7 +69,10 @@ module Yarrow
           end
         end
 
-        def cast(input); end
+        def cast(input)
+          return coerce(input) if should_coerce?(input)
+          check(input)
+        end
       end
   
       class Any < TypeClass
@@ -64,14 +82,14 @@ module Yarrow
       end
   
       class Instance < TypeClass
-        def cast(input)
+        def check(input)
           check_instance_of!(input)
           input
         end
       end
   
       class Kind < TypeClass
-        def cast(input)
+        def check(input)
           check_kind_of!(input)
           input
         end
@@ -94,7 +112,7 @@ module Yarrow
 
         alias members unit
 
-        def cast(input)
+        def check(input)
           case implementation
           when :any then check_respond_to_any!(input, members)
           when :all then check_respond_to_all!(input, members)

@@ -2,10 +2,12 @@ module Yarrow
   module Schema
     module Definitions
       DEFINED_TYPES = {
-        string: Type::Raw[String],
-        integer: Type::Raw[Integer],
-        path: Type::Raw[Pathname],
-        any: Type::Any
+        #string: Types::String,
+        string: Types::Instance.of(String),
+        #integer: Types::Integer,
+        integer: Types::Instance.of(Integer),
+        path: Types::Instance.of(Pathname),
+        any: Types::Any.new
       }
 
       def self.register(identifier, type_class)
