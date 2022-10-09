@@ -34,4 +34,23 @@ describe Yarrow::Schema::Value do
     expect(len.size).to eq(500)
     expect(len.unit).to eq("cm")
   end
+
+  it "supports class declaration syntax" do
+    class Temperature < Yarrow::Schema::Value.new(:value, :unit)
+      def to_fahrenheit
+        case unit
+        when :celsius
+          (value * 1.8) + 32
+        when :kelvin
+          (value - 273.15) * 1.8 + 32
+        end
+      end
+    end
+
+    winter_low = Temperature.new(-5, :celsius)
+    expect(winter_low.to_fahrenheit).to eq(23)
+
+    liquid_nitrogen = Temperature.new(77.36, :kelvin)
+    expect(liquid_nitrogen.to_fahrenheit).to be_within(0.1).of(-320.422)
+  end
 end

@@ -1,5 +1,16 @@
 module Yarrow
   module Schema
+    # class Structure < Struct
+    #   def self.inherited(subclass)
+    #     unless subclass.name
+    #       puts "CLASS"
+    #       p caller_locations[3]
+    #     else
+    #       p subclass.name.downcase.to_sym
+    #     end
+    #   end
+    # end
+
     # Value object (with comparison by value equality). This just chucks back a
     # Ruby struct but wraps the constructor with method advice that handles
     # type checking and conversion.

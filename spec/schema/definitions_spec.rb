@@ -1,6 +1,6 @@
 describe Yarrow::Schema::Definitions do
-  Warning = Class.new
-  Yarrow::Schema::Definitions.register(:warning, Warning)
+  WarningDef = Class.new
+  Yarrow::Schema::Definitions.register(:warning, WarningDef)
 
   let (:type_container) do
     type_container = Class.new
@@ -9,7 +9,7 @@ describe Yarrow::Schema::Definitions do
   end
 
   it "resolves identifier to a registered type class" do
-    expect(type_container.resolve_type(:warning)).to be_a(Warning.class)
+    expect(type_container.resolve_type(:warning)).to be_a(WarningDef.class)
   end
 
   it "raises an error when unregistered identifier is given" do

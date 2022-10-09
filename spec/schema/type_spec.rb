@@ -22,6 +22,45 @@ describe Yarrow::Schema::Types do
         "String is not a subclass of Numeric"
       )
     end
+
+    let :member_methods do
+      [:to_jank, :to_glitch]
+    end
+
+    class Jank
+      def to_jank
+        :jank
+      end
+
+      def to_glitch
+        :glitch
+      end
+    end
+
+    class Glitch
+      def to_glitch
+        :glitch
+      end
+    end
+
+    specify :check_respond_to_any! do
+      type_class = Yarrow::Schema::Types::TypeClass.new
+      expect { type_class.check_respond_to_any!(Jank.new, member_methods) }.not_to raise_error
+      expect { type_class.check_respond_to_any!(Glitch.new, member_methods) }.not_to raise_error
+      expect { type_class.check_respond_to_any!("", member_methods) }.to raise_error(
+        Yarrow::Schema::Types::CastError,
+        "String does not implement any of [:to_jank, :to_glitch]"
+      )
+    end
+
+    specify :check_respond_to_all! do
+      type_class = Yarrow::Schema::Types::TypeClass.new
+      expect { type_class.check_respond_to_all!(Jank.new, member_methods) }.not_to raise_error
+      expect { type_class.check_respond_to_all!(Glitch.new, member_methods) }.to raise_error(
+        Yarrow::Schema::Types::CastError,
+        "Glitch does not implement [:to_jank, :to_glitch]"
+      )
+    end
   end
 
   describe Yarrow::Schema::Types::Any do
@@ -41,7 +80,7 @@ describe Yarrow::Schema::Types do
   describe Yarrow::Schema::Types::Instance do
     describe :string do
       let :string_type do
-        Yarrow::Schema::Types::Instance.new(String)
+        Yarrow::Schema::Types::Instance.of(String)
       end
 
       specify :cast do
@@ -60,7 +99,7 @@ describe Yarrow::Schema::Types do
 
     describe :integer do
       let :int_type do
-        Yarrow::Schema::Types::Instance.new(Integer)
+        Yarrow::Schema::Types::Instance.of(Integer)
       end
 
       specify :cast do
@@ -70,6 +109,79 @@ describe Yarrow::Schema::Types do
         expect{ int_type.cast("hello") }.to raise_error("String is not an instance of Integer")
         expect{ int_type.cast(:abcd) }.to raise_error("Symbol is not an instance of Integer")
         expect{ int_type.cast(4.34) }.to raise_error("Float is not an instance of Integer")
+      end
+    end
+  end
+
+  describe Yarrow::Schema::Types::Interface do
+    describe :any do
+      let :duck_type do
+        Yarrow::Schema::Types::Interface.any(:to_duck, :to_quack)
+      end
+  
+      class DuckWalker
+        def to_duck
+          :duck
+        end
+      end
+  
+      class DuckQuacker
+        def to_quack
+          :quack
+        end
+      end
+  
+      specify :cast do
+        expect(duck_type.cast(DuckWalker.new)).to be_a(DuckWalker)
+        expect(duck_type.cast(DuckQuacker.new)).to be_a(DuckQuacker)
+        expect{ duck_type.cast("hello") }.to raise_error(
+          Yarrow::Schema::Types::CastError,
+          "String does not implement any of [:to_duck, :to_quack]"
+        )
+        expect{ duck_type.cast(1234) }.to raise_error(
+          Yarrow::Schema::Types::CastError,
+          "Integer does not implement any of [:to_duck, :to_quack]"
+        )
+
+      end
+    end
+
+    describe :all do
+      let :thing_type do
+        Yarrow::Schema::Types::Interface.all(:to_head, :to_body)
+      end
+  
+      class ThingOne
+        def to_head
+          :head
+        end
+
+        def to_body
+          :body
+        end
+      end
+  
+      class ThingTwo
+        def to_head
+          :head
+        end
+
+        def to_body
+          :body
+        end
+      end
+  
+      specify :cast do
+        expect(thing_type.cast(ThingOne.new)).to be_a(ThingOne)
+        expect(thing_type.cast(ThingTwo.new)).to be_a(ThingTwo)
+        expect{ thing_type.cast("hello") }.to raise_error(
+          Yarrow::Schema::Types::CastError,
+          "String does not implement [:to_head, :to_body]"
+        )
+        expect{ thing_type.cast(1234) }.to raise_error(
+          Yarrow::Schema::Types::CastError,
+          "Integer does not implement [:to_head, :to_body]"
+        )
       end
     end
   end

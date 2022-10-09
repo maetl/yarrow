@@ -13,9 +13,9 @@ describe Yarrow::Schema::Entity do
     }
 
     dt = DateType.new(data)
-    expect(dt.year).to eq(data[:year])
-    expect(dt.month).to eq(data[:month])
-    expect(dt.day).to eq(data[:day])
+    expect(dt.year).to eq(2021)
+    expect(dt.month).to eq(2)
+    expect(dt.day).to eq(22)
   end
 
   it "converts attributes to hash" do
