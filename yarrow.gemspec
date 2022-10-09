@@ -14,7 +14,8 @@ Gem::Specification.new do |spec|
   spec.executables << 'yarrow'
   spec.executables << 'yarrow-server'
   spec.add_runtime_dependency 'mementus', '~> 0.8'
-  spec.add_runtime_dependency 'rack', '~> 2.0'
+  spec.add_runtime_dependency 'rack', '~> 3.0'
+  spec.add_runtime_dependency 'rackup', '~> 0.2'
   spec.add_runtime_dependency 'rack-livereload', '~> 0.3'
   spec.add_runtime_dependency 'eventmachine', '~> 1.2'
   spec.add_runtime_dependency 'em-websocket', '~> 0.5.1'
@@ -24,7 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake', '~> 13.0'
   spec.add_development_dependency 'rspec', '~> 3.11'
   spec.add_development_dependency 'coveralls', '~> 0.8.23'
-  spec.add_development_dependency 'rack-test', '~> 0.8'
+  spec.add_development_dependency 'rack-test', '~> 2.0'
   spec.homepage = 'http://rubygemspec.org/gems/yarrow'
   spec.license = 'MIT'
 end

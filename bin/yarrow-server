@@ -9,9 +9,9 @@ $:.unshift(File.join(File.dirname(File.expand_path(path)), '..', 'lib'))
 
 require 'yarrow'
 
-Yarrow::Configuration.register_defaults
+config = Yarrow::Configuration.load_defaults
 
 Yarrow.logger = Logger.new(STDOUT)
 
-server = Yarrow::Server.new
+server = Yarrow::Server.new(config)
 server.run

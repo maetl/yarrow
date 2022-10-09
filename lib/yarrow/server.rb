@@ -1,4 +1,5 @@
 require 'rack'
+require 'rackup'
 
 module Yarrow
   ##
@@ -52,8 +53,8 @@ module Yarrow
         @app = app
       end
 
-      def should_try_rewrite(path)
-        !request_path.ends_with(".html") || !request_path.ends_with("/")
+      def should_try_rewrite(request_path)
+        !request_path.end_with?(".html") || !request_path.end_with?("/")
       end
 
       def call(env)
@@ -123,14 +124,14 @@ module Yarrow
         reactor.start
       end
 
-      handler = Rack::Handler.get(run_options[:server])
+      handler = Rackup::Handler.get(run_options[:server])
 
       trap(:INT) do
         handler.shutdown if handler.respond_to?(:shutdown)
         reactor.stop if live_reload?
       end
 
-      handler.run(app, run_options)
+      handler.run(app, **run_options)
     end
 
     private

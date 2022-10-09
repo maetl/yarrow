@@ -37,9 +37,9 @@ module Yarrow
       :port,
       :host,
       :handler,
-      :docroot,
+      #:docroot,
       :middleware,
-      :root_dir
+      #:root_dir
     )
 
     # Top level root config namespace.
