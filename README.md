@@ -40,7 +40,6 @@ A rough sketch of the project direction.
 
 | Version | Features |
 |---------|----------|
-| `0.6`   | Default media type mapping, graph collectors, markup converters |
 | `0.7`   | Content model/object mapping, template/site context |
 | `0.8`   | HTML publishing workflow |
 | `0.9`   | PDF publishing workflow |
