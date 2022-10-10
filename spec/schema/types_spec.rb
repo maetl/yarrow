@@ -198,6 +198,21 @@ describe Yarrow::Schema::Types do
     end
   end
 
+  describe Yarrow::Schema::Types::List do
+    let :list_type do
+      Yarrow::Schema::Types::List.of(Float)
+    end
+
+    specify :cast do
+      expect(list_type.cast([0.4, 0.3, 0.7])).to eq([0.4, 0.3, 0.7])
+
+      expect{ list_type.cast([4, 3, 7])}.to raise_error(
+        Yarrow::Schema::Types::CastError,
+        "Integer is not an instance of Float"
+      )
+    end
+  end
+
   describe Yarrow::Schema::Types::Map do
     specify :map_with_implicit_keys do
       map_type = Yarrow::Schema::Types::Map.of(Integer)

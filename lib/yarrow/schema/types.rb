@@ -180,8 +180,13 @@ module Yarrow
         end
 
         def check(input)
-          keys = input.keys.map { |key| key_type.cast(key) }
-          values = input.values.map { |value| value_type.cast(value) }
+          keys = input.keys.map do |key|
+            key_type.cast(key)
+          end
+          values = input.values.map do |value|
+            value_type.cast(value)
+          end
+
           [keys, values].transpose.to_h
         end
       end
