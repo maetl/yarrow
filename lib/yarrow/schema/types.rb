@@ -122,7 +122,68 @@ module Yarrow
         end
       end
 
-      class Union
+      module CompoundType
+        def instance(unit_type)
+          @unit = Instance.of(unit_type)
+          self
+        end
+
+        def kind(unit_type)
+          @unit = Kind.of(unit_type)
+          self
+        end
+
+        def interface(*args)
+          @unit = Interface.of(args)
+          self
+        end
+      end
+
+      class List < TypeClass
+        include CompoundType
+
+        def self.of(unit_type)
+          new(Instance.of(unit_type))
+        end
+
+        def cast(input)
+          input.map do |item|
+            unit.cast(item)
+          end
+        end
+      end
+
+      class Map < TypeClass
+        include CompoundType
+
+        def self.of(map_spec)
+          if map_spec.is_a?(Hash)
+            if map_spec.size == 1
+              key_type, value_type = map_spec.first
+            else
+              raise "map requires a single key => value type"
+            end
+          else
+            key_type = Symbol
+            value_type = map_spec
+          end
+
+          new(Instance.of(key_type), Instance.of(value_type))
+        end
+
+        attr_reader :key_type
+        alias value_type unit
+
+        def initialize(key_type, value_type)
+          @key_type = key_type
+          super(value_type)
+        end
+
+        def check(input)
+          keys = input.keys.map { |key| key_type.cast(key) }
+          values = input.values.map { |value| value_type.cast(value) }
+          [keys, values].transpose.to_h
+        end
       end
     end
   end

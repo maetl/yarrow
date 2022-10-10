@@ -197,4 +197,34 @@ describe Yarrow::Schema::Types do
       end
     end
   end
+
+  describe Yarrow::Schema::Types::Map do
+    specify :map_with_implicit_keys do
+      map_type = Yarrow::Schema::Types::Map.of(Integer)
+
+      expect(map_type.cast({a: 1, b: 2})).to eq({a: 1, b: 2})
+      expect{ map_type.cast({a: "1", b: "2"}) }.to raise_error(
+        Yarrow::Schema::Types::CastError,
+        "String is not an instance of Integer"
+      )
+      expect{ map_type.cast({"a" => "1", "b" => "2"}) }.to raise_error(
+        Yarrow::Schema::Types::CastError,
+        "String is not an instance of Symbol"
+      )
+    end
+
+    specify :map_with_explicit_keys do
+      map_type = Yarrow::Schema::Types::Map.of(String => Integer)
+
+      expect(map_type.cast({"a" => 1, "b" => 2})).to eq({"a" => 1, "b" => 2})
+      expect{ map_type.cast({"a" => "1", "b" => "2"}) }.to raise_error(
+        Yarrow::Schema::Types::CastError,
+        "String is not an instance of Integer"
+      )
+      expect{ map_type.cast({a: "1", b: "2"}) }.to raise_error(
+        Yarrow::Schema::Types::CastError,
+        "Symbol is not an instance of String"
+      )
+    end
+  end
 end
