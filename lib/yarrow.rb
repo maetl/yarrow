@@ -3,8 +3,9 @@ require 'yaml'
 require 'mustache'
 require 'parallel'
 
+require 'extensions/mementus'
+
 require 'yarrow/version'
-require 'yarrow/extensions'
 require 'yarrow/symbols'
 require 'yarrow/logging'
 require 'yarrow/schema/types'

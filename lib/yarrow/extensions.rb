@@ -1,1 +1,0 @@
-require "yarrow/extensions/mementus"
