@@ -96,7 +96,7 @@ module Yarrow
 
       app_args = [docroot, {}].tap { |args| args.push(default_type) if default_type }
 
-      static_app = Rack::File.new(*app_args)
+      static_app = Rack::Files.new(*app_args)
 
       if live_reload?
         require 'rack-livereload'
