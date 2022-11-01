@@ -31,5 +31,25 @@ describe Yarrow::Schema::Definitions do
     specify :integer do
       expect(type_container.resolve_type(:integer)).to be_a(Yarrow::Schema::Types::Instance)
     end
+
+    specify :symbol do
+      expect(type_container.resolve_type(:symbol)).to be_a(Yarrow::Schema::Types::Instance)
+    end
+
+    specify :path do
+      expect(type_container.resolve_type(:path)).to be_a(Yarrow::Schema::Types::Instance)
+    end
+  end
+
+  describe :register_outside_module_scope do
+    specify :define_types do
+      Money = Class.new
+
+      Yarrow::Schema.define do
+        type :money, Yarrow::Schema::Types::Instance.of(Money)
+      end
+
+      expect(type_container.resolve_type(:money).unit).to be(Money)
+    end
   end
 end

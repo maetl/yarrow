@@ -8,7 +8,7 @@ module Yarrow
           document.type
         end
 
-        @template_dir = "/Users/maetl/Projects/yarrow/spec/fixtures/templates/doctest"
+        @template_dir = "./spec/fixtures/templates/doctest"
         @template_ext = ".html"
 
         template_file = "#{layout_name}#{@template_ext}"

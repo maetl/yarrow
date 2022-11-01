@@ -50,6 +50,32 @@ module Yarrow
           freeze
         end
 
+        struct.define_method(:merge) do |other|
+          unless other.is_a?(self.class)
+            raise ArgumentError.new("cannot merge incompatible values")
+          end
+
+          kwargs = validator.attr_names.reduce({}) do |data, attr_name|
+            current_val = self.send(attr_name)
+            other_val = other.send(attr_name)
+
+            # TODO: handle optional types better
+            # call out to dictionary?
+            # validator.merge(attr_name, current_val, other_val)
+            data[attr_name] = if current_val.nil?
+              other_val
+            elsif other_val.nil?
+              current_val
+            else
+              other_val
+            end
+
+            data
+          end
+
+          struct.new(**kwargs)
+        end
+
         struct
       end
     end

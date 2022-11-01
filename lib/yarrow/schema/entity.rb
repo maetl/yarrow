@@ -33,9 +33,24 @@ module Yarrow
 
       def to_h
         dictionary.attr_names.reduce({}) do |attr_dict, name|
-          attr_dict[name] = instance_variable_get("@#{name}")
+          value = instance_variable_get("@#{name}")
+
+          attr_dict[name] = if value.respond_to?(:to_h)
+            value.to_h
+          else
+            value
+          end
+
           attr_dict
         end
+      end
+
+      def merge(other)
+        unless other.is_a?(self.class)
+          raise ArgumentError.new("cannot merge entities that are not the same type")
+        end
+
+        self.class.new(to_h.merge(other.to_h))
       end
 
       private

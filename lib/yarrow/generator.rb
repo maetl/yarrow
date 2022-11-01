@@ -28,10 +28,10 @@ module Yarrow
     end
   end
 
-  class BuildOutput < Process::StepProcessor
-    accepts Content::Manifest
-    provides Output::Result
-  end
+  # class BuildOutput < Process::StepProcessor
+  #   accepts Output::Manifest
+  #   provides Output::Result
+  # end
 
   # Generates documentation from a model.
   class Generator

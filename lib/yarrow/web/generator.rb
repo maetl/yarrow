@@ -8,7 +8,6 @@ module Yarrow
         # Config is here but we haven’t decided on schema for web publishing fields
         # so hard-code the needed values as part of this prototype
         @default_host = "http://example.com"
-        @public_dir = "/Users/maetl/Projects/yarrow/www"
       end
 
       def generate(manifest)
@@ -29,13 +28,16 @@ module Yarrow
         if url[url.length-1] == '/'
           url = "#{url}index"
         end
-      
-        path = Pathname.new("web#{url}.html")
-      
-        FileUtils.mkdir_p path.dirname
-      
+
+        # Construct full path to file in output dir
+        path = @config.output_dir.join(url.delete_prefix("/")).sub_ext('.html')
+
+        # Create directory path if it doesn’t exist
+        FileUtils.mkdir_p(path.dirname)
+
+        # Write out the file
         File.open(path.to_s, 'w+:UTF-8') do |file|
-          file.puts content
+          file.puts(content)
         end
       end
 

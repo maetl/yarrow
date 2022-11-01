@@ -2,11 +2,10 @@ module Yarrow
   module Schema
     module Definitions
       DEFINED_TYPES = {
-        #string: Types::String,
         string: Types::Instance.of(String),
-        #integer: Types::Integer,
         integer: Types::Instance.of(Integer),
-        path: Types::Instance.of(Pathname),
+        symbol: Types::Instance.of(Symbol),
+        path: Types::Instance.of(Pathname).accept(String),
         any: Types::Any.new
       }
 

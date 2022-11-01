@@ -1,6 +1,5 @@
 module Yarrow
   class ConsoleRunner
-
     SUCCESS = 0
     FAILURE = 1
 
@@ -12,20 +11,20 @@ module Yarrow
     }
 
     ALLOWED_CONFIG_FILES = [
-      '.yarrowdoc',
-      'Yarrowdoc'
+      ".yarrowdoc",
+      "Yarrowdoc",
+      "yarrow.yml"
     ]
 
-    def initialize(arguments, io=STDOUT)
+    def initialize(args, io=STDOUT)
+      @arguments = args
       @out = io
-      @arguments = arguments
       @options = {}
       @targets = []
-      @config = Configuration.load_defaults
     end
 
     def config
-      @config
+      @config ||= Configuration.load_defaults
     end
 
     def run_application
@@ -45,9 +44,7 @@ module Yarrow
 
         process_configuration
 
-        run_input_process
-
-        run_output_process
+        run_generation_process
 
         print_footer
 
@@ -80,17 +77,29 @@ module Yarrow
 
     def process_configuration
       # load_configuration(Dir.pwd)
+      default_config = Yarrow::Configuration.load_defaults
+
+      if @targets.empty?
+        @config = default_config
+      else
+        @config = Yarrow::Config::Instance.new(
+          output_dir: default_config.output_dir,
+          source_dir: @targets.first,
+          meta: default_config.meta,
+          server: default_config.meta
+        )
+      end
 
       # @targets.each do |input_path|
       #   @config.deep_merge! load_configuration(input_path)
       # end
 
-      if has_option?(:config)
-        path = @options[:config]
-        @config.deep_merge! Configuration.load(path)
-      end
+      # if has_option?(:config)
+      #   path = @options[:config]
+      #   @config.deep_merge! Configuration.load(path)
+      # end
 
-      @config.options = @options.to_hash
+      #@config.options = @options.to_hash
 
       # normalize_theme_path
 
@@ -139,9 +148,7 @@ module Yarrow
 
     def run_generation_process
       generator = Generator.new(@config)
-      generator.process do |manifest|
-        p manifest
-      end
+      generator.generate
     end
 
     def print_header
@@ -149,7 +156,7 @@ module Yarrow
     end
 
     def print_footer
-      @out.puts "Content generated at {path}!"
+      @out.puts "Content generated at #{@config.output_dir}"
     end
 
     def print_error(e)
@@ -157,42 +164,8 @@ module Yarrow
     end
 
     def print_help
-      help = <<HELP
-  See http://yarrow.maetl.net for more information.
-
-  Usage:
-
-   $ yarrow [options]
-   $ yarrow [options] <input>
-   $ yarrow [options] <input input> <output>
-
-   Arguments
-
-   <input>  -  Path to source directory or an individual source file. If not supplied
-               defaults to the current working directory. Multiple directories
-               can be specified by repeating arguments, separated by whitespace.
-
-   <output> -  Path to the generated documentation. If not supplied, defaults to
-               ./docs in the current working directory. If it does not exist, it
-               is created. If it does exist it remains in place, but existing
-               files are overwritten by new files with the same name.
-
-   Options
-
-   Use -o or --option for boolean switches and --option=value or --option:value
-   for options that require an explicit value to be set.
-
-    -h    --help          [switch]    Display this help message and exit
-    -v    --version       [switch]    Display version header and exit
-    -c    --config        [string]    Path to a config properties file
-    -p    --packages   	  [string]    Defines package convention for the model
-    -t    --theme         [string]    Template theme for generated docs
-
-
-HELP
-      @out.puts help
+      help_path = Pathname.new(__dir__) + "help.txt"
+      @out.puts(help_path.read)
     end
-
   end
-
 end

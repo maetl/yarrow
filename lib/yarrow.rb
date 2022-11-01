@@ -1,53 +1,50 @@
-require 'pathname'
-require 'yaml'
-require 'mustache'
-require 'parallel'
+require "pathname"
+require "yaml"
+require "mustache"
+require "parallel"
 
-require 'extensions/mementus'
+require "extensions/mementus"
 
-require 'yarrow/version'
-require 'yarrow/symbols'
-require 'yarrow/logging'
-require 'yarrow/schema/types'
-require 'yarrow/schema/definitions'
-require 'yarrow/schema/dictionary'
-require 'yarrow/schema/entity'
-require 'yarrow/schema/value'
-require 'yarrow/config'
-require 'yarrow/configuration'
-require 'yarrow/console_runner'
-require 'yarrow/tools/front_matter'
-require 'yarrow/tools/content_utils'
-require 'yarrow/content/graph'
-require 'yarrow/content/source'
-require 'yarrow/content/expansion'
-require 'yarrow/content/expansion_strategy'
-require 'yarrow/content/tree_expansion'
-require 'yarrow/content/manifest'
-require 'yarrow/content/resource'
-require 'yarrow/content/model'
-require 'yarrow/content/policy'
-require 'yarrow/web/manifest'
-require 'yarrow/web/document'
-require 'yarrow/web/generator'
-require 'yarrow/web/template'
-require 'yarrow/output/mapper'
-require 'yarrow/output/generator'
-require 'yarrow/output/context'
-require 'yarrow/output/result'
-require 'yarrow/output/web/indexed_file'
-require 'yarrow/content_map'
-require 'yarrow/server'
-require 'yarrow/server/livereload'
+require "yarrow/version"
+require "yarrow/symbols"
+require "yarrow/logging"
+require "yarrow/schema/types"
+require "yarrow/schema/definitions"
+require "yarrow/schema/dictionary"
+require "yarrow/schema/entity"
+require "yarrow/schema/value"
+require "yarrow/schema/registry"
+require "yarrow/config"
+require "yarrow/configuration"
+require "yarrow/console_runner"
+require "yarrow/tools/front_matter"
+require "yarrow/tools/content_utils"
+require "yarrow/content/graph"
+require "yarrow/content/source"
+require "yarrow/content/expansion"
+require "yarrow/content/expansion_strategy"
+require "yarrow/content/tree_expansion"
+require "yarrow/content/resource"
+require "yarrow/content/model"
+require "yarrow/content/policy"
+require "yarrow/web/manifest"
+require "yarrow/web/document"
+require "yarrow/web/generator"
+require "yarrow/web/template"
+require "yarrow/output/context"
+require "yarrow/output/web/indexed_file"
+require "yarrow/content_map"
+require "yarrow/server"
+require "yarrow/server/livereload"
 
-require 'yarrow/process/workflow'
-require 'yarrow/process/step_processor'
-require 'yarrow/process/expand_content'
-require 'yarrow/process/extract_source'
-require 'yarrow/process/project_manifest'
+require "yarrow/process/workflow"
+require "yarrow/process/step_processor"
+require "yarrow/process/expand_content"
+require "yarrow/process/extract_source"
+require "yarrow/process/project_manifest"
 
-require 'yarrow/generator'
+require "yarrow/generator"
 
-# Dir[File.dirname(__FILE__) + '/yarrow/generators/*.rb'].each do |generator|
+# Dir[File.dirname(__FILE__) + "/yarrow/generators/*.rb"].each do |generator|
 #   require generator
 # end

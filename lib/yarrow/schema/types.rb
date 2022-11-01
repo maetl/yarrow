@@ -18,20 +18,20 @@ module Yarrow
           new("#{t} does not implement #{m}")
         end
       end
-  
+
       class TypeClass
         def self.of(unit_type)
           new(unit_type)
         end
 
         attr_reader :unit, :accepts
-  
+
         def initialize(unit_type=nil)
           @unit = unit_type
           @accepts = {}
         end
 
-        def accept(type, constructor)
+        def accept(type, constructor=:new)
           accepts[type] = constructor
           self
         end
@@ -44,7 +44,7 @@ module Yarrow
           constructor = accepts[input.class]
           unit.send(constructor, input)
         end
-  
+
         def check_instance_of!(input)
           unless input.instance_of?(unit)
             raise CastError.instance_of(input.class, unit)
@@ -74,27 +74,27 @@ module Yarrow
           check(input)
         end
       end
-  
+
       class Any < TypeClass
         def cast(input)
           input
         end
       end
-  
+
       class Instance < TypeClass
         def check(input)
           check_instance_of!(input)
           input
         end
       end
-  
+
       class Kind < TypeClass
         def check(input)
           check_kind_of!(input)
           input
         end
       end
-  
+
       class Interface < TypeClass
         def self.any(*args)
           interface_type = new(args)
@@ -117,7 +117,7 @@ module Yarrow
           when :any then check_respond_to_any!(input, members)
           when :all then check_respond_to_all!(input, members)
           end
-          
+
           input
         end
       end

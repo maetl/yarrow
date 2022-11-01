@@ -1,0 +1,35 @@
+See https://github.com/maetl/yarrow for more information.
+
+Usage: yarrow [options] <source_dir...> <output_dir>
+
+yarrow [options]
+yarrow [options] <source_dir>
+yarrow [options] <source_dir> <output_dir>
+yarrow [options] <source_dir source_dir> <output_dir>
+
+Arguments
+
+<source_dir> - Path to source directory or an individual source file. If not
+               supplied defaults to the current working directory. Multiple
+               directories can be specified by repeating arguments, separated
+               by whitespace.
+
+<output_dir> - Path to the generated documentation. If not supplied, defaults
+               to `./docs` in the current working directory. If it does not
+               exist, it is created. If it does exist it remains in place, but
+               existing files are overwritten by new files with the same name.
+
+Options
+
+Use -o or --option for boolean switches and --option=value or --option:value
+for options that require an explicit value to be set.
+
+  -h    --help        [switch]    Display this help message and exit
+  -v    --version     [switch]    Display version header and exit
+  -c    --config      [string]    Path to a config properties file
+  -p    --packages    [string]    Defines package convention for the model
+  -t    --theme       [string]    Template theme for generated docs
+
+Not all these options currently work as they date back to when this library
+was used for generating documentation for PHP codebases, before it was
+generalised into a static site generator.

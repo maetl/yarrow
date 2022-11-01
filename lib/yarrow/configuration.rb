@@ -52,13 +52,11 @@ module Yarrow
         # automated as part of the schema types or a default value should be
         # generated here (eg: `"#{Dir.pwd}/docs"`)
         out_dir_or_string = config[:output_dir] || ""
-        source_dir_or_string = config[:project_dir] || ""
-        content_dir_or_string = config[:content_dir] || ""
+        source_dir_or_string = config[:source_dir] || ""
 
         Yarrow::Config::Instance.new(
           output_dir: Pathname.new(File.expand_path(out_dir_or_string)),
-          project_dir: Pathname.new(File.expand_path(source_dir_or_string)),
-          content_dir: Pathname.new(File.expand_path(content_dir_or_string)),
+          source_dir: Pathname.new(File.expand_path(source_dir_or_string)),
           meta: meta_obj,
           server: server_obj
         )

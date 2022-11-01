@@ -53,4 +53,14 @@ describe Yarrow::Schema::Value do
     liquid_nitrogen = Temperature.new(77.36, :kelvin)
     expect(liquid_nitrogen.to_fahrenheit).to be_within(0.1).of(-320.422)
   end
+
+  it "merges values with any type" do
+    Pegboard = Yarrow::Schema::Value.new(:first, :last)
+
+    start = Pegboard.new(:square, :square)
+    merged = start.merge(Pegboard.new(nil, :triangle))
+
+    expect(merged.first).to be :square
+    expect(merged.last).to be :triangle
+  end
 end

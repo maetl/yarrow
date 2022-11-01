@@ -6,8 +6,7 @@ describe "indexed file" do
   let(:raw_fixture) do
     Yarrow::Config::Instance.new(
       output_dir: output_path,
-      project_dir: Pathname.new("~~does not matter~~"),
-      content_dir: Pathname.new("~~does not matter~~")
+      source_dir: Pathname.new("~~does not matter~~"),
     )
   end
 

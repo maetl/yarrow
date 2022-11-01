@@ -1,7 +1,7 @@
 # Default configuration settings for Yarrow.
 # This is loaded when the configuration is initialized.
-input_dir: content
-output_dir: .
+source_dir: content
+output_dir: docs
 meta:
   title: Default Project
   author: Default Name

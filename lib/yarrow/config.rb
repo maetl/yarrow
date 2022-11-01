@@ -43,6 +43,12 @@ module Yarrow
     )
 
     # Top level root config namespace.
+    class Instance < Yarrow::Schema::Entity
+      attribute :source_dir, :path
+      attribute :output_dir, :path
+      attribute :meta, :any
+      attribute :server, :any
+    end
     #
     # `content_dir` and `output_dir` are placeholders and should be overriden
     # with more fine-grained config for web and book outputs in future.
@@ -51,12 +57,12 @@ module Yarrow
     # server locally.
     #
     # TODO: meta should be union of Type::Optional and Config::Meta
-    Instance = Yarrow::Schema::Value.new(
-      project_dir: :path,
-      content_dir: :path,
-      output_dir: :path,
-      meta: :any,
-      server: :any
-    )
+    # Instance = Yarrow::Schema::Value.new(
+    #   project_dir: :path,
+    #   content_dir: :path,
+    #   output_dir: :path,
+    #   meta: :any,
+    #   server: :any
+    # )
   end
 end
