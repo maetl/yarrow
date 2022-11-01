@@ -21,10 +21,10 @@ module Yarrow
 
   class FlattenManifest < Process::StepProcessor
     accepts Content::Graph
-    provides Content::Manifest
+    provides Web::Manifest
 
     def step(content)
-      Content::Manifest.build(content.graph)
+      Web::Manifest.build(content.graph)
     end
   end
 
@@ -50,8 +50,20 @@ module Yarrow
       end
     end
 
+    def generate
+      process do |manifest|
+        generators.each do |generator|
+          generator.generate(manifest)
+        end
+      end
+    end
+
     private
 
     attr_reader :config, :workflow
+
+    def generators
+      [Web::Generator.new(config)]
+    end
   end
 end

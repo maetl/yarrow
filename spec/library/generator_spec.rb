@@ -1,12 +1,19 @@
 require "spec_helper"
 
 describe Yarrow::Generator do
+  it "runs web generator by default" do
+    config = load_config_fixture("doctest")
+    generator = Yarrow::Generator.new(config)
+    generator.generate
+    expect(true).to be(true)
+  end
+
   it "generates a set of pages from markdown files" do
     config = load_config_fixture("doctest")
     generator = Yarrow::Generator.new(config)
 
     generator.process do |manifest|
-      expect(manifest).to be_a(Yarrow::Content::Manifest)
+      expect(manifest).to be_a(Yarrow::Web::Manifest)
 
       expect(manifest.documents.count).to be(4)
 

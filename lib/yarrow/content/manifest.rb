@@ -7,13 +7,14 @@ module Yarrow
         graph.n(:collection).each do |collection|
 
           unless collection.props[:content_only]
-            manifest.add_document(collection_context(collection))
+            collection_doc = collection_context(collection)
+            manifest.add_document(collection_doc)
           end
 
           unless collection.props[:index_only]
             collection.out(:item).each do |item|
               #if item[:entity].status.to_sym == :published
-              manifest.add_document(item_context(item))
+              manifest.add_document(item_context(item, collection_doc))
               #end
             end
           end
@@ -39,7 +40,7 @@ module Yarrow
         )
       end
 
-      def self.item_context(item)
+      def self.item_context(item, collection_doc)
         Yarrow::Output::Context.new(
           parent: item.in(:collection).first,
           name: item.props[:name],

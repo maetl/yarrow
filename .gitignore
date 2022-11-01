@@ -7,3 +7,5 @@ yarrow-*.gem
 coverage
 bin/scripts
 .DS_Store
+www
+web
