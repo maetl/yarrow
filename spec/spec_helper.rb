@@ -16,7 +16,30 @@ def load_config_fixture(input_dir)
   )
 end
 
+def fixture_path(item_path)
+  File.dirname(__FILE__) + "/fixtures/#{item_path}"
+end
+
+def load_fixture(item_path)
+  File.read(fixture_path(item_path))
+end
+
 RSpec.configure do |config|
   config.formatter = :progress
   config.color = true
+
+  RSpec::Matchers.define :collect_documents_with do |expected_attr, expected_list|
+    match do |manifest|
+      @actual = Set.new(manifest.documents.map { |resource| resource.send(expected_attr) })
+      @expected = Set.new(expected_list)
+      expect(@actual).to eq(@expected)
+    end
+
+    failure_message do
+      "Collected `document.#{expected_attr}` values in manifest did not match expected"
+    end
+
+    diffable
+    attr_reader :actual, :expected
+  end
 end
