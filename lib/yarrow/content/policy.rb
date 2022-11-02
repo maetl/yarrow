@@ -8,6 +8,8 @@ module Yarrow
         :match_path
       )
 
+      DEFAULT_HOME_NESTING = false
+
       DEFAULT_EXTENSIONS = [".md", ".yml", ".htm"]
 
       DEFAULT_MATCH_PATH = "."

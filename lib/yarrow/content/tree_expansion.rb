@@ -6,11 +6,6 @@ module Yarrow
         #policy.match()
 
         #p graph.n(:root).out(:directory).first.props[:name]
-
-        expand_impl(policy)
-      end
-
-      def expand_impl(policy)
         type = policy.container
 
         # If match path represents entire content dir, then include the entire
@@ -18,13 +13,14 @@ module Yarrow
         # the collection.
         #start_node = if policy.match_path == "."
         start_node = if true
-          graph.n(:root)
+          # TODO: match against source_dir
+          graph.n(:root).out(:directory)
         else
-          graph.n(:root).out(name: type.to_s)
+          graph.n(:root).out(name: policy.container.to_s)
         end
 
         # Extract metadata from given start node
-        collection_metadata = extract_metadata(start_node, type)
+        collection_metadata = extract_metadata(start_node, policy.container)
 
         # Collect all nested collections in the subgraph for this content type
         subcollections = {}
@@ -37,7 +33,7 @@ module Yarrow
             # Create a collection node representing a collection of documents
             index = graph.create_node do |collection_node|
               collection_node.label = :collection
-              collection_node.props[:type] = type
+              collection_node.props[:type] = policy.container
               collection_node.props[:name] = node.props[:name]
 
               # TODO: title needs to be defined from metadata

@@ -2,14 +2,14 @@ require "spec_helper"
 
 describe "doctest" do
   it "collects manifest from source" do
-    config = load_config_fixture("doctest")
+    config = load_config_fixture("pages")
     generator = Yarrow::Generator.new(config)
 
     generator.process do |manifest|
       expect(manifest).to be_a(Yarrow::Web::Manifest)
       expect(manifest).to collect_documents_with(:type, [:page, :pages])
-      expect(manifest).to collect_documents_with(:name, ["doctest", "page1", "page2", "page3"])
-      expect(manifest).to collect_documents_with(:url, ["/", "/page1", "/page2", "/page3"])
+      expect(manifest).to collect_documents_with(:name, ["about", "index", "children", "one", "two"])
+      expect(manifest).to collect_documents_with(:url, ["/", "/about", "/children", "/children/one", "/children/two"])
       expect(manifest)
     end
   end
