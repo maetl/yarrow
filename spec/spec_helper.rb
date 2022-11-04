@@ -13,6 +13,12 @@ def load_config_fixture(input_dir)
   Yarrow::Config::Instance.new(
     source_dir: Pathname.new("#{__dir__}/fixtures/sources/#{input_dir}"),
     output_dir: Pathname.new("#{__dir__}/fixtures/sources/output_dir"),
+    content: Yarrow::Config::Content.new({
+      module: "",
+      source_map: {
+        pages: :page
+      }
+    })
   )
 end
 

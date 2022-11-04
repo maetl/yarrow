@@ -1,22 +1,10 @@
 module Yarrow
   module Content
     class Model
-      def initialize(spec=nil, namespace=nil)
-        @namespace = []
-        @namespace << namespace unless namespace.nil?
-
-        @policies = if spec.nil?
-          spec = {
-            root: ContentPolicy.new(
-              expansion: :tree,
-              dir: "*",
-              file: "*.md",
-              :container => :pages,
-              :record => :page
-            )
-          }
-        else
-          spec.model
+      def initialize(content_config)
+        @policies = {}
+        content_config.source_map.each_entry do |policy_label, policy_spec|
+          @policies[policy_label] = Policy.from_spec(policy_label, policy_spec)
         end
       end
 
@@ -27,8 +15,8 @@ module Yarrow
         end
       end
 
-      def policy_for(policy_key)
-        @policies[policy_key]
+      def policy_for(policy_label)
+        @policies[policy_label]
       end
     end
   end

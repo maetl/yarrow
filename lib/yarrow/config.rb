@@ -41,15 +41,15 @@ module Yarrow
     )
 
     # Yarrow::Schema.define do
-    #   type :config_content_policy, Yarrow::Schema::Types::Instance.of(Yarrow::Content::Policy).accept(Hash)
+    #   type :config_source_map, Yarrow::Schema::Types::Instance.of(Hash).accept(Symbol)
     # end
 
-    class Content < Yarrow::Schema::Entity[:config_content]
+    class Content < Yarrow::Schema::Entity[:__config_content]
       attribute :module, :string
-      attribute :source_map, map: :hash
+      attribute :source_map, :hash
     end
 
-    class Output < Yarrow::Schema::Entity[:output]
+    class Output < Yarrow::Schema::Entity[:__config_output]
       attribute :generator, :string
       attribute :template_dir, :path
       #attribute :scripts, :array
@@ -61,7 +61,8 @@ module Yarrow
       attribute :output_dir, :path
       attribute :meta, :any
       attribute :server, :any
-      #attribute :output, :output
+      attribute :content, :__config_content
+      #attribute :output, :__config_output
     end
     #
     # `content_dir` and `output_dir` are placeholders and should be overriden

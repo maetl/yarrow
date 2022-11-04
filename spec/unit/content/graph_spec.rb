@@ -7,7 +7,14 @@ describe Yarrow::Content::Graph do
     end
 
     it "expands :pages by default" do
-      model = Yarrow::Content::Model.new
+      model = Yarrow::Content::Model.new(
+        Yarrow::Config::Content.new(
+          module: "",
+          source_map: {
+            pages: :page
+          }
+        )
+      )
       model.expand(content.graph)
 
       expect(

@@ -2,41 +2,48 @@ require "spec_helper"
 
 describe Yarrow::Content::Policy do
   it "assigns defaults when minimal data provided" do
-    content_type = Yarrow::Content::Policy.from_name(:posts)
-    expect(content_type.container).to eq(:posts)
-    expect(content_type.entity).to eq(:post)
-    expect(content_type.extensions).to eq([".md", ".yml", ".htm"])
-  end
+    policy = Yarrow::Content::Policy.from_spec(:blog, :post)
 
-  it "can be configured with a string" do
-    content_type = Yarrow::Content::Policy.from_name("posts")
-    expect(content_type.container).to eq(:posts)
+    expect(policy.container).to eq(:blog)
+    expect(policy.entity).to eq(:post)
   end
 
   it "can be configured with a container name" do
-    properties = Yarrow::Content::Policy::Options.new(container: :posts)
-    content_type = Yarrow::Content::Policy.new(properties)
-    expect(content_type.container).to eq(:posts)
-    expect(content_type.entity).to eq(:post)
+    policy = Yarrow::Content::Policy.from_spec(:root, { container: :posts})
+
+    expect(policy.container).to eq(:posts)
+    expect(policy.entity).to eq(:post)
   end
 
   it "can be configured with an entity name" do
-    properties = Yarrow::Content::Policy::Options.new(entity: :post)
-    content_type = Yarrow::Content::Policy.new(properties)
-    expect(content_type.container).to eq(:posts)
-    expect(content_type.entity).to eq(:post)
+    policy = Yarrow::Content::Policy.from_spec(:root, { entity: :post})
+
+    expect(policy.container).to eq(:posts)
+    expect(policy.entity).to eq(:post)
   end
 
   it "can be configured with container and entity names" do
-    properties = Yarrow::Content::Policy::Options.new(container: :blog, entity: :post)
-    content_type = Yarrow::Content::Policy.new(properties)
-    expect(content_type.container).to eq(:blog)
-    expect(content_type.entity).to eq(:post)
+    policy = Yarrow::Content::Policy.from_spec(:root, { container: :gallery, entity: :photo})
+
+    expect(policy.container).to eq(:gallery)
+    expect(policy.entity).to eq(:photo)
+  end
+
+  it "uses default extensions if none provided" do
+    policy = Yarrow::Content::Policy.from_spec(:root, { container: :pages })
+
+    expect(policy.extensions).to eq(Yarrow::Content::Policy::DEFAULT_EXTENSIONS)
   end
 
   it "can be configured with a list of custom extensions" do
-    properties = Yarrow::Content::Policy::Options.new(container: :pages, extensions: [".md", ".txt"])
-    content_type = Yarrow::Content::Policy.new(properties)
-    expect(content_type.extensions).to eq([".md", ".txt"])
+    policy = Yarrow::Content::Policy.from_spec(:root, { container: :pages, extensions: [".ascii", ".rtf"] })
+
+    expect(policy.extensions).to eq([".ascii", ".rtf"])
+  end
+
+  it "uses default expansion if none provided" do
+    policy = Yarrow::Content::Policy.from_spec(:root, { container: :pages })
+
+    expect(policy.expansion).to eq(Yarrow::Content::Policy::DEFAULT_EXPANSION)
   end
 end

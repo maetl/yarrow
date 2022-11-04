@@ -48,6 +48,17 @@ module Yarrow
           nil
         end
 
+        content_obj = if config.key?(:content)
+          Yarrow::Config::Content.new(config[:content])
+        else
+          Yarrow::Config::Content.new({
+            module: "",
+            source_map: {
+              pages: :page
+            }
+          })
+        end
+
         # TODO: messy hack to get rid of Hashie::Mash, this should either be
         # automated as part of the schema types or a default value should be
         # generated here (eg: `"#{Dir.pwd}/docs"`)
@@ -58,7 +69,8 @@ module Yarrow
           output_dir: Pathname.new(File.expand_path(out_dir_or_string)),
           source_dir: Pathname.new(File.expand_path(source_dir_or_string)),
           meta: meta_obj,
-          server: server_obj
+          server: server_obj,
+          content: content_obj
         )
       end
     end
