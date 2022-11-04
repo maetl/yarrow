@@ -8,7 +8,7 @@ module Yarrow
         path: Types::Instance.of(Pathname).accept(String),
         any: Types::Any.new,
         array: Types::List.of(Types::Any),
-        hash: Types::Map.of(Symbol => Types::Any)
+        hash: Types::Instance.of(Hash)
       }
 
       TEMPLATE_TYPES = {
@@ -40,7 +40,7 @@ module Yarrow
 
           # Get reference to the type class we want to resolve
           template_type = TEMPLATE_TYPES[key_id]
-          
+
           # Resolve the type to an instance depending on structure of its template args
           resolved_type = if value_id.is_a?(Hash)
             # Map template with two argument constructor
@@ -55,7 +55,7 @@ module Yarrow
 
           # Cache the resolved type for later reference
           DEFINED_TYPES[identifier] = resolved_type
-          
+
           # Return the resolve type
           resolved_type
         else

@@ -90,6 +90,14 @@ describe Yarrow::Schema::Definitions do
     expect(type_container.resolve_type(map: :string).value_type.unit).to be(String)
   end
 
+  specify :compound_map_with_runtime_template_any_hash do
+    expect(type_container.resolve_type(map: :hash)).to be_a(Yarrow::Schema::Types::Map)
+    expect(type_container.resolve_type(map: :hash).key_type).to be_a(Yarrow::Schema::Types::Instance)
+    expect(type_container.resolve_type(map: :hash).key_type.unit).to be(Symbol)
+    expect(type_container.resolve_type(map: :hash).value_type).to be_a(Yarrow::Schema::Types::Instance)
+    expect(type_container.resolve_type(map: :hash).value_type.unit).to be(Hash)
+  end
+
   specify :compound_map_with_runtime_template_pair do
     expect(type_container.resolve_type(map: {integer: :string})).to be_a(Yarrow::Schema::Types::Map)
     expect(type_container.resolve_type(map: {integer: :string}).key_type).to be_a(Yarrow::Schema::Types::Instance)

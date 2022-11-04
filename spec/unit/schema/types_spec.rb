@@ -130,19 +130,19 @@ describe Yarrow::Schema::Types do
       let :duck_type do
         Yarrow::Schema::Types::Interface.any(:to_duck, :to_quack)
       end
-  
+
       class DuckWalker
         def to_duck
           :duck
         end
       end
-  
+
       class DuckQuacker
         def to_quack
           :quack
         end
       end
-  
+
       specify :cast do
         expect(duck_type.cast(DuckWalker.new)).to be_a(DuckWalker)
         expect(duck_type.cast(DuckQuacker.new)).to be_a(DuckQuacker)
@@ -162,7 +162,7 @@ describe Yarrow::Schema::Types do
       let :thing_type do
         Yarrow::Schema::Types::Interface.all(:to_head, :to_body)
       end
-  
+
       class ThingOne
         def to_head
           :head
@@ -172,7 +172,7 @@ describe Yarrow::Schema::Types do
           :body
         end
       end
-  
+
       class ThingTwo
         def to_head
           :head
@@ -182,7 +182,7 @@ describe Yarrow::Schema::Types do
           :body
         end
       end
-  
+
       specify :cast do
         expect(thing_type.cast(ThingOne.new)).to be_a(ThingOne)
         expect(thing_type.cast(ThingTwo.new)).to be_a(ThingTwo)
@@ -226,6 +226,14 @@ describe Yarrow::Schema::Types do
         Yarrow::Schema::Types::CastError,
         "String is not an instance of Symbol"
       )
+    end
+
+    specify :map_of_hash_with_implicit_keys do
+      map_type = Yarrow::Schema::Types::Map.of(Hash)
+
+      expect(map_type.cast({a: {one: 1}, b: {two: 2}})).to eq({a: {one: 1}, b: {two: 2}})
+      expect(map_type.cast({a: {}, b: {}})).to eq({a: {}, b: {}})
+      expect(map_type.cast({a: {"1" => 1}, b: {"2" => 2}})).to eq({a: {"1" => 1}, b: {"2" => 2}})
     end
 
     specify :map_with_explicit_keys do
