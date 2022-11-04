@@ -7,8 +7,8 @@ describe Yarrow::Content::Graph do
     end
 
     it "expands :pages by default" do
-      expander = Yarrow::Content::Expansion.new(Yarrow::Content::Model.new)
-      expander.expand(content.graph)
+      model = Yarrow::Content::Model.new
+      model.expand(content.graph)
 
       expect(
         Set.new(content.graph.nodes.map { |n| n.label })
@@ -28,16 +28,6 @@ describe Yarrow::Content::Graph do
       expect(
         Set.new(content.files.map { |f| f.props[:name] })
       ).to eq(Set.new(['about.htm', 'index.htm', 'one.htm', 'two.htm']))
-    end
-
-    it "expands source files into collections" do
-      class Page
-        def initialize(props)
-          @props = props
-        end
-      end
-
-      content.expand_pages
     end
   end
 

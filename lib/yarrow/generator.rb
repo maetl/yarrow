@@ -13,8 +13,8 @@ module Yarrow
     provides Content::Graph
 
     def step(content)
-      expander = Content::Expansion.new(Yarrow::Content::Model.new)
-      expander.expand(content.graph)
+      model = Content::Model.new
+      model.expand(content.graph)
       content
     end
   end

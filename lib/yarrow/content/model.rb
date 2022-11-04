@@ -34,8 +34,11 @@ module Yarrow
         end
       end
 
-      def each_policy(&block)
-        @policies.each_value(&block)
+      def expand(graph)
+        @policies.each_value do |policy|
+          strategy = TreeExpansion.new(graph)
+          strategy.expand(policy)
+        end
       end
 
       def policy_for(policy_key)

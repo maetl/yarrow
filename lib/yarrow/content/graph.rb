@@ -17,11 +17,6 @@ module Yarrow
         @config = config
       end
 
-      def expand_pages
-        expander = Yarrow::Content::Expansion.new(Yarrow::Content::Model.new)
-        expander.expand(graph)
-      end
-
       # List of source files.
       def files
         graph.nodes(:file)
