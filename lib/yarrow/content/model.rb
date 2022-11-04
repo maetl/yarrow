@@ -36,7 +36,7 @@ module Yarrow
 
       def expand(graph)
         @policies.each_value do |policy|
-          strategy = TreeExpansion.new(graph)
+          strategy = Expansion::Tree.new(graph)
           strategy.expand(policy)
         end
       end
