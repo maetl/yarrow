@@ -1,5 +1,13 @@
 module Yarrow
   module Content
+    ContentPolicy = Yarrow::Schema::Value.new(
+      :dir,
+      :file,
+      :expansion,
+      :container,
+      :record
+    )
+
     class Policy
       Options = Yarrow::Schema::Value.new(
         :container,

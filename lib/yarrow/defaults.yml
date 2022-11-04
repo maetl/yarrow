@@ -5,6 +5,11 @@ output_dir: docs
 meta:
   title: Default Project
   author: Default Name
+content:
+  module: Yarrow::Content
+  source_map:
+    pages:
+      expansion: tree
 output:
   generator: web
   template_dir: templates

@@ -40,6 +40,15 @@ module Yarrow
       :middleware
     )
 
+    # Yarrow::Schema.define do
+    #   type :config_content_policy, Yarrow::Schema::Types::Instance.of(Yarrow::Content::Policy).accept(Hash)
+    # end
+
+    class Content < Yarrow::Schema::Entity[:config_content]
+      attribute :module, :string
+      attribute :source_map, map: :hash
+    end
+
     class Output < Yarrow::Schema::Entity[:output]
       attribute :generator, :string
       attribute :template_dir, :path

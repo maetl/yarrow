@@ -1,17 +1,10 @@
 describe "yarrow content model" do
-  it "loads a policy from explicit catch-all config" do
-    config_spec = Yarrow::Content::ContentSpec.new(
-      namespace: "Site",
-      model: {
-        root: Yarrow::Content::ContentPolicy.new(
-          expansion: :tree,
-          dir: "*",
-          file: "*.md",
-          :container => :pages,
-          :record => :page
-        )
-      }
+  xit "loads a policy from explicit catch-all config" do
+    config_spec = Yarrow::Config::Content.new(
+      module: "Site",
+      source_map: {}
     )
+
 
     model = Yarrow::Content::Model.new(config_spec)
 
