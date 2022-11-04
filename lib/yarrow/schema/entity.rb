@@ -13,6 +13,19 @@ module Yarrow
         def dictionary
           @dictionary ||= Dictionary.new({})
         end
+
+        def [](label)
+          @label = label
+          self
+        end
+
+        def inherited(class_name)
+          if @label
+            class_type = Yarrow::Schema::Types::Instance.of(class_name)
+            Yarrow::Schema::Definitions.register(@label, class_type)
+            @label = nil
+          end
+        end
       end
 
       def initialize(config)

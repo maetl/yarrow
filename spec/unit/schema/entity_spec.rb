@@ -104,4 +104,26 @@ describe Yarrow::Schema::Entity do
     expect(pub3.url.path).to eq("/pub1")
     expect(pub3.url.scheme).to eq(:http)
   end
+
+  it "registers type definition from class inheritance" do
+    class WidgetPart < Yarrow::Schema::Entity[:widget_part]
+      attribute :label, :string
+    end
+
+    class WidgetDevice < Yarrow::Schema::Entity[:widget_device]
+      attribute :label, :string
+    end
+
+    class Widget < Yarrow::Schema::Entity
+      attribute :part, :widget_part
+      attribute :device, :widget_device
+    end
+
+    part = WidgetPart.new(label: "part.1")
+    device = WidgetDevice.new(label: "device.1")
+    widget = Widget.new(part: part, device: device)
+
+    expect(widget.part.label).to eq("part.1")
+    expect(widget.device.label).to eq("device.1")
+  end
 end

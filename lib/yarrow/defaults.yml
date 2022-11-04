@@ -6,10 +6,8 @@ meta:
   title: Default Project
   author: Default Name
 output:
-  target_dir: public
+  generator: web
   template_dir: templates
-  object_map:
-    page: Yarrow::Model::Site.pages
 assets:
   input_dir: assets
   output_dir: public/assets

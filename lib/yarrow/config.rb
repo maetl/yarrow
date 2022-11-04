@@ -37,10 +37,14 @@ module Yarrow
       :port,
       :host,
       :handler,
-      #:docroot,
-      :middleware,
-      #:root_dir
+      :middleware
     )
+
+    class Output < Yarrow::Schema::Entity[:output]
+      attribute :generator, :string
+      attribute :template_dir, :path
+      #attribute :scripts, :array
+    end
 
     # Top level root config namespace.
     class Instance < Yarrow::Schema::Entity
@@ -48,6 +52,7 @@ module Yarrow
       attribute :output_dir, :path
       attribute :meta, :any
       attribute :server, :any
+      #attribute :output, :output
     end
     #
     # `content_dir` and `output_dir` are placeholders and should be overriden
