@@ -2,6 +2,7 @@ describe Yarrow::Symbols do
   BlittyBlob = [:bits, :len]
   GliffyFlip = [:gif, :jif]
   module SpliTty; class Blit; Z = :z; end; end
+  module One; module Two; module Three; class Four; FOUR = 4; end; end; end; end
 
   it "converts a string module path to a live constant" do
     splitty_bit = Yarrow::Symbols.to_module_const(["SpliTty", "Blit"])
@@ -13,6 +14,12 @@ describe Yarrow::Symbols do
     splitty_bit = Yarrow::Symbols.to_module_const([:spli_tty, :blit])
     expect(splitty_bit).to be(SpliTty::Blit)
     expect(splitty_bit::Z).to eq(:z)
+  end
+
+  it "converts a sequence of nested module strings to a live constant" do
+    four = Yarrow::Symbols.to_module_const("One::Two::Three::Four".split("::"))
+    expect(four).to be(One::Two::Three::Four)
+    expect(four::FOUR).to eq(4)
   end
 
   it "converts an underscored noun symbol to a live constant" do

@@ -63,6 +63,8 @@ module Yarrow
                 item_node.props[:body] = body if body
                 item_node.props[:title] = meta[:title] if meta
                 # TODO: better handling of metadata on node props
+
+                puts policy.entity_const
               end
 
               # We may not have an expanded node for the parent collection if this is a

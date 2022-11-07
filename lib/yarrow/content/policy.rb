@@ -9,6 +9,8 @@ module Yarrow
 
       DEFAULT_MATCH_PATH = "."
 
+      MODULE_SEPARATOR = "::"
+
       # Construct a content policy from the given source specification.
       def self.from_spec(policy_label, policy_props, module_prefix="")
         # TODO: validate length, structure etc
@@ -64,7 +66,7 @@ module Yarrow
         end
       end
 
-      attr_reader :container, :entity, :expansion, :extensions, :match_path, :module
+      attr_reader :container, :entity, :expansion, :extensions, :match_path, :module_prefix
 
       def initialize(container, entity, expansion, extensions, match_path, module_prefix)
         @container = container
@@ -72,15 +74,15 @@ module Yarrow
         @expansion = expansion
         @extensions = extensions
         @match_path = match_path
-        @module_prefix = module_prefix
+        @module_prefix = module_prefix.split(MODULE_SEPARATOR)
       end
 
       def container_const
-        @container_const ||= Yarrow::Symbols.to_module_const([module_prefix, container])
+        @container_const ||= Yarrow::Symbols.to_module_const([*module_prefix, container])
       end
 
       def entity_const
-        @entity_const ||= Yarrow::Symbols.to_module_const([module_prefix, entity])
+        @entity_const ||= Yarrow::Symbols.to_module_const([*module_prefix, entity])
       end
     end
   end
