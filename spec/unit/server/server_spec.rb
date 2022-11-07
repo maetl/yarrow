@@ -40,6 +40,10 @@ describe Yarrow::Server do
             source_map: {
               pages: :page
             }
+          ),
+          output: Yarrow::Config::Output.new(
+            template_dir: "templates",
+            generator: "web"
           )
         ))
       end
@@ -81,6 +85,10 @@ describe Yarrow::Server do
             source_map: {
               pages: :page
             }
+          ),
+          output: Yarrow::Config::Output.new(
+            template_dir: "templates",
+            generator: "web"
           )
         ))
       end
@@ -120,6 +128,10 @@ describe Yarrow::Server do
             source_map: {
               pages: :page
             }
+          ),
+          output: Yarrow::Config::Output.new(
+            template_dir: "templates",
+            generator: "web"
           )
         ))
       end
@@ -161,6 +173,10 @@ describe Yarrow::Server do
             source_map: {
               pages: :page
             }
+          ),
+          output: Yarrow::Config::Output.new(
+            template_dir: "templates",
+            generator: "web"
           )
         ))
       end

@@ -18,6 +18,10 @@ def load_config_fixture(input_dir)
       source_map: {
         pages: :page
       }
+    }),
+    output: Yarrow::Config::Output.new({
+      generator: "web",
+      template_dir: "templates"
     })
   )
 end
@@ -48,4 +52,12 @@ RSpec.configure do |config|
     diffable
     attr_reader :actual, :expected
   end
+end
+
+class Page
+
+end
+
+class Pages
+
 end
