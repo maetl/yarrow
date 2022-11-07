@@ -27,7 +27,7 @@ module Yarrow
             if policy_props.key?(:entity)
               Yarrow::Symbols.to_plural(policy_props[:entity])
             else
-              Yarrow::Symbols.to_plural(label)
+              Yarrow::Symbols.to_plural(policy_label)
             end
           end
 
@@ -38,7 +38,7 @@ module Yarrow
             if policy_props.key?(:container)
               Yarrow::Symbols.to_singular(policy_props[:container])
             else
-              Yarrow::Symbols.to_singular(label)
+              Yarrow::Symbols.to_singular(policy_label)
             end
           end
 

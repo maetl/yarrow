@@ -18,7 +18,7 @@ module Yarrow
       end
 
       def write_document(document)
-        template = Template.for_document(document)
+        template = Template.for_document(document, config)
         write_output_file(document.url, template.render(document))
       end
 
@@ -39,6 +39,8 @@ module Yarrow
         File.open(path.to_s, 'w+:UTF-8') do |file|
           file.puts(content)
         end
+
+        puts "[write] #{path} → #{url}"
       end
 
       def generate_sitemap(manifest)

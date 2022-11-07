@@ -1,14 +1,15 @@
 module Yarrow
   module Web
     class Template
-      def self.for_document(document)
+      def self.for_document(document, config)
         layout_name = if document.respond_to?(:layout)
           document.layout || document.type
         else
           document.type
         end
 
-        @template_dir = "./spec/fixtures/templates/doctest"
+        @template_dir = config.output.template_dir
+        #@template_dir = "./spec/fixtures/templates/doctest"
         @template_ext = ".html"
 
         template_file = "#{layout_name}#{@template_ext}"

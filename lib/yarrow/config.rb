@@ -62,7 +62,7 @@ module Yarrow
       attribute :meta, :any
       attribute :server, :any
       attribute :content, :__config_content
-      #attribute :output, :__config_output
+      attribute :output, :__config_output
     end
     #
     # `content_dir` and `output_dir` are placeholders and should be overriden
