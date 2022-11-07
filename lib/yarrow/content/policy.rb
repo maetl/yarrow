@@ -82,26 +82,6 @@ module Yarrow
       def entity_const
         @entity_const ||= Yarrow::Symbols.to_module_const([module_prefix, entity])
       end
-
-      def _container
-        return @properties.container if @properties.container
-        Yarrow::Symbols.to_plural(@properties.entity)
-      end
-
-      def _entity
-        return @properties.entity if @properties.entity
-        Yarrow::Symbols.to_singular(@properties.container)
-      end
-
-      def _extensions
-        return @properties.extensions if @properties.extensions
-        DEFAULT_EXTENSIONS
-      end
-
-      def _match_path
-        return @properties.match_path if @properties.match_path
-        DEFAULT_MATCH_PATH
-      end
     end
   end
 end
