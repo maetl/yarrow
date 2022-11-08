@@ -12,7 +12,7 @@ module Yarrow
           unless collection.props[:index_only]
             collection.out(:item).each do |item|
               #if item[:entity].status.to_sym == :published
-              if item.props[:name] == "index"
+              if item.props[:resource].name == "index"
                 index = item
               else
                 manifest.add_document(item_context(item))
@@ -25,7 +25,7 @@ module Yarrow
           unless collection.props[:content_only]
             if index
               manifest.add_document(collection_index_context(collection, index))
-            else 
+            else
               manifest.add_document(collection_context(collection))
             end
           end

@@ -81,6 +81,7 @@ module Yarrow
         @container_const ||= Yarrow::Symbols.to_module_const([*module_prefix, container])
       end
 
+      alias_method :collection, :container
       alias_method :collection_const, :container_const
 
       def entity_const

@@ -21,13 +21,13 @@ describe Yarrow::Schema::Dictionary do
     specify "missing attribute error" do
       expect {
         anchor.cast({})
-      }.to raise_error("wrong number of attributes")
+      }.to raise_error("[:href, :title, :target] wrong number of attributes")
     end
 
     specify "mismatching attribute error" do
       expect {
         anchor.cast({:href => "https://maetl.net", :src => "https://maetl.net"})
-      }.to raise_error("attribute does not exist")
+      }.to raise_error("attribute [:src] does not exist")
     end
   end
 
@@ -51,13 +51,13 @@ describe Yarrow::Schema::Dictionary do
     specify "missing attribute error" do
       expect {
         rect.cast({:shape => "rect"})
-      }.to raise_error("wrong number of attributes")
+      }.to raise_error("[:x, :y, :w, :h] wrong number of attributes")
     end
 
     specify "bad key error" do
       expect {
         rect.cast({:mishape => "rect", :shape => "rect", :x => 10, :y => 10, :w => 64, :h => 48})
-      }.to raise_error("attribute does not exist")
+      }.to raise_error("attribute [:mishape] does not exist")
     end
 
     specify "mismatching type error" do

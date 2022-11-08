@@ -9,7 +9,7 @@ describe Yarrow::Content::Graph do
     it "expands :pages by default" do
       model = Yarrow::Content::Model.new(
         Yarrow::Config::Content.new(
-          module: "",
+          module: "TestContentGraph",
           source_map: {
             pages: :page
           }

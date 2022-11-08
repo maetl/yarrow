@@ -6,6 +6,8 @@ describe "doctest" do
     generator = Yarrow::Generator.new(config)
 
     generator.process do |manifest|
+      #p manifest
+
       expect(manifest).to be_a(Yarrow::Web::Manifest)
       expect(manifest).to collect_documents_with(:type, [:page, :pages])
       expect(manifest).to collect_documents_with(:name, ["about", "index", "children", "one", "two"])

@@ -37,7 +37,7 @@ module Yarrow
 
         def set_collection_props(node, policy, meta_attrs)
           node.label = :collection
-          node.props[:type] = policy.entity
+          node.props[:type] = policy.collection
           node.props[:resource] = policy.collection_const.new(meta_attrs)
         end
 

@@ -37,7 +37,7 @@ describe Yarrow::Schema::Entity do
 
     # TODO: "missing declared attribute `day`"
     expect { DateType.new(data) }.to raise_error(
-      "wrong number of attributes"
+      "[:day] wrong number of attributes"
     )
   end
 
@@ -51,7 +51,7 @@ describe Yarrow::Schema::Entity do
 
     # TODO: "iso8601 not a declared attribute"
     expect { DateType.new(data) }.to raise_error(
-      "attribute does not exist"
+      "attribute [:iso8601] does not exist"
     )
   end
 
