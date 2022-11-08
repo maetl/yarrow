@@ -123,6 +123,19 @@ describe Yarrow::Schema::Types do
         expect{ datetime_type.cast(2022) }.to raise_error("Integer is not an instance of DateTime")
       end
     end
+
+    describe :string_scanner do
+      let :string_scanner_type do
+        Yarrow::Schema::Types::Instance.of(StringScanner).accept(String, :new, { fixed_anchor: true })
+      end
+
+      specify :cast do
+        expect(string_scanner_type.cast(StringScanner.new(""))).to be_a(StringScanner)
+        expect(string_scanner_type.cast("...")).to be_a(StringScanner)
+        expect(string_scanner_type.cast("...").fixed_anchor?).to be(true)
+        expect{ string_scanner_type.cast(2022) }.to raise_error("Integer is not an instance of StringScanner")
+      end
+    end
   end
 
   describe Yarrow::Schema::Types::Interface do

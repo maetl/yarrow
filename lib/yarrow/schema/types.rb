@@ -31,8 +31,13 @@ module Yarrow
           @accepts = {}
         end
 
-        def accept(type, constructor=:new)
-          accepts[type] = constructor
+        def accept(type, constructor=:new, options=nil)
+          accepts[type] = if options.nil?
+            [constructor]
+          else
+            [constructor, options]
+          end
+
           self
         end
 
@@ -41,8 +46,14 @@ module Yarrow
         end
 
         def coerce(input)
-          constructor = accepts[input.class]
-          unit.send(constructor, input)
+          constructor, options = accepts[input.class]
+
+          # TODO: should we clone all input so copy is stored rather than ref?
+          if options.nil?
+            unit.send(constructor, input)
+          else
+            unit.send(constructor, input, options.clone)
+          end
         end
 
         def check_instance_of!(input)
