@@ -28,13 +28,14 @@ module Yarrow
 
         if missing_attrs.any?
           missing_attrs.each do |name|
-            raise "wrong number of attributes" unless @attrs_spec[name].is_a?(Types::Any)
+            p @attrs_spec
+            raise "#{missing_attrs} wrong number of attributes" unless @attrs_spec[name].is_a?(Types::Any)
           end
         end
 
         mismatching_attrs = input.keys.difference(@attrs_spec.keys)
 
-        raise "attribute does not exist" if mismatching_attrs.any?
+        raise "attribute #{mismatching_attrs} does not exist" if mismatching_attrs.any?
 
         input.reduce({}) do |converted, (name, value)|
           converted[name] = @attrs_spec[name].cast(value)

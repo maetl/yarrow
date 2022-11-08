@@ -8,7 +8,8 @@ module Yarrow
         path: Types::Instance.of(Pathname).accept(String),
         any: Types::Any.new,
         array: Types::List.of(Types::Any),
-        hash: Types::Instance.of(Hash)
+        hash: Types::Instance.of(Hash),
+        markdown: Types::Instance.of(Kramdown::Document).accept(String)
       }
 
       TEMPLATE_TYPES = {

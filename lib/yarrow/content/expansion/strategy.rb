@@ -34,6 +34,19 @@ module Yarrow
           data
         end
 
+
+        def set_collection_props(node, policy, meta_attrs)
+          node.label = :collection
+          node.props[:type] = policy.entity
+          node.props[:resource] = policy.collection_const.new(meta_attrs)
+        end
+
+        def set_item_props(node, policy, meta_attrs)
+          node.label = :item
+          node.props[:type] = policy.entity
+          node.props[:resource] = policy.entity_const.new(meta_attrs)
+        end
+
         # Workaround for handling meta and content source in multiple files or a single
         # file with front matter.
         def process_content(path)

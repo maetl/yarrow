@@ -33,12 +33,13 @@ module Yarrow
             if node.label == :directory
               # Create a collection node representing a collection of documents
               index = graph.create_node do |collection_node|
-                collection_node.label = :collection
-                collection_node.props[:type] = policy.container
-                collection_node.props[:name] = node.props[:name]
 
-                # TODO: title needs to be defined from metadata
-                collection_node.props[:title] = node.props[:name].capitalize
+                collection_attrs = {
+                  name: node.props[:name],
+                  title: node.props[:name].capitalize
+                }
+
+                set_collection_props(collection_node, policy, collection_attrs)
               end
 
               # Add this collection id to the lookup table for edge construction
@@ -57,15 +58,16 @@ module Yarrow
 
               # Create an item node representing a file mapped to a unique content object
               item = graph.create_node do |item_node|
-                item_node.label = :item
-                item_node.props[:type] = policy.entity
-                item_node.props[:name] = node.props[:entry].basename(node.props[:entry].extname).to_s
-                item_node.props[:body] = body if body
-                item_node.props[:title] = meta[:title] if meta
-                # TODO: better handling of metadata on node props
 
-                # TODO: new schema edits go here
-                #puts policy.entity_const
+                item_slug = node.props[:entry].basename(node.props[:entry].extname).to_s
+
+                item_attrs = {
+                  name: item_slug,
+                  title: item_slug.gsub("-", " ").capitalize,
+                  body: body
+                }
+
+                set_item_props(item_node, policy, item_attrs.merge(meta || {}))
               end
 
               # We may not have an expanded node for the parent collection if this is a
