@@ -34,14 +34,13 @@ module Yarrow
           data
         end
 
-
-        def set_collection_props(node, policy, meta_attrs)
+        def populate_collection(node, policy, meta_attrs)
           node.label = :collection
           node.props[:type] = policy.collection
           node.props[:resource] = policy.collection_const.new(meta_attrs)
         end
 
-        def set_item_props(node, policy, meta_attrs)
+        def populate_entity(node, policy, meta_attrs)
           node.label = :item
           node.props[:type] = policy.entity
           node.props[:resource] = policy.entity_const.new(meta_attrs)

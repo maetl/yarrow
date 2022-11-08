@@ -25,7 +25,7 @@ module Yarrow
 
           # Collect all nested collections in the subgraph for this content type
           subcollections = {}
-          item_links = []
+          entity_links = []
           index = nil
 
           # Scan and collect all nested files from the root
@@ -39,7 +39,7 @@ module Yarrow
                   title: node.props[:name].capitalize
                 }
 
-                set_collection_props(collection_node, policy, collection_attrs)
+                populate_collection(collection_node, policy, collection_attrs)
               end
 
               # Add this collection id to the lookup table for edge construction
@@ -56,36 +56,36 @@ module Yarrow
             elsif node.label == :file
               body, meta = process_content(node.props[:entry])
 
-              # Create an item node representing a file mapped to a unique content object
-              item = graph.create_node do |item_node|
+              # Create an entity node representing a file mapped to a unique content object
+              entity = graph.create_node do |entity_node|
 
-                item_slug = node.props[:entry].basename(node.props[:entry].extname).to_s
+                entity_slug = node.props[:entry].basename(node.props[:entry].extname).to_s
 
-                item_attrs = {
-                  name: item_slug,
-                  title: item_slug.gsub("-", " ").capitalize,
+                entity_attrs = {
+                  name: entity_slug,
+                  title: entity_slug.gsub("-", " ").capitalize,
                   body: body
                 }
 
-                set_item_props(item_node, policy, item_attrs.merge(meta || {}))
+                populate_entity(entity_node, policy, entity_attrs.merge(meta || {}))
               end
 
               # We may not have an expanded node for the parent collection if this is a
               # preorder traversal so save it for later
-              item_links << {
-                parent_path: node.props[:entry].parent.to_s,
-                item_id: item.id
+              entity_links << {
+                parent_id: subcollections[node.props[:entry].parent.to_s].id,
+                child_id: entity.id
               }
             end
           end
 
           # Once all files and directories have been expanded, connect all the child
-          # edges between collections and items
-          item_links.each do |item_link|
+          # edges between collections and entities
+          entity_links.each do |entity_link|
             graph.create_edge do |edge|
               edge.label = :child
-              edge.from = subcollections[item_link[:parent_path]].id
-              edge.to = item_link[:item_id]
+              edge.from = entity_link[:parent_id]
+              edge.to = entity_link[:child_id]
             end
           end
         end
