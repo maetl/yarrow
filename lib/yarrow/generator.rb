@@ -58,7 +58,7 @@ module Yarrow
       end
     end
 
-    private
+    #private
 
     attr_reader :config, :workflow
 
