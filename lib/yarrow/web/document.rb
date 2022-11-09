@@ -44,7 +44,9 @@ module Yarrow
             current = current.in(:collection).first
           end
 
-          "/" + segments.reverse.join("/")
+          suffix = @is_index ? "/" : ""
+
+          "/" + segments.reverse.join("/") + suffix
         end
       end
     end
