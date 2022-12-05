@@ -59,7 +59,7 @@ module Yarrow
       end
 
       def merge(other)
-        unless other.is_a?(self.class)
+        unless other.is_a?(self.class) || other.is_a?(Hash)
           raise ArgumentError.new("cannot merge entities that are not the same type")
         end
 

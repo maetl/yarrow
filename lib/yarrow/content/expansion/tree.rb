@@ -21,11 +21,12 @@ module Yarrow
           end
 
           # Extract metadata from given start node
-          collection_metadata = extract_metadata(start_node, policy.container)
+          #collection_metadata = extract_metadata(start_node, policy.container)
 
           # Collect all nested collections in the subgraph for this content type
           subcollections = {}
           entity_links = []
+          index_links = []
           index = nil
 
           # Scan and collect all nested files from the root
@@ -36,7 +37,8 @@ module Yarrow
 
                 collection_attrs = {
                   name: node.props[:name],
-                  title: node.props[:name].capitalize
+                  title: node.props[:name].capitalize,
+                  body: ""
                 }
 
                 populate_collection(collection_node, policy, collection_attrs)
@@ -56,26 +58,36 @@ module Yarrow
             elsif node.label == :file
               body, meta = process_content(node.props[:entry])
 
-              # Create an entity node representing a file mapped to a unique content object
-              entity = graph.create_node do |entity_node|
-
-                entity_slug = node.props[:entry].basename(node.props[:entry].extname).to_s
-
-                entity_attrs = {
-                  name: entity_slug,
-                  title: entity_slug.gsub("-", " ").capitalize,
-                  body: body
+              # TODO: document mapping convention for index pages and collection metadata
+              # TODO: underscore _index pattern?
+              bare_basename = node.props[:entry].basename(node.props[:entry].extname)
+              if bare_basename.to_s == "index"
+                index_links << {
+                  parent_id: subcollections[node.props[:entry].parent.to_s],
+                  index_attrs: meta.merge({ body: body})
                 }
+              else
+                # Create an entity node representing a file mapped to a unique content object
+                entity = graph.create_node do |entity_node|
 
-                populate_entity(entity_node, policy, entity_attrs.merge(meta || {}))
+                  entity_slug = node.props[:entry].basename(node.props[:entry].extname).to_s
+
+                  entity_attrs = {
+                    name: entity_slug,
+                    title: entity_slug.gsub("-", " ").capitalize,
+                    body: body
+                  }
+
+                  populate_entity(entity_node, policy, entity_attrs.merge(meta || {}))
+                end
+
+                # We may not have an expanded node for the parent collection if this is a
+                # preorder traversal so save it for later
+                entity_links << {
+                  parent_id: subcollections[node.props[:entry].parent.to_s],
+                  child_id: entity
+                }
               end
-
-              # We may not have an expanded node for the parent collection if this is a
-              # preorder traversal so save it for later
-              entity_links << {
-                parent_id: subcollections[node.props[:entry].parent.to_s].id,
-                child_id: entity.id
-              }
             end
           end
 
@@ -84,9 +96,14 @@ module Yarrow
           entity_links.each do |entity_link|
             graph.create_edge do |edge|
               edge.label = :child
-              edge.from = entity_link[:parent_id]
-              edge.to = entity_link[:child_id]
+              edge.from = entity_link[:parent_id].id
+              edge.to = entity_link[:child_id].id
             end
+          end
+
+          # Merge index page body and metadata with their parent collections
+          index_links.each do |index_link|
+            merge_collection_index(index_link[:parent_id], policy, index_link[:index_attrs])
           end
         end
       end

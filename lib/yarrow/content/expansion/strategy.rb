@@ -46,6 +46,11 @@ module Yarrow
           node.props[:resource] = policy.entity_const.new(meta_attrs)
         end
 
+        def merge_collection_index(node, policy, meta_attrs)
+          props = { resource: node.props[:resource].merge(meta_attrs) }
+          node.merge_props(props)
+        end
+
         # Workaround for handling meta and content source in multiple files or a single
         # file with front matter.
         def process_content(path)

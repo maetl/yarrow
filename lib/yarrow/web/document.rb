@@ -15,6 +15,34 @@ module Yarrow
         @resource
       end
 
+      def index
+        _index = @item.out_e(:index)
+        unless _index.first.nil?
+          _index.first.to.props
+        else
+          nil
+        end
+      end
+
+      def index_body
+        @item.props[:index_body]
+      end
+
+      # TODO: manage behaviour with and without current item
+      # TODO: link to manifest
+      def breadcrumbs
+        path = []
+
+        current_parent = @item.in(:collection)
+
+        while !current_parent.first.nil?
+          path << current_parent.first.props[:resource]
+          current_parent = current_parent.in(:collection)
+        end
+
+        path.reverse
+      end
+
       def name
         @resource.name
       end

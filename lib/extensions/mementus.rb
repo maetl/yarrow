@@ -21,4 +21,11 @@ module Mementus
         "nodes_count=#{nodes_count} edges_count=#{edges_count}>"
     end
   end
+
+  class Node
+    def merge_props(data)
+      next_props = props.merge(data)
+      @props = next_props.freeze
+    end
+  end
 end
