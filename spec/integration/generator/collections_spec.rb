@@ -8,8 +8,8 @@ describe "collections" do
     generator.process do |manifest|
       expect(manifest).to be_a(Yarrow::Web::Manifest)
       expect(manifest).to collect_documents_with(:url, [
-        "/", "/articles", "/articles/title", "/photos", "/photos/melonslapcat",
-        "/posts", "/posts/one", "/posts/two",  "/posts/three"
+        "/", "/articles/", "/articles/title", "/photos/", "/photos/melonslapcat",
+        "/posts/", "/posts/one", "/posts/two",  "/posts/three"
       ])
     end
   end

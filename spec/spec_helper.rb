@@ -17,6 +17,10 @@ module TestContentGraph
       @name = meta[:name]
       @title = meta[:title]
     end
+
+    def merge(other)
+      self
+    end
   end
 
   class Page

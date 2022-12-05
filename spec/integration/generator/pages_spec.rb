@@ -10,8 +10,8 @@ describe "doctest" do
 
       expect(manifest).to be_a(Yarrow::Web::Manifest)
       expect(manifest).to collect_documents_with(:type, [:page, :pages])
-      expect(manifest).to collect_documents_with(:name, ["about", "index", "children", "one", "two"])
-      expect(manifest).to collect_documents_with(:url, ["/", "/about", "/children", "/children/one", "/children/two"])
+      expect(manifest).to collect_documents_with(:name, ["about", "pages", "children", "one", "two"])
+      expect(manifest).to collect_documents_with(:url, ["/", "/about", "/children/", "/children/one", "/children/two"])
       expect(manifest)
     end
   end

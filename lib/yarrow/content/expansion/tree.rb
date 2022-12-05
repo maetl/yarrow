@@ -57,6 +57,7 @@ module Yarrow
               end
             elsif node.label == :file
               body, meta = process_content(node.props[:entry])
+              meta = {} if !meta
 
               # TODO: document mapping convention for index pages and collection metadata
               # TODO: underscore _index pattern?
