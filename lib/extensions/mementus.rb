@@ -6,6 +6,22 @@ module Mementus
       # Monkeypatch extension to ensure each pipeline step supports enumerable
       # methods. Mostly used for #map. API needs to be fixed in the gem itself.
       include Enumerable
+
+      def to
+        Step.new(map { |edge| edge.to }, Pipe.new(graph), graph)
+      end
+
+      def props
+        Step.new(map { |node| node.props }, Pipe.new(graph), graph)
+      end
+
+      # def props
+      #   node_props = source.inject([]) do |result, node|
+      #     result.concat(node.props)
+      #   end
+
+      #   Step.new(node_props, Pipe.new(graph), graph)
+      # end
     end
   end
   module Structure

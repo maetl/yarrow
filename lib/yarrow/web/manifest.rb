@@ -50,15 +50,15 @@ module Yarrow
       end
 
       def self.collection_context(collection)
-        Document.new(collection, collection.in(:collection).first, true)
+        IndexDocument.new(collection, nil, true)
       end
 
       def self.collection_index_context(collection, item)
-        Document.new(item, collection.in(:collection).first, false)
+        IndexDocument.new(collection, item, false)
       end
 
       def self.item_context(item)
-        Document.new(item, item.in(:collection).first, false)
+        Document.new(item, false)
       end
     end
   end
