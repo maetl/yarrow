@@ -17,6 +17,10 @@ module Yarrow
         def self.respond_to_all(t, m)
           new("#{t} does not implement #{m}")
         end
+
+        def self.union_member(t, s)
+          new("#{t} is not a member of union")
+        end
       end
 
       class TypeClass
@@ -29,6 +33,10 @@ module Yarrow
         def initialize(unit_type=nil)
           @unit = unit_type
           @accepts = {}
+        end
+
+        def |(rhs_opt)
+          Union.new(self, rhs_opt)
         end
 
         def accept(type, constructor=:new, options=nil)
@@ -199,6 +207,39 @@ module Yarrow
           end
 
           [keys, values].transpose.to_h
+        end
+      end
+
+      class Union < TypeClass
+        def self.of(*unit_opts)
+          instances = unit_opts.map { |unit| Instance.of(unit) }
+          new(*instances)
+        end
+
+        def initialize(*type_opts)
+          @options = type_opts
+          super()
+        end
+
+        def |(rhs_opt)
+          @options << rhs_opt
+        end
+
+        def check(input)
+          failed_checks = []
+          @options.each do |opt|
+            begin
+              opt.check(input)
+            rescue CastError => err
+              failed_checks << err
+            end
+          end
+
+          if failed_checks.size == @options.size
+            raise CastError.union_member(input.class, @options.map { |opt| opt.class })
+          end
+
+          input
         end
       end
     end

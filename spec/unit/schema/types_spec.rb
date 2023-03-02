@@ -263,4 +263,43 @@ describe Yarrow::Schema::Types do
       )
     end
   end
+
+  describe Yarrow::Schema::Types::Union do
+    specify "instance of membership in union of two types" do
+      union_type = Yarrow::Schema::Types::Union.of(String, Integer)
+
+      expect(union_type.cast("a1234")).to eq("a1234")
+      expect(union_type.cast(1234)).to eq(1234)
+
+      expect{ union_type.cast(:a1234) }.to raise_error(
+        Yarrow::Schema::Types::CastError,
+        "Symbol is not a member of union"
+      )
+    end
+
+    specify "instance of membership in union of three types" do
+      union_type = Yarrow::Schema::Types::Union.of(String, Integer, Symbol)
+
+      expect(union_type.cast("a1234")).to eq("a1234")
+      expect(union_type.cast(1234)).to eq(1234)
+      expect(union_type.cast(:a1234)).to eq(:a1234)
+
+      expect{ union_type.cast(nil) }.to raise_error(
+        Yarrow::Schema::Types::CastError,
+        "NilClass is not a member of union"
+      )
+    end
+
+    specify "declare union type using operator overloading" do
+      union_type = Yarrow::Schema::Types::Instance.of(String) | Yarrow::Schema::Types::Instance.of(Integer)
+
+      expect(union_type.cast("a1234")).to eq("a1234")
+      expect(union_type.cast(1234)).to eq(1234)
+
+      expect{ union_type.cast(:a1234) }.to raise_error(
+        Yarrow::Schema::Types::CastError,
+        "Symbol is not a member of union"
+      )
+    end
+  end
 end
