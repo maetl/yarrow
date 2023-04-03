@@ -17,6 +17,8 @@ describe Yarrow::Content::Graph do
       )
       model.expand(content.graph)
 
+      File.write("pages.dot", content.graph.to_dot)
+
       expect(
         Set.new(content.graph.nodes.map { |n| n.label })
       ).to eq(Set.new([:root, :collection, :item, :file, :directory]))

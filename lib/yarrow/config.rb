@@ -43,9 +43,19 @@ module Yarrow
     # Yarrow::Schema.define do
     #   type :config_source_map, Yarrow::Schema::Types::Instance.of(Hash).accept(Symbol)
     # end
+    # class PolicySpec < Yarrow::Schema::Entity[:__config_policy_spec]
+    #   attribute :module, :string
+    #   attribute :source_map, :__config_source_map
+    # end
+
+    # Yarrow::Schema::Definitions.register(
+    #   :__config_source_map,
+    #   Yarrow::Schema::Types::Map.of(Symbol)
+    # )
 
     class Content < Yarrow::Schema::Entity[:__config_content]
       attribute :module, :string
+      #attribute :source_map, :__config_source_map
       attribute :source_map, :hash
     end
 

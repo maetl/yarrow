@@ -22,8 +22,8 @@ module Yarrow
         # Otherwise scan through all the props and fill in any gaps
         else
           # Use explicit container name if provided
-          container = if policy_props.key?(:container)
-            policy_props[:container]
+          collection = if policy_props.key?(:collection)
+            policy_props[:collection]
           else
             # If an entity name is provided use its plural for the container name
             if policy_props.key?(:entity)
@@ -37,8 +37,8 @@ module Yarrow
           entity = if policy_props.key?(:entity)
             policy_props[:entity]
           else
-            if policy_props.key?(:container)
-              Yarrow::Symbols.to_singular(policy_props[:container])
+            if policy_props.key?(:collection)
+              Yarrow::Symbols.to_singular(policy_props[:collection])
             else
               Yarrow::Symbols.to_singular(policy_label)
             end
@@ -62,14 +62,14 @@ module Yarrow
           match_path = DEFAULT_MATCH_PATH
 
           # Construct the new policy
-          new(container, entity, expansion, extensions, match_path, module_prefix)
+          new(collection, entity, expansion, extensions, match_path, module_prefix)
         end
       end
 
-      attr_reader :container, :entity, :expansion, :extensions, :match_path, :module_prefix
+      attr_reader :collection, :entity, :expansion, :extensions, :match_path, :module_prefix
 
-      def initialize(container, entity, expansion, extensions, match_path, module_prefix)
-        @container = container
+      def initialize(collection, entity, expansion, extensions, match_path, module_prefix)
+        @collection = collection
         @entity = entity
         @expansion = expansion
         @extensions = extensions
@@ -77,12 +77,16 @@ module Yarrow
         @module_prefix = module_prefix.split(MODULE_SEPARATOR)
       end
 
-      def container_const
-        @container_const ||= Yarrow::Symbols.to_module_const([*module_prefix, container])
+      def collection_const
+        begin
+          @collection_const ||= Yarrow::Symbols.to_module_const([*module_prefix, collection])
+        rescue NameError
+          raise NameError, "cannot map undefined entity `#{collection}`"
+        end
       end
 
-      alias_method :collection, :container
-      alias_method :collection_const, :container_const
+      #alias_method :container, :collection
+      #alias_method :container_const, :collection_const
 
       def entity_const
         @entity_const ||= Yarrow::Symbols.to_module_const([*module_prefix, entity])

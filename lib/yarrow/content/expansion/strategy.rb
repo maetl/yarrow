@@ -37,6 +37,7 @@ module Yarrow
         def populate_collection(node, policy, meta_attrs)
           node.label = :collection
           node.props[:type] = policy.collection
+          p policy.collection_const
           node.props[:resource] = policy.collection_const.new(meta_attrs)
         end
 

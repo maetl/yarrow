@@ -9,8 +9,7 @@ describe "yarrow content model" do
 
     model = Yarrow::Content::Model.new(content)
     policy = model.policy_for(:blog)
-
-    expect(policy.container).to eq(:blog)
+    expect(policy.collection).to eq(:blog)
     expect(policy.entity).to eq(:post)
     expect(policy.expansion).to eq(:tree)
     expect(policy.match_path).to eq(".")
@@ -21,7 +20,7 @@ describe "yarrow content model" do
       module: "Test::Content",
       source_map: {
         root: {
-          container: :gallery,
+          collection: :gallery,
           entity: :photo,
           expansion: :custom_strategy,
           match_path: "archive/photos"
@@ -32,7 +31,7 @@ describe "yarrow content model" do
     model = Yarrow::Content::Model.new(content)
     policy = model.policy_for(:root)
 
-    expect(policy.container).to eq(:gallery)
+    expect(policy.collection).to eq(:gallery)
     expect(policy.entity).to eq(:photo)
     expect(policy.expansion).to eq(:custom_strategy)
     #expect(policy.match_path).to eq("archive/photos")

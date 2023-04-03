@@ -36,6 +36,28 @@ module Mementus
       "<Mementus::Graph @structure=#{@structure.inspect} " +
         "nodes_count=#{nodes_count} edges_count=#{edges_count}>"
     end
+
+    def to_dot
+      statements = []
+
+      nodes.each do |node|
+        label = if node.props.key?(:type)
+          "#{node.label}: #{node.props[:type]}"
+        elsif node.props.key?(:name)
+          "#{node.label}: #{node.props[:name]}"
+        else
+          node.label
+        end
+
+        statements << "#{node.id} [label=\"#{label}\"]"
+      end
+
+      edges.each do |edge|
+        statements << "#{edge.from.id} -> #{edge.to.id} [label=\"#{edge.label}\"];"
+      end
+
+      "digraph {\n#{statements.join("\n")}\n}"
+    end
   end
 
   class Node
