@@ -34,15 +34,13 @@ module TestContentGraph
   end
 end
 
-def load_config_fixture(input_dir)
+def load_config_fixture(input_dir, source_map={pages: :page})
   Yarrow::Config::Instance.new(
     source_dir: Pathname.new("#{__dir__}/fixtures/sources/#{input_dir}"),
     output_dir: Pathname.new("#{__dir__}/fixtures/sources/output_dir"),
     content: Yarrow::Config::Content.new({
       module: "TestContentGraph",
-      source_map: {
-        pages: :page
-      }
+      source_map: source_map
     }),
     output: Yarrow::Config::Output.new({
       generator: "web",

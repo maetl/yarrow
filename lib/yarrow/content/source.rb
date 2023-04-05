@@ -15,6 +15,7 @@ module Yarrow
             dir.label = :directory
             dir.props = {
               name: root_dir_entry.basename.to_s,
+              basename: root_dir_entry.basename.to_s,
               path: root_dir_entry.to_s,
               entry: root_dir_entry
             }
@@ -30,6 +31,7 @@ module Yarrow
             root_dir_entry.to_s => root_dir.id
           }
 
+          # TODO: merge entry and path props
           Pathname.glob("#{input_dir}/**/**").each do |entry|
             if entry.directory?
               content_node = create_node do |dir|
@@ -40,6 +42,7 @@ module Yarrow
                 # dir.props[:entry] = entry
                 dir.props = {
                   name: entry.basename.to_s,
+                  basename: entry.basename.to_s,
                   path: entry.to_s,
                   entry: entry
                 }
@@ -56,6 +59,7 @@ module Yarrow
 
                 file.props = {
                   name: entry.basename.to_s,
+                  basename: entry.basename.sub_ext('').to_s,
                   ext: entry.extname.to_s,
                   path: entry.to_s,
                   entry: entry

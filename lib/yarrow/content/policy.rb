@@ -21,7 +21,7 @@ module Yarrow
 
         # Otherwise scan through all the props and fill in any gaps
         else
-          # Use explicit container name if provided
+          # Use explicit collection name if provided
           collection = if policy_props.key?(:collection)
             policy_props[:collection]
           else
@@ -31,6 +31,13 @@ module Yarrow
             else
               Yarrow::Symbols.to_plural(policy_label)
             end
+          end
+
+          # Use explicit container name if provided
+          container = if policy_props.key?(:container)
+            policy_props[:container]
+          else
+            collection
           end
 
           # Use explicit entity name if provided
@@ -58,23 +65,33 @@ module Yarrow
             DEFAULT_EXTENSIONS
           end
 
-          # TODO: handle this in expansion strategies
-          match_path = DEFAULT_MATCH_PATH
+          # If match path is provided, treat it as a basename
+          match_path = if policy_props.key?(:match_path)
+            policy_props[:match_path]
+          else
+            DEFAULT_MATCH_PATH
+          end
 
           # Construct the new policy
-          new(collection, entity, expansion, extensions, match_path, module_prefix)
+          new(container, collection, entity, expansion, extensions, match_path, module_prefix)
         end
       end
 
-      attr_reader :collection, :entity, :expansion, :extensions, :match_path, :module_prefix
+      attr_reader :container, :collection, :entity, :expansion, :extensions, :match_path, :match_strategy, :module_prefix
 
-      def initialize(collection, entity, expansion, extensions, match_path, module_prefix)
+      def initialize(container, collection, entity, expansion, extensions, match_path, module_prefix)
+        @container = container
         @collection = collection
         @entity = entity
         @expansion = expansion
         @extensions = extensions
         @match_path = match_path
+        @match_strategy = :filename_map
         @module_prefix = module_prefix.split(MODULE_SEPARATOR)
+      end
+
+      def container_const
+        @container_const ||= Yarrow::Symbols.to_module_const([*module_prefix, container])
       end
 
       def collection_const
@@ -85,11 +102,15 @@ module Yarrow
         end
       end
 
-      #alias_method :container, :collection
-      #alias_method :container_const, :collection_const
-
       def entity_const
         @entity_const ||= Yarrow::Symbols.to_module_const([*module_prefix, entity])
+      end
+
+      def expansion_strategy
+        case match_strategy
+        when :tree then Expansion::Tree
+        when :filename_map then Expansion::FilenameMap
+        end
       end
     end
   end

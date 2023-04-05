@@ -10,12 +10,12 @@ module Yarrow
 
           # If the collection is tagged :index_only then skip adding individual documents
           unless collection.props[:index_only]
-            collection.out(:item).each do |item|
+            collection.out(:entity).each do |entity|
               #if item[:entity].status.to_sym == :published
-              if item.props[:resource].name == "index"
-                index = item
+              if entity.props[:resource].name == "index"
+                index = entity
               else
-                manifest.add_document(item_context(item))
+                manifest.add_document(entity_context(entity))
               end
               #end
             end
@@ -53,12 +53,12 @@ module Yarrow
         IndexDocument.new(collection, nil, true)
       end
 
-      def self.collection_index_context(collection, item)
-        IndexDocument.new(collection, item, false)
+      def self.collection_index_context(collection, entity)
+        IndexDocument.new(collection, entity, false)
       end
 
-      def self.item_context(item)
-        Document.new(item, false)
+      def self.entity_context(entity)
+        Document.new(entity, false)
       end
     end
   end

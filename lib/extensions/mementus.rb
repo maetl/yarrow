@@ -7,6 +7,13 @@ module Mementus
       # methods. Mostly used for #map. API needs to be fixed in the gem itself.
       include Enumerable
 
+      def traverse_by(traversal)
+        case traversal
+        when :tree then depth_first
+        when :list then nodes
+        end
+      end
+
       def to
         Step.new(map { |edge| edge.to }, Pipe.new(graph), graph)
       end

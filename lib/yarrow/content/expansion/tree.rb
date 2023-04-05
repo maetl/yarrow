@@ -7,11 +7,11 @@ module Yarrow
           # content dir instead of scanning from a subfolder matching the name of
           # the collection.
           #start_node = if policy.match_path == "."
-          start_node = if true
+          start_node = if policy.match_path == "."
             # TODO: match against source_dir
             graph.n(:root).out(:directory)
           else
-            graph.n(:root).out(name: policy.container.to_s)
+            graph.n(name: policy.match_path)
           end
 
           # Collect all nested collections in the subgraph for this content type
@@ -45,30 +45,11 @@ module Yarrow
           end
         end
 
-        def expand_directory(policy, node)
-          # Create a collection node representing a collection of documents
-          index = graph.create_node do |collection_node|
+        def expand_file_by_basename(policy, node)
+          body, meta = process_content(node.props[:entry])
+          meta = {} if !meta
 
-            collection_attrs = {
-              name: node.props[:name],
-              title: node.props[:name].capitalize,
-              body: ""
-            }
 
-            populate_collection(collection_node, policy, collection_attrs)
-          end
-
-          # Add this collection id to the lookup table for edge construction
-          @subcollections[node.props[:path]] = index
-
-          # Join the collection to its parent
-          unless node.props[:slug] == policy.collection.to_s || !@subcollections.key?(node.props[:entry].parent.to_s)
-            graph.create_edge do |edge|
-              edge.label = :child
-              edge.from = @subcollections[node.props[:entry].parent.to_s].id
-              edge.to = index.id
-            end
-          end
         end
 
         def expand_file_by_extension(policy, node)
