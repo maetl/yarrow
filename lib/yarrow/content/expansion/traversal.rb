@@ -1,7 +1,7 @@
 module Yarrow
   module Content
     module Expansion
-      class Visitor
+      class Aggregator
         attr_reader :graph
 
         def initialize(graph)
@@ -9,15 +9,20 @@ module Yarrow
           @collections = {}
         end
 
-        def before_traversal; end
+        def before_traversal
+        end
 
-        def expand_container; end
+        def expand_container
+        end
 
-        def expand_collection; end
+        def expand_collection
+        end
 
-        def expand_entity; end
+        def expand_entity
+        end
 
-        def after_traversal; end
+        def after_traversal
+        end
 
         private
 
@@ -51,13 +56,19 @@ module Yarrow
           # Create an entity node with attached resource model
           entity = graph.create_node do |entity_node|
             attributes = {
-              name: source_node.props[:name],
-              title: source_node.props[:name].capitalize,
+              name: source_node.props[:basename],
+              title: source_node.props[:basename].capitalize,
               body: ""
             }
             entity_node.label = :entity
             entity_node.props[:type] = type
             entity_node.props[:resource] = entity_const.new(attributes)
+          end
+
+          graph.create_edge do |edge|
+            edge.label = :source
+            edge.from = entity.id
+            edge.to = source_node.id
           end
 
           if @collections.key?(parent_collection)
@@ -70,7 +81,7 @@ module Yarrow
         end
       end
 
-      class DirectFileMapping
+      class DirectFileMapping < Aggregator
         def expand_container(container, policy)
           puts "create_node label=:collection type=:#{policy.container} name='#{container.props[:basename]}'"
           @current_collection = container.props[:basename]
@@ -90,7 +101,8 @@ module Yarrow
         end
       end
 
-      class DirectoryAsBundle < Visitor
+      # 
+      class DirectoryAsBundle < Aggregator
         def before_traversal(policy)
           @bundles = {}
           @current_collection = nil
@@ -120,7 +132,7 @@ module Yarrow
         end
       end
 
-      class BasenameFileBundle
+      class BasenameFileBundle < Aggregator
         def before_traversal(policy)
           @bundles = {}
           @container_collection = nil
@@ -160,12 +172,12 @@ module Yarrow
       end
 
       class Traversal
-        attr_reader :graph, :policy
+        attr_reader :graph, :policy, :aggregator
 
         def initialize(graph, policy)
           @graph = graph
           @policy = policy
-          @observer = DirectoryAsBundle.new(graph)
+          @aggregator = DirectoryAsBundle.new(graph)
         end
 
         # If match path represents entire content dir, then include the entire
@@ -180,26 +192,26 @@ module Yarrow
         end
 
         def on_root_visited(root_node)
-          @observer.expand_container(root_node, policy)
+          aggregator.expand_container(root_node, policy)
         end
 
         def on_directory_visited(dir_node)
           # TODO: match on potential directory extension/filter
-          @observer.expand_collection(dir_node, policy)
+          aggregator.expand_collection(dir_node, policy)
         end
 
         def on_file_visited(file_node)
           # TODO: dispatch underscore prefix or index files separately
           # TODO: match on file extension
-          @observer.expand_entity(file_node, policy)
+          aggregator.expand_entity(file_node, policy)
         end
 
         def on_traversal_initiated
-          @observer.before_traversal(policy)
+          aggregator.before_traversal(policy)
         end
 
         def on_traversal_completed
-          @observer.after_traversal(policy)
+          aggregator.after_traversal(policy)
         end
 
         def expand

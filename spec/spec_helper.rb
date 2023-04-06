@@ -49,6 +49,21 @@ def load_config_fixture(input_dir, source_map={pages: :page})
   )
 end
 
+def load_example_fixture(input_dir, module_prefix, source_map)
+  Yarrow::Config::Instance.new(
+    source_dir: Pathname.new("#{__dir__}/fixtures/sources/#{input_dir}"),
+    output_dir: Pathname.new("#{__dir__}/fixtures/sources/output_dir"),
+    content: Yarrow::Config::Content.new({
+      module: module_prefix,
+      source_map: source_map
+    }),
+    output: Yarrow::Config::Output.new({
+      generator: "web",
+      template_dir: "templates"
+    })
+  )
+end
+
 def fixture_path(item_path)
   File.dirname(__FILE__) + "/fixtures/#{item_path}"
 end
