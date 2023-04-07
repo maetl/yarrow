@@ -1,14 +1,23 @@
 require "spec_helper"
 
 describe Yarrow::Content::Policy do
-  describe "shorthand with symbol" do
-    it "assigns defaults when minimal data provided" do
+  describe "configuration shorthand" do
+    it "defines entity from symbol value" do
       policy = Yarrow::Content::Policy.from_spec(:blog, :post)
 
       expect(policy.container).to eq(:blog)
       expect(policy.collection).to eq(:blog)
       expect(policy.entity).to eq(:post)
       expect(policy.source_path).to eq("blog")
+    end
+
+    it "defines source from string value" do
+      policy = Yarrow::Content::Policy.from_spec(:posts, "archive")
+
+      expect(policy.container).to eq(:posts)
+      expect(policy.collection).to eq(:posts)
+      expect(policy.entity).to eq(:post)
+      expect(policy.source_path).to eq("archive")
     end
   end
 

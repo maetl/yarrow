@@ -24,7 +24,6 @@ module Yarrow
     provides Web::Manifest
 
     def step(content)
-      File.write("_test.dot", content.graph.to_dot)
       Web::Manifest.build(content.graph)
     end
   end

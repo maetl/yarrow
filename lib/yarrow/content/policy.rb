@@ -13,7 +13,7 @@ module Yarrow
       def self.from_spec(policy_label, policy_props, module_prefix="")
         # TODO: validate length, structure etc
 
-        # If the spec holds a symbol value then treat it as a container => entity mapping
+        # If the spec holds a symbol value then treat it as an entity mapping
         if policy_props.is_a?(Symbol)
           new(
             policy_label,
@@ -25,10 +25,17 @@ module Yarrow
             module_prefix
           )
 
-          #new(container, collection, entity, expansion, extensions, source_path, module_prefix)
-
+        # If the spec holds a string value then treat it as a source path mapping
         elsif policy_props.is_a?(String)
-          raise "String unsupported until match_path and source_path stuff is resolved"
+          new(
+            policy_label,
+            policy_label,
+            Yarrow::Symbols.to_singular(policy_label),
+            DEFAULT_EXPANSION,
+            DEFAULT_EXTENSIONS,
+            policy_props,
+            module_prefix
+          )
 
         # Otherwise scan through the spec and fill in any gaps
         else

@@ -49,7 +49,7 @@ module Mementus
 
       nodes.each do |node|
         label = if node.props.key?(:type)
-          "#{node.label}: #{node.props[:type]}"
+          "#{node.label}: #{node.props[:type]}:#{node.props[:resource].name}"
         elsif node.props.key?(:name)
           "#{node.label}: #{node.props[:name]}"
         else

@@ -3,6 +3,7 @@ module Yarrow
     class Manifest
       def self.build(graph)
         manifest = new
+        manifest.set_graph(graph)
 
         graph.n(:collection).each do |collection|
           # TODO: raise error if both content_only and index_only are set
@@ -34,11 +35,16 @@ module Yarrow
         manifest
       end
 
-      attr_reader :documents, :assets
+      attr_reader :documents, :assets, :graph
 
       def initialize
         @documents = []
         @assets = []
+      end
+
+      # Used for dot debugging
+      def set_graph(graph)
+        @graph = graph
       end
 
       def add_document(document)

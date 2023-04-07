@@ -4,17 +4,18 @@ module Yarrow
       class FilenameMap < Aggregator
         def expand_container(container, policy)
           create_collection(container, policy.container, policy.container_const)
-          @current_collection = container.props[:basename]
+          @current_collection = container.props[:path]
         end
 
         def expand_collection(collection, policy)
           create_collection(collection, policy.collection, policy.collection_const)
-          @current_collection = collection.props[:basename]
+          @current_collection = collection.props[:path]
         end
 
         def expand_entity(entity, policy)
           if policy.match_by_extension(entity.props[:ext])
-            create_entity(entity, @current_collection, policy.entity, policy.entity_const)
+            parent_path = entity.incoming(:directory).first.props[:path]
+            create_entity(entity, parent_path, policy.entity, policy.entity_const)
           end
         end
       end

@@ -52,7 +52,7 @@ module Yarrow
           end
         end
 
-        def create_entity(source_node, parent_collection, type, entity_const)
+        def create_entity(source_node, parent_path, type, entity_const)
           # Create an entity node with attached resource model
           entity = graph.create_node do |entity_node|
             attributes = {
@@ -71,13 +71,16 @@ module Yarrow
             edge.to = source_node.id
           end
 
-          if @collections.key?(parent_collection)
+          if @collections.key?(parent_path)
             graph.create_edge do |edge|
               edge.label = :child
-              edge.from = @collections[parent_collection].id
+              edge.from = @collections[parent_path].id
               edge.to = entity.id
             end
           end
+        end
+
+        def connect_entity(entity, collection)
         end
       end
     end

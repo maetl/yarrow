@@ -8,7 +8,7 @@ Currently only website projects are supported, so the organisation is slightly s
 
 The source map is made up of a set of expansion policies, listed in the configuration as key-value pairs.
 
-### Configuration Shorthand
+### Shorthand Format
 
 The configuration format supports a shorthand for declaring policies based on defaults without needing to provide a specification with every single attribute filled in.
 
@@ -18,7 +18,7 @@ The simplest possible config shorthand assumes that the policy label is a plural
 
 If the spec value is a symbol, this is interpreted as a singular reference to the entity type that gets attached to the parent collection for each matched content object. In this case, the policy label is overloaded to match the source directory root.
 
-```
+```yaml
 content:
   source_map:
     pages: :page
@@ -34,7 +34,7 @@ This source map will be interpreted as:
 
 If the spec value is a string, this is interpreted as matching the source directory root for the traversal with the policy label referring to the collection type only and the entity type being a singular conversion of the plural policy label.
 
-```
+```yaml
 content:
   source_map:
     pages: "about"
@@ -48,11 +48,11 @@ This source map will be interpreted as:
 - Expand a `Notes` collection of `Note` objects from the source directory `./archive`
 - Expand a `Photos` collection of `Photo` objects from the source directory `./gallery`
 
-### Granular Configuration
+### Attribute Precedence
 
 The shorthand format offers limited possibilities for customisation, so in many situations it’s best to provide a more detailed policy spec. All attributes specified directly take precedence over shorthand conventions and defaults.
 
-```
+```yaml
 content:
   source_map:
     site:
@@ -72,11 +72,68 @@ This will be interpreted as:
 - Expand a `Blog` collection of `Post` objects from the source directory `./archive`
 - Expand a `Photos` collection of `Photo` objects from the source directory `./gallery`
 
+### Default Spec
+
+```yaml
+content:
+  source_map:
+    site:
+      container: :pages
+      collection: :pages
+      entity: :page
+      source_path: "."
+
+```
+
 ## Expansion Strategies
 
 Each policy specified in the source map triggers a traversal of the source content graph using an event-driven pattern to report each relevant file and directory to an aggregator component which expands these into collections and entity resources.
 
 Changing the aggregator enables a variety of different structures of nested directories and files to be expanded into a well-organised content model, providing a more flexible and creative foundation for publishing and editorial design than the rigid conventions of most other static-site generators.
+
+### Filename Map
+
+```yml
+aggregator: :filename_map
+```
+
+Expands nested directories and files with a simple 1:1 mapping to collections and files. Each matching filename becomes a single item of content.
+
+#### Example
+
+Source:
+
+```
+🖿 content
+└──🖿 pages
+   ├──🗎page1.md
+   ├──🗎page2.md
+   ├──🗎page3.md
+   └──🖿 children
+      ├──🗎page4.md
+      └──🗎page5.md
+```
+
+Policy:
+
+```
+content:
+  source_map:
+    pages:
+      aggregator: :filename_map
+```
+
+Expansion:
+
+```mermaid
+graph TD;
+  pages((Pages: pages))-->page1(Page: page1);
+  pages-->page2(Page: page2);
+  pages-->page3(Page: page3);
+  pages-->children((Pages: children));
+  children-->page4(Page: page4);
+  children-->page5(Page: page5);
+```
 
 ### Directory Merge
 
@@ -121,7 +178,7 @@ Expansion:
 
 ```mermaid
 graph TD;
-  essays((Essays))-->concept1(Essay: concept-1);
+  essays((Essays: essays))-->concept1(Essay: concept-1);
   concept1-->image1(Asset: image1.png);
   concept1-->image2(Asset: image2.png);
   concept1-->image3(Asset: image3.jpg);
