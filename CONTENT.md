@@ -6,7 +6,7 @@ The source map specifies how content is expanded into addressable resources that
 
 Currently only website projects are supported, so the organisation is slightly skewed towards URL-centric representations (this can be tidied up in future in order to represent e-books and print publications).
 
-The source map is made up of a set of expansion policies, listed in the configuration as of key-value pairs. The keys are identifier labels for the policy and the values are the specification of the policy.
+The source map is made up of a set of expansion policies, listed in the configuration as key-value pairs.
 
 ### Configuration Shorthand
 
@@ -118,6 +118,16 @@ content:
 ```
 
 Expansion:
+
+```mermaid
+graph TD
+  Essays --> Concept1(Essay: "concept-1")
+  Concept1 --> Asset1(Asset: "image1.png")
+  Concept1 --> Asset2(Asset: "image2.svg")
+  Concept1 --> Asset3(Asset: "image3.jpg")
+  Concept1 --> Asset4(Asset: "data.json")
+  Concept1 --> Asset5(Asset: "loop.mp3")
+```
 
 ```
 🗀 essays
