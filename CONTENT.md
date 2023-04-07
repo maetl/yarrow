@@ -95,7 +95,7 @@ Source:
 ```
 🖿 content
 └──🖿 essays
-   └──🖿 concept-1
+   └──🖿 concept1
       ├──🗎concept-1.md
       ├──🖻image1.png
       ├──🖻image2.svg
@@ -121,15 +121,12 @@ Expansion:
 
 ```mermaid
 graph TD;
-    A-->B;
-    A-->C;
-    B-->D;
-    C-->D;
-```
-
-```mermaid
-graph TD;
-  Essays-->Concept1;
+  essays((Essays))-->concept1(Essay: concept-1);
+  concept1-->image1(Asset: image1.png);
+  concept1-->image2(Asset: image2.png);
+  concept1-->image3(Asset: image3.jpg);
+  concept1-->data(Asset: data.json);
+  concept1-->loop(Asset: loop.mp3);
 ```
 
 ```
