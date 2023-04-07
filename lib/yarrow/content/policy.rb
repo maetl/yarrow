@@ -5,7 +5,7 @@ module Yarrow
 
       DEFAULT_EXTENSIONS = [".md", ".yml", ".htm"]
 
-      DEFAULT_MATCH_PATH = "."
+      DEFAULT_SOURCE_PATH = "."
 
       MODULE_SEPARATOR = "::"
 
@@ -15,14 +15,22 @@ module Yarrow
 
         # If the spec holds a symbol value then treat it as a container => entity mapping
         if policy_props.is_a?(Symbol)
-          new(policy_label, policy_label, policy_props, DEFAULT_EXPANSION, DEFAULT_EXTENSIONS, DEFAULT_MATCH_PATH, module_prefix)
+          new(
+            policy_label,
+            policy_label,
+            policy_props,
+            DEFAULT_EXPANSION,
+            DEFAULT_EXTENSIONS,
+            policy_label.to_s,
+            module_prefix
+          )
 
-          #new(container, collection, entity, expansion, extensions, match_path, module_prefix)
+          #new(container, collection, entity, expansion, extensions, source_path, module_prefix)
 
         elsif policy_props.is_a?(String)
           raise "String unsupported until match_path and source_path stuff is resolved"
 
-        # Otherwise scan through all the props and fill in any gaps
+        # Otherwise scan through the spec and fill in any gaps
         else
           # Use explicit collection name if provided
           collection = if policy_props.key?(:collection)
@@ -69,26 +77,34 @@ module Yarrow
           end
 
           # If match path is provided, treat it as a basename
-          match_path = if policy_props.key?(:match_path)
-            policy_props[:match_path]
+          source_path = if policy_props.key?(:source_path)
+            policy_props[:source_path]
           else
-            DEFAULT_MATCH_PATH
+            DEFAULT_SOURCE_PATH
           end
 
           # Construct the new policy
-          new(container, collection, entity, expansion, extensions, match_path, module_prefix)
+          new(
+            container,
+            collection,
+            entity,
+            expansion,
+            extensions,
+            source_path,
+            module_prefix
+          )
         end
       end
 
-      attr_reader :container, :collection, :entity, :expansion, :extensions, :match_path, :module_prefix
+      attr_reader :container, :collection, :entity, :expansion, :extensions, :source_path, :module_prefix
 
-      def initialize(container, collection, entity, expansion, extensions, match_path, module_prefix)
+      def initialize(container, collection, entity, expansion, extensions, source_path, module_prefix)
         @container = container
         @collection = collection
         @entity = entity
         @expansion = expansion
         @extensions = extensions
-        @match_path = match_path
+        @source_path = source_path
         @module_prefix = module_prefix.split(MODULE_SEPARATOR)
       end
 
@@ -113,7 +129,7 @@ module Yarrow
         when :filename_map then Expansion::FilenameMap
         when :directory_merge then Expansion::DirectoryMerge
         else
-          raise "No match strategy exists for :#{match_strategy}"
+          raise "No match strategy exists for :#{expansion}"
         end
       end
 

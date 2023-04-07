@@ -32,7 +32,7 @@ describe "fixtures/sources/essays" do
     config = load_example_fixture("essays", "Sources::EssaysSpec", {
       essays: {
         expansion: :directory_merge,
-        match_path: "."
+        source_path: "."
       }
     })
     generator = Yarrow::Generator.new(config)
@@ -49,7 +49,7 @@ describe "fixtures/sources/essays" do
     config = load_example_fixture("", "Sources::EssaysSpec", {
       essays: {
         expansion: :directory_merge,
-        match_path: "essays"
+        source_path: "essays"
       }
     })
     generator = Yarrow::Generator.new(config)

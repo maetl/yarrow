@@ -10,14 +10,14 @@ module Yarrow
           @aggregator = policy.aggregator_const.new(graph)
         end
 
-        # If match path represents entire content dir, then include the entire
+        # If source path represents entire content dir, then include the entire
         # content dir instead of scanning from a subfolder matching the name of
         # the collection.
-        def start_node
-          if policy.match_path == "."
+        def source_node
+          if policy.source_path == "."
             graph.n(:root).out(:directory)
           else
-            graph.n(name: policy.match_path)
+            graph.n(name: policy.source_path)
           end
         end
 
@@ -47,7 +47,7 @@ module Yarrow
         def expand
           on_traversal_initiated
 
-          traversal = start_node.depth_first.each
+          traversal = source_node.depth_first.each
           
           on_root_visited(traversal.next)
 

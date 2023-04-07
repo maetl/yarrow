@@ -1,11 +1,15 @@
 require "spec_helper"
 
 describe Yarrow::Content::Policy do
-  it "assigns defaults when minimal data provided" do
-    policy = Yarrow::Content::Policy.from_spec(:blog, :post)
+  describe "shorthand with symbol" do
+    it "assigns defaults when minimal data provided" do
+      policy = Yarrow::Content::Policy.from_spec(:blog, :post)
 
-    expect(policy.collection).to eq(:blog)
-    expect(policy.entity).to eq(:post)
+      expect(policy.container).to eq(:blog)
+      expect(policy.collection).to eq(:blog)
+      expect(policy.entity).to eq(:post)
+      expect(policy.source_path).to eq("blog")
+    end
   end
 
   it "can be configured with a container name" do

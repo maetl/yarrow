@@ -112,7 +112,7 @@ content:
     essays:
       collection: :essays
       aggregator: :directory_merge
-      match_source: "essays"
+      source_path: "essays"
       match_entities: [.md]
       match_assets: [.png, .jpg, .svg, .json, .mp3]
 ```
@@ -127,16 +127,6 @@ graph TD;
   concept1-->image3(Asset: image3.jpg);
   concept1-->data(Asset: data.json);
   concept1-->loop(Asset: loop.mp3);
-```
-
-```
-🗀 essays
-└──🗋 essay "concept-1"
-   ├──🗅 asset "image1.png"
-   ├──🗅 asset "image2.svg"
-   ├──🗅 asset "image3.jpg"
-   ├──🗅 asset "data.json"
-   └──🗅 asset "loop.mp3"
 ```
 
 ### Directory

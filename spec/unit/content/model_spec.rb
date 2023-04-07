@@ -12,7 +12,7 @@ describe "yarrow content model" do
     expect(policy.collection).to eq(:blog)
     expect(policy.entity).to eq(:post)
     expect(policy.expansion).to eq(:filename_map)
-    expect(policy.match_path).to eq(".")
+    expect(policy.source_path).to eq("blog")
   end
 
   it "loads a policy from explicit config" do
