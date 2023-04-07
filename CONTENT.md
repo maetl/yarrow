@@ -120,13 +120,13 @@ content:
 Expansion:
 
 ```mermaid
-graph TD
-  Essays --> Concept1(Essay: "concept-1")
-  Concept1 --> Asset1(Asset: "image1.png")
-  Concept1 --> Asset2(Asset: "image2.svg")
-  Concept1 --> Asset3(Asset: "image3.jpg")
-  Concept1 --> Asset4(Asset: "data.json")
-  Concept1 --> Asset5(Asset: "loop.mp3")
+graph TD;
+  Essays --> Concept1(Essay: "concept-1");
+  Concept1 --> Asset1(Asset: "image1.png");
+  Concept1 --> Asset2(Asset: "image2.svg");
+  Concept1 --> Asset3(Asset: "image3.jpg");
+  Concept1 --> Asset4(Asset: "data.json");
+  Concept1 --> Asset5(Asset: "loop.mp3");
 ```
 
 ```
