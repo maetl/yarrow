@@ -121,6 +121,14 @@ Expansion:
 
 ```mermaid
 graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
+
+```mermaid
+graph TD;
   Essays --> Concept1(Essay: "concept-1");
   Concept1 --> Asset1(Asset: "image1.png");
   Concept1 --> Asset2(Asset: "image2.svg");
