@@ -129,7 +129,7 @@ graph TD;
 
 ```mermaid
 graph TD;
-  Essays-->Concept1(Essay: "concept-1");
+  Essays-->Concept1;
 ```
 
 ```
