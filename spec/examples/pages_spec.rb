@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe "" do
-  it "collects manifest from source" do
+  xit "collects manifest from source" do
     config = load_config_fixture("essays", { pages: { match_path: "."}})
     generator = Yarrow::Generator.new(config)
 

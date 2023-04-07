@@ -1,9 +1,7 @@
 module Yarrow
   module Content
     class Policy
-      DEFAULT_HOME_NESTING = false
-
-      DEFAULT_EXPANSION = :tree
+      DEFAULT_EXPANSION = :filename_map
 
       DEFAULT_EXTENSIONS = [".md", ".yml", ".htm"]
 
@@ -17,7 +15,12 @@ module Yarrow
 
         # If the spec holds a symbol value then treat it as a container => entity mapping
         if policy_props.is_a?(Symbol)
-          new(policy_label, policy_props, DEFAULT_EXPANSION, DEFAULT_EXTENSIONS, DEFAULT_MATCH_PATH, module_prefix)
+          new(policy_label, policy_label, policy_props, DEFAULT_EXPANSION, DEFAULT_EXTENSIONS, DEFAULT_MATCH_PATH, module_prefix)
+
+          #new(container, collection, entity, expansion, extensions, match_path, module_prefix)
+
+        elsif policy_props.is_a?(String)
+          raise "String unsupported until match_path and source_path stuff is resolved"
 
         # Otherwise scan through all the props and fill in any gaps
         else
@@ -77,7 +80,7 @@ module Yarrow
         end
       end
 
-      attr_reader :container, :collection, :entity, :expansion, :extensions, :match_path, :match_strategy, :module_prefix
+      attr_reader :container, :collection, :entity, :expansion, :extensions, :match_path, :module_prefix
 
       def initialize(container, collection, entity, expansion, extensions, match_path, module_prefix)
         @container = container
@@ -86,7 +89,6 @@ module Yarrow
         @expansion = expansion
         @extensions = extensions
         @match_path = match_path
-        @match_strategy = :filename_map
         @module_prefix = module_prefix.split(MODULE_SEPARATOR)
       end
 
@@ -106,11 +108,17 @@ module Yarrow
         @entity_const ||= Yarrow::Symbols.to_module_const([*module_prefix, entity])
       end
 
-      def expansion_strategy
-        case match_strategy
-        when :tree then Expansion::Tree
+      def aggregator_const
+        case expansion
         when :filename_map then Expansion::FilenameMap
+        when :directory_merge then Expansion::DirectoryMerge
+        else
+          raise "No match strategy exists for :#{match_strategy}"
         end
+      end
+
+      def match_by_extension(candidate)
+        extensions.include?(candidate)
       end
     end
   end

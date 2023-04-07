@@ -15,8 +15,8 @@ module Yarrow
       def expand(graph)
         @policies.each_value do |policy|
           #strategy = policy.expansion_strategy.new(graph)
-          strategy = Expansion::Traversal.new(graph, policy)
-          strategy.expand
+          traversal = Expansion::Traversal.new(graph, policy)
+          traversal.expand
         end
       end
 

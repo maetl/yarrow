@@ -11,7 +11,7 @@ describe "yarrow content model" do
     policy = model.policy_for(:blog)
     expect(policy.collection).to eq(:blog)
     expect(policy.entity).to eq(:post)
-    expect(policy.expansion).to eq(:tree)
+    expect(policy.expansion).to eq(:filename_map)
     expect(policy.match_path).to eq(".")
   end
 
