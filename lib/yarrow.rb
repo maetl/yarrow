@@ -15,8 +15,7 @@ require "yarrow/schema/dictionary"
 require "yarrow/schema/entity"
 require "yarrow/schema/value"
 require "yarrow/schema/registry"
-require "yarrow/tools/front_matter"
-require "yarrow/tools/content_utils"
+require "yarrow/format"
 require "yarrow/content/graph"
 require "yarrow/content/policy"
 require "yarrow/content/model"
@@ -44,9 +43,4 @@ require "yarrow/process/project_manifest"
 require "yarrow/config"
 require "yarrow/configuration"
 require "yarrow/console_runner"
-
 require "yarrow/generator"
-
-# Dir[File.dirname(__FILE__) + "/yarrow/generators/*.rb"].each do |generator|
-#   require generator
-# end
