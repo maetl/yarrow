@@ -21,45 +21,45 @@ module Yarrow
           end
         end
 
-        def on_root_visited(root_node)
-          aggregator.expand_container(root_node, policy)
+        def visit_source(root_node)
+          aggregator.expand_source(root_node, policy)
         end
 
-        def on_directory_visited(dir_node)
+        def visit_directory(dir_node)
           # TODO: match on potential directory extension/filter
-          aggregator.expand_collection(dir_node, policy)
+          aggregator.expand_directory(dir_node, policy)
         end
 
-        def on_file_visited(file_node)
+        def visit_file(file_node)
           # TODO: dispatch underscore prefix or index files separately
           # TODO: match on file extension
-          aggregator.expand_entity(file_node, policy)
+          aggregator.expand_file(file_node, policy)
         end
 
-        def on_traversal_initiated
+        def start_traversal
           aggregator.before_traversal(policy)
         end
 
-        def on_traversal_completed
+        def complete_traversal
           aggregator.after_traversal(policy)
         end
 
         def expand
-          on_traversal_initiated
+          start_traversal
 
           traversal = source_node.depth_first.each
           
-          on_root_visited(traversal.next)
+          visit_source(traversal.next)
 
           loop do
             node = traversal.next
             case node.label
-            when :directory then on_directory_visited(node)
-            when :file then on_file_visited(node)
+            when :directory then visit_directory(node)
+            when :file then visit_file(node)
             end
           end
 
-          on_traversal_completed
+          complete_traversal
         end
       end
     end

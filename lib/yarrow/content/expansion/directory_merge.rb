@@ -8,16 +8,16 @@ module Yarrow
           @current_entity = nil
         end
 
-        def expand_container(container, policy)
+        def expand_source(container, policy)
           create_collection(container, policy.container, policy.container_const)
           @current_collection = container.props[:path]
         end
 
-        def expand_collection(collection, policy)
+        def expand_directory(collection, policy)
           @current_entity = collection.props[:basename]
         end
 
-        def expand_entity(entity, policy)
+        def expand_file(entity, policy)
           if entity.props[:basename] == @current_entity && entity.props[:ext] == ".md"
             create_entity(entity, @current_collection, policy.entity, policy.entity_const)
           else

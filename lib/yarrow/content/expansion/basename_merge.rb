@@ -9,18 +9,18 @@ module Yarrow
           @entity_collections = {}
         end
       
-        def expand_container(container, policy)
+        def expand_source(container, policy)
           puts "create_node label=:collection type=:#{policy.collection} name='#{container.props[:basename]}'"
           @container_collection = container.props[:basename]
         end
       
-        def expand_collection(collection, policy)
+        def expand_directory(collection, policy)
           if @container_collection == collection.props[:entry].parent.to_s
             puts "create_node label=:collection type=:#{policy.entity} name='#{collection.props[:basename]}' collection='#{@container_collection}'"
           end
         end
       
-        def expand_entity(entity, policy)
+        def expand_file(entity, policy)
           unless @entity_bundles.key?(entity.props[:basename])
             @entity_bundles[entity.props[:basename]] = []
           end

@@ -12,13 +12,13 @@ module Yarrow
         def before_traversal(policy)
         end
 
-        def expand_container(container, policy)
+        def expand_source(container, policy)
         end
 
-        def expand_collection(collection, policy)
+        def expand_directory(collection, policy)
         end
 
-        def expand_entity(entity, policy)
+        def expand_file(entity, policy)
         end
 
         def after_traversal(policy)
