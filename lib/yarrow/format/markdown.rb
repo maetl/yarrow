@@ -1,6 +1,6 @@
 module Yarrow
   module Format
-    class Markdown < ContentType[".md", ".markdown"]
+    class Markdown < ContentType[".md", ".markdown", ".htm"]
       include Methods::FrontMatter
 
       def initialize(source)

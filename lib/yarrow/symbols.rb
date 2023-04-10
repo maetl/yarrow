@@ -30,5 +30,11 @@ module Yarrow
     def self.to_plural(atom)
       Strings::Inflection.pluralize(atom.to_s).to_sym
     end
+
+    # @param [Symbol, String] atom
+    # @return [String]
+    def self.to_text(identifier)
+      identifier.to_s.gsub(/\A[^[:alnum:]]+/, "").gsub(/[\-_]+/, " ").capitalize
+    end
   end
 end

@@ -48,4 +48,18 @@ describe Yarrow::Symbols do
     expect(Yarrow::Symbols.to_singular(:indices)).to eq(:index)
     expect(Yarrow::Symbols.to_singular(:posts)).to eq(:post)
   end
+
+  it "converts symbol identifiers to readable text" do
+    expect(Yarrow::Symbols.to_text(:on_node_visited)).to eq("On node visited")
+    expect(Yarrow::Symbols.to_text(:pages)).to eq("Pages")
+  end
+
+  it "converts string identifiers to readable text" do
+    expect(Yarrow::Symbols.to_text("on-node-visited")).to eq("On node visited")
+    expect(Yarrow::Symbols.to_text("on--node--visited")).to eq("On node visited")
+    expect(Yarrow::Symbols.to_text("on-_-node-_-visited")).to eq("On node visited")
+    expect(Yarrow::Symbols.to_text("_on-button-clicked")).to eq("On button clicked")
+    expect(Yarrow::Symbols.to_text("--on-button-clicked")).to eq("On button clicked")
+    expect(Yarrow::Symbols.to_text("_-_on-button-clicked")).to eq("On button clicked")
+  end
 end

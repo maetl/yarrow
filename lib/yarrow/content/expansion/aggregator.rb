@@ -53,13 +53,16 @@ module Yarrow
         end
 
         def create_entity(source_node, parent_path, type, entity_const)
+          contents = Yarrow::Format.read(source_node.props[:path])
+
           # Create an entity node with attached resource model
           entity = graph.create_node do |entity_node|
             attributes = {
               name: source_node.props[:basename],
-              title: source_node.props[:basename].capitalize,
-              body: ""
-            }
+              title: Yarrow::Symbols.to_text(source_node.props[:basename]),
+              body: contents.document.to_s
+            }.merge(contents.metadata)
+            
             entity_node.label = :entity
             entity_node.props[:type] = type
             entity_node.props[:resource] = entity_const.new(attributes)

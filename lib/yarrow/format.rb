@@ -5,7 +5,7 @@ module Yarrow
 
       def initialize(document, metadata)
         @document = document
-        @metadata = metadata
+        @metadata = metadata || {}
       end
     end
 

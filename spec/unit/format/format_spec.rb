@@ -31,6 +31,12 @@ describe Yarrow::Format do
 
       expect(contents.document).to be_a(Yarrow::Format::Markdown)
     end
+
+    it "can read .htm files" do
+      contents = Yarrow::Format.read(__dir__ + "/fixtures/document.htm")
+
+      expect(contents.document).to be_a(Yarrow::Format::Markdown)
+    end
   end
 
   describe "Yaml#read" do
