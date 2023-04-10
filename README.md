@@ -38,14 +38,14 @@ Roadmap
 
 A rough sketch of the project direction.
 
-| Version | Features |
-|---------|----------|
-| `0.7`   | Content model/object mapping, template/site context |
-| `0.8`   | HTML publishing workflow |
-| `0.9`   | PDF publishing workflow |
-| `0.10`   | Media and video publishing workflow |
-| `0.11`   | Generic command line runner |
-| `1.0`   | Refactoring, performance fixes, lock down API |
+| Version | Features                                        |
+|---------|-------------------------------------------------|
+| `0.9`   | Support standard text formats and linked assets |
+| `0.10`  | Custom Markdown components                      |
+| `0.11`  | Publishing support for S3 and GitHub/Netlify    |
+| `0.12`  | Clean up local web server and watcher           |
+| `0.13`  | Content structure transformations               |
+| `1.0`   | Reintroduce generic command line runner         |
 
 License
 -------
