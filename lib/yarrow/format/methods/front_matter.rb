@@ -14,7 +14,54 @@ module Yarrow
             text = File.read(path, :encoding => 'utf-8')
             extract_yfm(text, symbolize_keys: true)
           end
-  
+
+          def parse_(text)
+            pattern = /\A
+              (?<start>[\-]{3}|[\+]{3}|[;]{3}|[\{]{1})\s*\r?\n
+              (?<meta>.*?)\r?\n?
+              ^(?<stop>[\-]{3}|[\+]{3}|[;]{3}|[\.]{3}|[\}]{1})\s*\r?\n?
+              \r?\n?
+              (?<body>.*)
+            /mx
+
+            result = pattern.match(text)
+
+            return [text, nil] if result.nil?
+
+            start_chr = result[:start].chr
+            stop_chr = result[:stop].chr
+
+            meta = if start_chr == stop_chr
+              case start_chr
+              when "-" then parse_yaml(result[:meta])
+              when "+" then parse_toml(result[:meta])
+              when ";" then parse_json(result[:meta])
+              end
+            else
+              if start_chr == "-" && stop_chr == "."
+                parse_yaml(result[:meta])
+              elsif start_chr == "{" && stop_chr == "}"
+                parse_json(result[:meta])
+              else
+                raise "Unsupported frontmatter delimiters"
+              end
+            end
+
+            [result[:body], meta]
+          end
+
+          def parse_yaml(raw)
+            YAML.load(raw, symbolize_names: true)
+          end
+
+          def parse_toml(raw)
+            parse_yaml(raw)
+          end
+
+          def parse_json(raw)
+            JSON.parse("{#{raw}}", symbolize_names: true)
+          end
+
           def extract_yfm(text, options={})
             pattern = /^(---\s*\n.*?\n?)^(---\s*$\n?)/m
             if text =~ pattern
