@@ -3,45 +3,50 @@ module Yarrow
     module Methods
       # Utility methods for working with text formats containing frontmatter separators.
       module FrontMatter
+        module Syntax
+          YAML = "-"
+          YAML_DOC_END = "."
+          TOML = "+"
+          MM_JSON = ";"
+          JSON_START = "{"
+          JSON_END = "}"
+
+          PATTERN = /\A
+            (?<start>[\-]{3}|[\+]{3}|[;]{3}|[\{]{1})\s*\r?\n
+            (?<meta>.*?)\r?\n?
+            ^(?<stop>[\-]{3}|[\+]{3}|[;]{3}|[\.]{3}|[\}]{1})\s*\r?\n?
+            \r?\n?
+            (?<body>.*)
+          /mx
+        end
+
         module ClassMethods
           def read(path)
             text = File.read(path, :encoding => "utf-8")
-            source, metadata = read_yfm(path)
+            source, metadata = parse(text)
             Yarrow::Format::Contents.new(new(source), metadata)
           end
 
-          def read_yfm(path)
-            text = File.read(path, :encoding => 'utf-8')
-            extract_yfm(text, symbolize_keys: true)
-          end
-
-          def parse_(text)
-            pattern = /\A
-              (?<start>[\-]{3}|[\+]{3}|[;]{3}|[\{]{1})\s*\r?\n
-              (?<meta>.*?)\r?\n?
-              ^(?<stop>[\-]{3}|[\+]{3}|[;]{3}|[\.]{3}|[\}]{1})\s*\r?\n?
-              \r?\n?
-              (?<body>.*)
-            /mx
-
-            result = pattern.match(text)
+          def parse(text)
+            result = Syntax::PATTERN.match(text)
 
             return [text, nil] if result.nil?
 
             start_chr = result[:start].chr
             stop_chr = result[:stop].chr
+            input = result[:meta]
 
             meta = if start_chr == stop_chr
               case start_chr
-              when "-" then parse_yaml(result[:meta])
-              when "+" then parse_toml(result[:meta])
-              when ";" then parse_json(result[:meta])
+              when Syntax::YAML then parse_yaml(input)
+              when Syntax::TOML then parse_toml(input)
+              when Syntax::MM_JSON then parse_json(input)
               end
             else
-              if start_chr == "-" && stop_chr == "."
-                parse_yaml(result[:meta])
-              elsif start_chr == "{" && stop_chr == "}"
-                parse_json(result[:meta])
+              if start_chr == Syntax::YAML && stop_chr == Syntax::YAML_DOC_END
+                parse_yaml(input)
+              elsif start_chr == Syntax::JSON_START && stop_chr == Syntax::JSON_END
+                parse_json(input)
               else
                 raise "Unsupported frontmatter delimiters"
               end
@@ -55,11 +60,16 @@ module Yarrow
           end
 
           def parse_toml(raw)
-            parse_yaml(raw)
+            TOML::Parser.new(raw).parsed
           end
 
           def parse_json(raw)
             JSON.parse("{#{raw}}", symbolize_names: true)
+          end
+
+          def read_yfm(path)
+            text = File.read(path, :encoding => 'utf-8')
+            extract_yfm(text, symbolize_keys: true)
           end
 
           def extract_yfm(text, options={})

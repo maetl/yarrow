@@ -41,37 +41,38 @@ describe Yarrow::Format::Methods::FrontMatter do
     include Yarrow::Format::Methods::FrontMatter::ClassMethods
   
     it "can parse Markdown frontmatter with standard delimiters" do
-      content, meta = parse_("---\ntitle: Hello\n---\n\n# Hello title")
+      content, meta = parse("---\ntitle: Hello\n---\n\n# Hello title")
 
       expect(content).to eq("# Hello title")
     end
 
     it "can parse Markdown frontmatter with yaml eof delimiter" do
-      content, meta = parse_("---\ntitle: Hello\n...\n\n# Hello title")
+      content, meta = parse("---\ntitle: Hello\n...\n\n# Hello title")
 
       expect(content).to eq("# Hello title")
     end
 
     it "can parse TOML frontmatter with Hugo and Middleman delimiters" do
-      content, meta = parse_("+++\ntitle: Hello\n+++\n\n# Hello title")
+      content, meta = parse("+++\ntitle: Hello\n+++\n\n# Hello title")
 
       expect(content).to eq("# Hello title")
+      expect(meta["title"]).to eq("Hello")
     end
 
     it "can parse JSON frontmatter with Middleman delimiters" do
-      content, meta = parse_(";;;\n\"title\": \"Hello\"\n;;;\n\n# Hello title")
+      content, meta = parse(";;;\n\"title\": \"Hello\"\n;;;\n\n# Hello title")
 
       expect(content).to eq("# Hello title")
     end
 
     it "can parse JSON frontmatter with Hugo delimiters" do
-      content, meta = parse_("{\n\"title\": \"Hello\"\n}\n\n# Hello title")
+      content, meta = parse("{\n\"title\": \"Hello\"\n}\n\n# Hello title")
 
       expect(content).to eq("# Hello title")
     end
 
     it "passes through raw content when no delimiters are detected" do
-      content, meta = parse_("# Hello world title\n\nHello intro paragraph.")
+      content, meta = parse("# Hello world title\n\nHello intro paragraph.")
 
       expect(content).to eq("# Hello world title\n\nHello intro paragraph.")
       expect(meta).to be_nil
