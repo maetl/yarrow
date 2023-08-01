@@ -109,7 +109,7 @@ module Yarrow
         @container = container
         @collection = collection
         @entity = entity
-        @expansion = expansion
+        @expansion = expansion.to_sym
         @extensions = extensions
         @source_path = source_path
         @module_prefix = module_prefix.split(MODULE_SEPARATOR)
