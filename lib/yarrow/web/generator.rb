@@ -40,7 +40,8 @@ module Yarrow
           file.puts(content)
         end
 
-        puts "[write] #{path} → #{url}"
+        # If stdout logging
+        #puts "[write] #{path} → #{url}"
       end
 
       def generate_sitemap(manifest)
