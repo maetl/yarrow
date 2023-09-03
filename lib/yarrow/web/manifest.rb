@@ -56,10 +56,18 @@ module Yarrow
       end
 
       def self.collection_context(collection)
+        # TODO: debug log
+        # puts "collection_context"
+        # p collection.props[:resource].title
+        # p collection
         IndexDocument.new(collection, nil, true)
       end
 
       def self.collection_index_context(collection, entity)
+        # TODO: debug log
+        # puts "collection_index_context"
+        # p collection.props[:resource].title
+        # p entity.props[:resource].title
         IndexDocument.new(collection, entity, false)
       end
 
