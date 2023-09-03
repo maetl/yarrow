@@ -10,3 +10,4 @@ bin/scripts
 /www
 /web
 /docs
+_*.md
