@@ -1,4 +1,9 @@
-require 'eventmachine'
+begin
+  require 'eventmachine'
+rescue
+  require 'em/pure_ruby'
+end
+
 require 'em-websocket'
 require 'json'
 

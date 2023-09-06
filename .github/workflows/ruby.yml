@@ -19,7 +19,5 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true
-    - name: Update system gems
-      run: gem update --system
     - name: Run tests
       run: bundle exec rspec
