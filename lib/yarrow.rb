@@ -1,7 +1,7 @@
 require "pathname"
 require "yaml"
 require "kramdown"
-require "toml"
+require "toml-rb"
 require "mustache"
 require "parallel"
 

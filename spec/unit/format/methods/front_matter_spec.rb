@@ -44,25 +44,28 @@ describe Yarrow::Format::Methods::FrontMatter do
       content, meta = parse("---\ntitle: Hello\n---\n\n# Hello title")
 
       expect(content).to eq("# Hello title")
+      expect(meta[:title]).to eq("Hello")
     end
 
     it "can parse Markdown frontmatter with yaml eof delimiter" do
       content, meta = parse("---\ntitle: Hello\n...\n\n# Hello title")
 
       expect(content).to eq("# Hello title")
+      expect(meta[:title]).to eq("Hello")
     end
 
     it "can parse TOML frontmatter with Hugo and Middleman delimiters" do
       content, meta = parse("+++\ntitle = \"Hello\"\n+++\n\n# Hello title")
 
       expect(content).to eq("# Hello title")
-      expect(meta["title"]).to eq("Hello")
+      expect(meta[:title]).to eq("Hello")
     end
 
     it "can parse JSON frontmatter with Middleman delimiters" do
       content, meta = parse(";;;\n\"title\": \"Hello\"\n;;;\n\n# Hello title")
 
       expect(content).to eq("# Hello title")
+      expect(meta[:title]).to eq("Hello")
     end
 
     it "can parse JSON frontmatter with Hugo delimiters" do

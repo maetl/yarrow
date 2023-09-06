@@ -60,7 +60,7 @@ module Yarrow
           end
 
           def parse_toml(raw)
-            TOML::Parser.new(raw).parsed
+            TomlRB.parse(raw, symbolize_keys: true)
           end
 
           def parse_json(raw)

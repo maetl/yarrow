@@ -24,9 +24,9 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'parallel', '~> 1.22.1'
   spec.add_runtime_dependency 'strings-inflection', '~> 0.1'
   spec.add_runtime_dependency 'strings-case', '~> 0.3'
-  spec.add_runtime_dependency 'toml', '~> 0.3.0'
+  spec.add_runtime_dependency 'toml-rb', '~> 2.2.0'
   spec.add_runtime_dependency 'shale', '~> 1.0.0'
-  # https://github.com/joeldrapper/phlex
+  spec.add_runtime_dependency 'phlex', '~> 1.8.1'
   spec.add_runtime_dependency 'kramdown', '~> 2.4.0'
   spec.add_development_dependency 'rake', '~> 13.0'
   spec.add_development_dependency 'rspec', '~> 3.11'
