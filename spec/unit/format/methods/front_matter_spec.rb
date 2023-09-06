@@ -53,7 +53,7 @@ describe Yarrow::Format::Methods::FrontMatter do
     end
 
     it "can parse TOML frontmatter with Hugo and Middleman delimiters" do
-      content, meta = parse("+++\ntitle: Hello\n+++\n\n# Hello title")
+      content, meta = parse("+++\ntitle = \"Hello\"\n+++\n\n# Hello title")
 
       expect(content).to eq("# Hello title")
       expect(meta["title"]).to eq("Hello")
