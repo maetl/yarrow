@@ -105,12 +105,12 @@ describe Yarrow::Schema::Entity do
     expect(pub3.url.scheme).to eq(:http)
   end
 
-  it "registers type definition from class inheritance" do
-    class WidgetPart < Yarrow::Schema::Entity[:widget_part]
+  it "registers type definition automatically from class const" do
+    class WidgetPart < Yarrow::Schema::Entity
       attribute :label, :string
     end
 
-    class WidgetDevice < Yarrow::Schema::Entity[:widget_device]
+    class WidgetDevice < Yarrow::Schema::Entity
       attribute :label, :string
     end
 
@@ -119,11 +119,66 @@ describe Yarrow::Schema::Entity do
       attribute :device, :widget_device
     end
 
-    part = WidgetPart.new(label: "part.1")
-    device = WidgetDevice.new(label: "device.1")
-    widget = Widget.new(part: part, device: device)
+    widget = Widget.new(
+      part: WidgetPart.new(label: "part.1"),
+      device: WidgetDevice.new(label: "device.1")
+    )
 
     expect(widget.part.label).to eq("part.1")
     expect(widget.device.label).to eq("device.1")
+  end
+
+  it "registers type definition manually from defined label" do
+    class XWidgetPart < Yarrow::Schema::Entity[:w_part]
+      attribute :label, :string
+    end
+
+    class XWidgetDevice < Yarrow::Schema::Entity[:w_device]
+      attribute :label, :string
+    end
+
+    class XWidget < Yarrow::Schema::Entity
+      attribute :part, :w_part
+      attribute :device, :w_device
+    end
+
+    widget = XWidget.new(
+      part: XWidgetPart.new(label: "part.1"),
+      device: XWidgetDevice.new(label: "device.1")
+    )
+
+    expect(widget.part.label).to eq("part.1")
+    expect(widget.device.label).to eq("device.1")
+  end
+
+  it "can serialize entities with compound attributes from a hash" do
+    class Address < Yarrow::Schema::Entity
+      attribute :city, :string
+      attribute :street, :string
+      attribute :postcode, :string
+    end
+
+    class Person < Yarrow::Schema::Entity
+      attribute :first_name, :string
+      attribute :last_name, :string
+      attribute :billing_address, :address
+
+      def full_name
+        "#{first_name} #{last_name}" 
+      end
+    end
+
+    person = Person.new({
+      first_name: "Erika",
+      last_name: "Mustermann",
+      billing_address: {
+        city: "Berlin",
+        street: "Wrangelstraße 71",
+        postcode: "10997"
+      }
+    })
+
+    expect(person.full_name).to eq("Erika Mustermann")
+    expect(person.billing_address.city).to eq("Berlin")
   end
 end

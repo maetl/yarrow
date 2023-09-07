@@ -1,6 +1,7 @@
 describe Yarrow::Symbols do
   BlittyBlob = [:bits, :len]
   GliffyFlip = [:gif, :jif]
+  Jittery = Class.new
   module SpliTty; class Blit; Z = :z; end; end
   module One; module Two; module Three; class Four; FOUR = 4; end; end; end; end
 
@@ -32,6 +33,19 @@ describe Yarrow::Symbols do
     gliffy_flip = Yarrow::Symbols.to_const("gliffy FLIP")
     expect(gliffy_flip.first).to eq(:gif)
     expect(gliffy_flip.last).to eq(:jif)
+  end
+
+  it "converts a string constant name to a symbol atom" do
+    expect(Yarrow::Symbols.from_const("AtomicSymbol")).to eq(:atomic_symbol)
+    expect(Yarrow::Symbols.from_const("Pages")).to eq(:pages)
+    expect(Yarrow::Symbols.from_const("Yarrow::Symbols")).to eq(:yarrow_symbols)
+  end
+
+  it "converts a class constant name to a symbol atom" do
+    expect(Yarrow::Symbols.from_const(:BlittyBlob)).to eq(:blitty_blob)
+    expect(Yarrow::Symbols.from_const(Jittery)).to eq(:jittery)
+    expect(Yarrow::Symbols.from_const(Yarrow)).to eq(:yarrow)
+    expect(Yarrow::Symbols.from_const(Yarrow::Symbols)).to eq(:yarrow_symbols)
   end
 
   it "converts singular noun symbols to a plural form" do

@@ -20,11 +20,16 @@ module Yarrow
         end
 
         def inherited(class_name)
+          class_type = Yarrow::Schema::Types::Instance.of(class_name).accept(Hash)
+          
           if @label
-            class_type = Yarrow::Schema::Types::Instance.of(class_name)
-            Yarrow::Schema::Definitions.register(@label, class_type)
+            label = @label
             @label = nil
+          else
+            label = Yarrow::Symbols.from_const(class_name)
           end
+
+          Yarrow::Schema::Definitions.register(label, class_type)
         end
       end
 
@@ -32,14 +37,7 @@ module Yarrow
         converted = dictionary.cast(config)
 
         converted.each_pair do |key, value|
-          # raise "#{key} not a declared attribute" unless dictionary.key?(key)
-          #
-          # defined_type = dictionary[key]
-          #
-          # unless value.is_a?(defined_type)
-          #   raise "#{key} accepts #{defined_type} but #{value.class} given"
-          # end
-
+          # TODO: should we represent this as an attribute set rather than instance vars?
           instance_variable_set("@#{key}", value)
         end
       end
