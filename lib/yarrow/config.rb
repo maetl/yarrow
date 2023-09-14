@@ -53,13 +53,13 @@ module Yarrow
     #   Yarrow::Schema::Types::Map.of(Symbol)
     # )
 
-    class Content < Yarrow::Schema::Entity[:__config_content]
+    class Content < Yarrow::Schema::Entity
       attribute :module, :string
       #attribute :source_map, :__config_source_map
       attribute :source_map, :hash
     end
 
-    class Output < Yarrow::Schema::Entity[:__config_output]
+    class Output < Yarrow::Schema::Entity
       attribute :generator, :string
       attribute :template_dir, :path
       #attribute :scripts, :array
@@ -71,8 +71,8 @@ module Yarrow
       attribute :output_dir, :path
       attribute :meta, :any
       attribute :server, :any
-      attribute :content, :__config_content
-      attribute :output, :__config_output
+      attribute :content, :yarrow_config_content
+      attribute :output, :yarrow_config_output
     end
     #
     # `content_dir` and `output_dir` are placeholders and should be overriden
