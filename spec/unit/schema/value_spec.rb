@@ -63,4 +63,51 @@ describe Yarrow::Schema::Value do
     expect(merged.first).to be :square
     expect(merged.last).to be :triangle
   end
+
+  it "manually registers the value as a defined type" do
+    ColorVal = Yarrow::Schema::Value.new(r: :integer, g: :integer, b: :integer).register(:color_val)
+
+    Div = Yarrow::Schema::Value.new(background_color: :color_val, display: :string)
+
+    flex = Div.new(
+      background_color: ColorVal.new(r: 255, g: 255, b: 255),
+      display: "flex"
+    )
+
+    block = Div.new(
+      background_color: {
+        r: 255,
+        g: 255,
+        b: 255
+      },
+      display: "block"
+    )
+
+    expect(flex.display).to eq("flex")
+    expect(block.display).to eq("block")
+
+    expect(flex.background_color == block.background_color).to be(true)
+    expect(flex.background_color.r).to eq(255)
+    expect(block.background_color.r).to eq(255)
+  end
+
+  it "automatically registers class-declared value as a defined type" do
+    class Channel < Yarrow::Schema::Value.new(mix: :integer); end
+
+    class Stereo < Yarrow::Schema::Value.new(left: :channel, right: :channel)
+      def center
+        Stereo.new(left: { mix: 50 }, right: { mix: 50 })
+      end
+    end
+
+    mixer = Stereo.new(left: { mix: 10 }, right: { mix: 90 })
+
+    expect(mixer.left.mix).to eq(10)
+    expect(mixer.right.mix).to eq(90)
+
+    centered = mixer.center
+
+    expect(centered.left.mix).to eq(50)
+    expect(centered.right.mix).to eq(50)
+  end
 end

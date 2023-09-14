@@ -1,15 +1,20 @@
 module Yarrow
   module Schema
-    # class Structure < Struct
-    #   def self.inherited(subclass)
-    #     unless subclass.name
-    #       puts "CLASS"
-    #       p caller_locations[3]
-    #     else
-    #       p subclass.name.downcase.to_sym
-    #     end
-    #   end
-    # end
+    class ValueType < Struct
+      def self.register(label)
+        class_type = Yarrow::Schema::Types::Instance.of(self).accept(Hash)
+        Yarrow::Schema::Definitions.register(label, class_type)
+        self
+      end
+
+      # Automatically register when struct is defined as a class extension
+      # rather than anonymous struct class.
+      def self.inherited(subclass)
+        if subclass.name
+          self.register(subclass.name.downcase.to_sym)
+        end
+      end
+    end
 
     # Value object (with comparison by value equality). This just chucks back a
     # Ruby struct but wraps the constructor with method advice that handles
@@ -33,12 +38,16 @@ module Yarrow
 
         validator = Dictionary.new(fields_spec)
 
-        struct = Struct.new(*slots_spec, keyword_init: true, &block)
+        struct = ValueType.new(*slots_spec, keyword_init: true, &block)
 
         struct.define_method :initialize do |*args, **kwargs|
           attr_values = if args.any?
             raise ArgumentError.new("cannot mix slots and kwargs") if kwargs.any?
-            Hash[slots.zip(args)]
+            if args.first.instance_of?(Hash) and args.count == 1
+              args.first
+            else
+              Hash[slots.zip(args)]
+            end
           else
             kwargs
           end
