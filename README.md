@@ -29,7 +29,7 @@ gem 'yarrow'
 Status
 ------
 
-Yarrow is an extraction from several existing private documentation projects. This repo is in alpha state, which means that many of the useful features are not yet folded into this codebase.
+Yarrow is an extraction from several existing private documentation projects. ~~This repo is in alpha state, which means that many of the useful features are not yet folded into this codebase.~~ This repo is in flux as it is being used on several live projects, but lacks documentation and a unified command line tool.
 
 Yarrow is being slowly developed as a part-time project to scratch a few itches. New features and bugfixes are pushed straight to `main`, and releases of the Gem are kept more or less in sync with the planned roadmap.
 
@@ -40,12 +40,15 @@ A rough sketch of the project direction.
 
 | Version | Features                                        |
 |---------|-------------------------------------------------|
-| `0.9`   | Support standard text formats and linked assets |
-| `0.10`  | Custom Markdown components                      |
-| `0.11`  | Publishing support for S3 and GitHub/Netlify    |
-| `0.12`  | Clean up local web server and watcher           |
-| `0.13`  | Content structure transformations               |
-| `1.0`   | Reintroduce generic command line runner         |
+| `0.10`  | Filename map expansion strategy                 |
+| `0.11`  | Directory merge expansion strategy              |
+| `0.12`  | Basename merge expansion strategy               |
+| `0.13`  | Resources and Assets vocabulary                 |
+| `0.14`  | Flatten namespaces and clean up modules         |
+| `0.15`  | Web template mapping and markup generators      |
+| `0.16`  | Document custom Markdown components             |
+| `0.17`  | Publishing support for S3 and GitHub/Netlify    |
+| `0.18`  | Clean up local web server and watcher           |
 
 License
 -------
