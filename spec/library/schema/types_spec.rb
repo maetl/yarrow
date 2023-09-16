@@ -216,6 +216,10 @@ describe Yarrow::Schema::Types do
       Yarrow::Schema::Types::List.of(Float)
     end
 
+    let :dynamic_list_type do
+      Yarrow::Schema::Types::List.any
+    end
+
     specify :cast do
       expect(list_type.cast([0.4, 0.3, 0.7])).to eq([0.4, 0.3, 0.7])
 
@@ -223,6 +227,11 @@ describe Yarrow::Schema::Types do
         Yarrow::Schema::Types::CastError,
         "Integer is not an instance of Float"
       )
+    end
+
+    specify :dynamic_cast do
+      expect(dynamic_list_type.cast([0.4, 0.3, 0.7])).to eq([0.4, 0.3, 0.7])
+      expect(dynamic_list_type.cast(["aaa", "bbb"])).to eq(["aaa", "bbb"])
     end
   end
 

@@ -1,6 +1,17 @@
+Yarrow::Schema::Definitions.register(:extension_list, Yarrow::Schema::Types::List.of(String))
+
 module Yarrow
   module Content
-    class Policy
+    class Policy < Yarrow::Schema::Entity
+      # TODO: document meaning and purpose of each attribute
+      attribute :container, :symbol
+      attribute :collection, :symbol
+      attribute :entity, :symbol
+      attribute :expansion, :symbol
+      attribute :extensions, :extension_list
+      attribute :source_path, :string
+      attribute :module_prefix, :string
+
       DEFAULT_EXPANSION = :filename_map
 
       DEFAULT_EXTENSIONS = [".md", ".yml", ".htm"]
@@ -15,26 +26,26 @@ module Yarrow
 
         # If the spec holds a symbol value then treat it as an entity mapping
         if policy_props.is_a?(Symbol)
-          new(
-            policy_label,
-            policy_label,
-            policy_props,
-            DEFAULT_EXPANSION,
-            DEFAULT_EXTENSIONS,
-            policy_label.to_s,
-            module_prefix
-          )
+          new({
+            container: policy_label,
+            collection: policy_label,
+            entity: policy_props,
+            expansion: DEFAULT_EXPANSION,
+            extensions: DEFAULT_EXTENSIONS,
+            source_path: policy_label.to_s,
+            module_prefix: module_prefix
+          })
 
         # If the spec holds a string value then treat it as a source path mapping
         elsif policy_props.is_a?(String)
           new(
-            policy_label,
-            policy_label,
-            Yarrow::Symbols.to_singular(policy_label),
-            DEFAULT_EXPANSION,
-            DEFAULT_EXTENSIONS,
-            policy_props,
-            module_prefix
+            container: policy_label,
+            collection: policy_label,
+            entity: Yarrow::Symbols.to_singular(policy_label),
+            expansion: DEFAULT_EXPANSION,
+            extensions: DEFAULT_EXTENSIONS,
+            source_path: policy_props,
+            module_prefix: module_prefix
           )
 
         # Otherwise scan through the spec and fill in any gaps
@@ -91,44 +102,36 @@ module Yarrow
           end
 
           # Construct the new policy
-          new(
-            container,
-            collection,
-            entity,
-            expansion,
-            extensions,
-            source_path,
-            module_prefix
-          )
+          new({
+            container: container,
+            collection: collection,
+            entity: entity,
+            expansion: expansion,
+            extensions: extensions,
+            source_path: source_path,
+            module_prefix: module_prefix
+          })
         end
       end
 
-      attr_reader :container, :collection, :entity, :expansion, :extensions, :source_path, :module_prefix
-
-      def initialize(container, collection, entity, expansion, extensions, source_path, module_prefix)
-        @container = container
-        @collection = collection
-        @entity = entity
-        @expansion = expansion.to_sym
-        @extensions = extensions
-        @source_path = source_path
-        @module_prefix = module_prefix.split(MODULE_SEPARATOR)
+      def module_prefix_parts
+        module_prefix.split(MODULE_SEPARATOR)
       end
 
       def container_const
-        @container_const ||= Yarrow::Symbols.to_module_const([*module_prefix, container])
+        @container_const ||= Yarrow::Symbols.to_module_const([*module_prefix_parts, container])
       end
 
       def collection_const
         begin
-          @collection_const ||= Yarrow::Symbols.to_module_const([*module_prefix, collection])
+          @collection_const ||= Yarrow::Symbols.to_module_const([*module_prefix_parts, collection])
         rescue NameError
           raise NameError, "cannot map undefined entity `#{collection}`"
         end
       end
 
       def entity_const
-        @entity_const ||= Yarrow::Symbols.to_module_const([*module_prefix, entity])
+        @entity_const ||= Yarrow::Symbols.to_module_const([*module_prefix_parts, entity])
       end
 
       def aggregator_const

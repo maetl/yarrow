@@ -7,7 +7,7 @@ module Yarrow
         symbol: Types::Instance.of(Symbol).accept(String, :to_sym),
         path: Types::Instance.of(Pathname).accept(String),
         any: Types::Any.new,
-        array: Types::List.of(Types::Any),
+        array: Types::List.any,
         hash: Types::Instance.of(Hash),
         markdown: Types::Instance.of(Kramdown::Document).accept(String)
       }

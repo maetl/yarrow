@@ -161,6 +161,10 @@ module Yarrow
       class List < TypeClass
         include CompoundType
 
+        def self.any
+          new(Any.new)
+        end
+
         def self.of(unit_type)
           new(Instance.of(unit_type))
         end
