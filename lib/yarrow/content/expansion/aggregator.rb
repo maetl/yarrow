@@ -36,7 +36,7 @@ module Yarrow
             }
             collection_node.label = :collection
             collection_node.props[:type] = type
-            collection_node.props[:resource] = collection_const.new(attributes)
+            collection_node.props[:collection] = collection_const.new(attributes)
           end
 
           # Add this collection id to the lookup table for edge construction
@@ -52,7 +52,7 @@ module Yarrow
           end
         end
 
-        def create_entity(source_node, parent_path, type, entity_const)
+        def create_resource(source_node, parent_path, type, entity_const)
           contents = Yarrow::Format.read(source_node.props[:path])
 
           # Create an entity node with attached resource model
@@ -63,7 +63,7 @@ module Yarrow
               body: contents.document.to_s
             }.merge(contents.metadata)
             
-            entity_node.label = :entity
+            entity_node.label = :resource
             entity_node.props[:type] = type
             entity_node.props[:resource] = entity_const.new(attributes)
           end

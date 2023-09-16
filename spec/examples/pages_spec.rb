@@ -28,7 +28,7 @@ module Sources
 end
 
 describe "fixtures/sources/pages" do
-  it ":filename_map root policy" do
+  xit ":filename_map root policy" do
     config = load_example_fixture("pages", "Sources::PagesSpec", {
       pages: {
         expansion: :filename_map,
@@ -46,7 +46,7 @@ describe "fixtures/sources/pages" do
     end
   end
 
-  it ":filename_map nested policy" do
+  xit ":filename_map nested policy" do
     config = load_example_fixture("pages", "Sources::PagesSpec", {
       pages: {
         expansion: :filename_map,

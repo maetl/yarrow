@@ -19,7 +19,7 @@ describe Yarrow::Content::Graph do
 
       expect(
         Set.new(content.graph.nodes.map { |n| n.label })
-      ).to eq(Set.new([:root, :collection, :entity, :file, :directory]))
+      ).to eq(Set.new([:root, :collection, :resource, :file, :directory]))
     end
   end
 

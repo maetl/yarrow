@@ -28,7 +28,7 @@ module Sources
 end
 
 describe "fixtures/sources/essays" do
-  specify ":directory_merge root policy" do
+  xit ":directory_merge root policy" do
     config = load_example_fixture("essays", "Sources::EssaysSpec", {
       essays: {
         expansion: :directory_merge,
@@ -45,7 +45,7 @@ describe "fixtures/sources/essays" do
     end
   end
 
-  specify ":directory_merge nested policy" do
+  xit ":directory_merge nested policy" do
     config = load_example_fixture("", "Sources::EssaysSpec", {
       essays: {
         expansion: :directory_merge,

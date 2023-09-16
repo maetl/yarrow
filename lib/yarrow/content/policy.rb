@@ -18,10 +18,12 @@ module Yarrow
 
       DEFAULT_SOURCE_PATH = "."
 
+      DEFAULT_MODULE_PREFIX = ""
+
       MODULE_SEPARATOR = "::"
 
       # Construct a content policy from the given source specification.
-      def self.from_spec(policy_label, policy_props, module_prefix="")
+      def self.from_spec(policy_label, policy_props=DEFAULT_SOURCE_PATH, module_prefix=DEFAULT_MODULE_PREFIX)
         # TODO: validate length, structure etc
 
         # If the spec holds a symbol value then treat it as an entity mapping
@@ -54,7 +56,8 @@ module Yarrow
           collection = if policy_props.key?(:collection)
             policy_props[:collection]
           else
-            # If an entity name is provided use its plural for the container name
+            # If an entity name is provided use its plural for the container name.
+            # Otherwise fall back to a container name or policy label. 
             if policy_props.key?(:entity)
               Yarrow::Symbols.to_plural(policy_props[:entity])
             else
@@ -62,7 +65,7 @@ module Yarrow
             end
           end
 
-          # Use explicit container name if provided
+          # Use explicit container name if provided. Otherwise fall back to the collection name.
           container = if policy_props.key?(:container)
             policy_props[:container]
           else

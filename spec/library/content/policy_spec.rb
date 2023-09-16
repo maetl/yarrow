@@ -2,6 +2,15 @@ require "spec_helper"
 
 describe Yarrow::Content::Policy do
   describe "configuration shorthand" do
+    it "defines default policy from label" do
+      policy = Yarrow::Content::Policy.from_spec(:pages)
+
+      expect(policy.container).to eq(:pages)
+      expect(policy.collection).to eq(:pages)
+      expect(policy.entity).to eq(:page)
+      expect(policy.source_path).to eq(".")
+    end
+
     it "defines entity from symbol value" do
       policy = Yarrow::Content::Policy.from_spec(:blog, :post)
 
@@ -21,9 +30,10 @@ describe Yarrow::Content::Policy do
     end
   end
 
-  it "can be configured with a container name" do
+  it "can be configured with a collection name" do
     policy = Yarrow::Content::Policy.from_spec(:root, { collection: :posts})
 
+    expect(policy.container).to eq(:posts)
     expect(policy.collection).to eq(:posts)
     expect(policy.entity).to eq(:post)
   end
@@ -31,14 +41,40 @@ describe Yarrow::Content::Policy do
   it "can be configured with an entity name" do
     policy = Yarrow::Content::Policy.from_spec(:root, { entity: :post})
 
+    expect(policy.container).to eq(:posts)
     expect(policy.collection).to eq(:posts)
     expect(policy.entity).to eq(:post)
   end
 
-  it "can be configured with container and entity names" do
+  it "can be configured with a container name" do
+    policy = Yarrow::Content::Policy.from_spec(:posts, { container: :feed})
+
+    expect(policy.container).to eq(:feed)
+    expect(policy.collection).to eq(:posts)
+    expect(policy.entity).to eq(:post)
+  end
+
+  it "can be configured with collection and entity names" do
     policy = Yarrow::Content::Policy.from_spec(:root, { collection: :gallery, entity: :photo})
 
+    expect(policy.container).to eq(:gallery)
     expect(policy.collection).to eq(:gallery)
+    expect(policy.entity).to eq(:photo)
+  end
+
+  it "can be configured with container and collection names" do
+    policy = Yarrow::Content::Policy.from_spec(:root, { container: :gallery, collection: :photos})
+
+    expect(policy.container).to eq(:gallery)
+    expect(policy.collection).to eq(:photos)
+    expect(policy.entity).to eq(:photo)
+  end
+
+  it "can be configured with container, collection and entity names" do
+    policy = Yarrow::Content::Policy.from_spec(:root, { container: :gallery, collection: :exhibition, entity: :photo})
+
+    expect(policy.container).to eq(:gallery)
+    expect(policy.collection).to eq(:exhibition)
     expect(policy.entity).to eq(:photo)
   end
 
