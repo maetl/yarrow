@@ -28,6 +28,7 @@ module Yarrow
 
         if missing_attrs.any?
           missing_attrs.each do |name|
+            # TODO: add optional check
             raise "#{missing_attrs} wrong number of attributes" unless @attrs_spec[name].is_a?(Types::Any)
           end
         end

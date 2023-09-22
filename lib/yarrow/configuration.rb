@@ -1,21 +1,11 @@
 module Yarrow
   class Configuration
     class << self
-      # Merges the given configuration or hash-like object with the
-      # registered global configuration.
-      #
-      # @param [Hash, Hashie::Mash, Yarrow::Configuration]
-      #
-      def merge(config)
-        instance.deep_merge!(config)
-      end
-
       # Loads a configuration object from the given YAML file.
       #
       # @param [String] path to YAML file
       #
       # @return [Yarrow::Config]
-      #
       def load(file)
         coerce_config_struct(YAML.load(File.read(file), symbolize_names: true))
       end
@@ -34,12 +24,9 @@ module Yarrow
       # TODO: this should be folded into the schema machinery with type coercions
       def coerce_config_struct(config)
         meta_obj = if config.key?(:meta)
-          Yarrow::Config::Meta.new(
-            title: config[:meta][:title],
-            author: config[:meta][:author]
-          )
+          config[:meta]
         else
-          nil
+          raise "missing :meta key in config"
         end
 
         server_obj = if config.key?(:server)
@@ -49,7 +36,7 @@ module Yarrow
         end
 
         content_obj = if config.key?(:content)
-          Yarrow::Config::Content.new(config[:content])
+          config[:content]
         else
           Yarrow::Config::Content.new({
             module: "",
@@ -60,9 +47,9 @@ module Yarrow
         end
 
         output_obj = if config.key?(:output)
-          Yarrow::Config::Output.new(config[:output])
+          config[:output]
         else
-          Yarrow::Config::Output.new({ generator: "web", template_dir: "templates" })
+          raise "missing :output key in config"
         end
 
         # TODO: messy hack to get rid of Hashie::Mash, this should either be

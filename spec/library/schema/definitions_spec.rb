@@ -54,7 +54,8 @@ describe Yarrow::Schema::Definitions do
 
     expect(type_container.resolve_type(:quaternion)).to be_a(Yarrow::Schema::Types::List)
     expect(type_container.resolve_type(:quaternion).unit).to be_a(Yarrow::Schema::Types::Instance)
-    expect(type_container.resolve_type(:quaternion).unit.unit).to be(Vector3D)
+    expect(type_container.resolve_type(:quaternion).unit.unit).to be(Array)
+    expect(type_container.resolve_type(:quaternion).element_type.unit).to be(Vector3D)
   end
 
   specify :compound_list_with_runtime_template do

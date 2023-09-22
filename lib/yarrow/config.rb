@@ -10,11 +10,11 @@ module Yarrow
     # For larger web publishing projects, this should be moved out into a
     # template context or language/translation files to make it editable
     # for a larger group of people.
-    Meta = Yarrow::Schema::Value.new(
-      :title,
-      :author
+    class Meta < Yarrow::Schema::Entity
+      attribute :title, :string
+      attribute :author, :string
       # :copyright TODO: what other basic details to include?
-    )
+    end
 
     # Dev server config. This is mainly useful if you want to set up a specific
     # chain of Rack middleware and handlers. If you don’t care about default
@@ -52,27 +52,59 @@ module Yarrow
     #   :__config_source_map,
     #   Yarrow::Schema::Types::Map.of(Symbol)
     # )
-
     class Content < Yarrow::Schema::Entity
       attribute :module, :string
       #attribute :source_map, :__config_source_map
       attribute :source_map, :hash
     end
-
-    class Output < Yarrow::Schema::Entity
-      attribute :generator, :string
-      attribute :template_dir, :path
-      #attribute :scripts, :array
+    
+    # Template engine and site generator configuration block
+    class OutputGenerator < Yarrow::Schema::Entity
+      attribute :engine, :string
+      attribute :template_dir, :string
+      attribute :options, :hash
     end
+
+    # Document mapping configuration block
+    class OutputManifest < Yarrow::Schema::Entity
+      attribute :layout, :string
+      attribute :scheme, :string
+    end
+
+    # Define output document map type
+    Yarrow::Schema::Definitions.register(
+      :yarrow_config_output_manifest_spec,
+      Yarrow::Schema::Types::Map.of(Symbol => OutputManifest).accept_elements(Hash)
+    )
+
+    # Manifest reconciliation configuration block
+    class OutputReconcile < Yarrow::Schema::Entity
+      attribute :match, :string
+      attribute :manifest, :yarrow_config_output_manifest_spec
+    end
+
+    # Output configuration block
+    class Output < Yarrow::Schema::Entity
+      attribute :target, :string
+      attribute :generator, :yarrow_config_output_generator
+      attribute :reconcile, :yarrow_config_output_reconcile
+    end
+
+    # Define output schema list type
+    Yarrow::Schema::Definitions.register(
+      :yarrow_config_output_list,
+      Yarrow::Schema::Types::List.of(Output).accept_elements(Hash)
+    )
 
     # Top level root config namespace.
     class Instance < Yarrow::Schema::Entity
       attribute :source_dir, :path
       attribute :output_dir, :path
-      attribute :meta, :any
+      attribute :meta, :yarrow_config_meta
       attribute :server, :any
       attribute :content, :yarrow_config_content
-      attribute :output, :yarrow_config_output
+      attribute :output, :yarrow_config_output_list
+      #attribute :output, :any
     end
     #
     # `content_dir` and `output_dir` are placeholders and should be overriden

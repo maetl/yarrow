@@ -1,5 +1,27 @@
 module Yarrow
   module Web
+    class NewManifest
+      def initialize
+        @documents_index = {}
+        @documents = []
+      end
+
+      attr_reader :documents
+
+      def add_resource(resource)
+        add_document(Document.new(resource, self))
+      end
+
+      def add_document(document)
+        if @documents_index.key?(document.url)
+          raise "#{document.url} already exists in manifest" 
+        end
+
+        @documents << document
+        @documents_index[document.url] = @documents.count - 1
+      end
+    end
+
     class Manifest
       def self.build(graph)
         manifest = new

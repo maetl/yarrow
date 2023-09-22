@@ -46,7 +46,15 @@ module Yarrow
         dictionary.attr_names.reduce({}) do |attr_dict, name|
           value = instance_variable_get("@#{name}")
 
-          attr_dict[name] = if value.respond_to?(:to_h)
+          attr_dict[name] =if value.is_a?(Array)
+            value.map do |entry|
+              if entry.respond_to?(:to_h)
+                entry.to_h
+              else
+                entry
+              end
+            end
+          elsif value.respond_to?(:to_h)
             value.to_h
           else
             value

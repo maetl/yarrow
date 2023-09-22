@@ -3,3 +3,20 @@ content_dir: "./spec/fixtures/sources/doctest"
 output_dir: "./docs"
 meta:
   title: "Doctest"
+  author: "me@example.com"
+output:
+  - target: web
+    generator:
+      engine: mustache
+      template_dir: templates
+      options:
+        error_mode: strict
+    reconcile:
+      match: collection
+      manifest:
+        page:
+          layout: doc
+          scheme: /archive/{name}
+        pages:
+          layout: index
+          scheme: /feed/{name}

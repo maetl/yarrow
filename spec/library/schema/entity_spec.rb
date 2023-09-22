@@ -1,3 +1,5 @@
+require "spec_helper"
+
 describe Yarrow::Schema::Entity do
   class DateType < Yarrow::Schema::Entity
     attribute :year, :integer
@@ -151,7 +153,7 @@ describe Yarrow::Schema::Entity do
     expect(widget.device.label).to eq("device.1")
   end
 
-  it "can serialize entities with compound attributes from a hash" do
+  it "can serialize entities with compound attributes from hash" do
     class Address < Yarrow::Schema::Entity
       attribute :city, :string
       attribute :street, :string
@@ -180,5 +182,39 @@ describe Yarrow::Schema::Entity do
 
     expect(person.full_name).to eq("Erika Mustermann")
     expect(person.billing_address.city).to eq("Berlin")
+  end
+
+  it "can serialize entities with compound attributes from array" do
+    class LineItem < Yarrow::Schema::Entity
+      attribute :sku, :string
+      attribute :qty, :integer
+    end
+
+    Yarrow::Schema::Definitions.register(
+      :line_items,
+      Yarrow::Schema::Types::List.of(LineItem).accept_elements(Hash)
+    )
+
+    class Cart < Yarrow::Schema::Entity
+      attribute :session_id, :string
+      attribute :items, :line_items
+    end
+
+    cart = Cart.new({
+      session_id: "19y34234239472934023jshdf",
+      items: [
+        { sku: "BOOK123", qty: 3 },
+        { sku: "GAME456", qty: 2 }
+      ]
+    })
+
+    expect(cart.session_id).to eq("19y34234239472934023jshdf")
+    expect(cart.items.count).to eq(2)
+    expect(cart.items.first).to be_a(LineItem)
+    expect(cart.items.last).to be_a(LineItem)
+    expect(cart.items.first.sku).to eq("BOOK123")
+    expect(cart.items.first.qty).to eq(3)
+    expect(cart.items.last.sku).to eq("GAME456")
+    expect(cart.items.last.qty).to eq(2)
   end
 end

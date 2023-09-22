@@ -50,6 +50,7 @@ module Yarrow
         end
 
         def should_coerce?(input)
+
           accepts.key?(input.class)
         end
 
@@ -141,43 +142,40 @@ module Yarrow
         end
       end
 
-      module CompoundType
-        def instance(unit_type)
-          @unit = Instance.of(unit_type)
-          self
-        end
-
-        def kind(unit_type)
-          @unit = Kind.of(unit_type)
-          self
-        end
-
-        def interface(*args)
-          @unit = Interface.of(args)
-          self
-        end
-      end
-
       class List < TypeClass
-        include CompoundType
-
         def self.any
-          new(Any.new)
+          # Constraint: must be array instance
+          new(Instance.of(Array), Any.new)
         end
 
-        def self.of(unit_type)
-          new(Instance.of(unit_type))
+        def self.of(wrapped_type)
+          new(Instance.of(Array), Instance.of(wrapped_type))
         end
 
-        def cast(input)
-          input.map do |item|
-            unit.cast(item)
+        attr_reader :element_type
+        alias container_type unit
+
+        def initialize(unit_type, element_type)
+          @element_type = element_type
+          super(unit_type)
+        end
+
+        def accept_elements(accept_type)
+          element_type.accept(accept_type)
+          self
+        end
+
+        def check(input)
+          converted = container_type.cast(input)
+
+          converted.map do |item|
+            element_type.cast(item)
           end
         end
       end
 
       class Map < TypeClass
-        include CompoundType
+        #include CompoundType
 
         def self.of(map_spec)
           if map_spec.is_a?(Hash)
@@ -200,6 +198,11 @@ module Yarrow
         def initialize(key_type, value_type)
           @key_type = key_type
           super(value_type)
+        end
+
+        def accept_elements(accept_type)
+          value_type.accept(accept_type)
+          self
         end
 
         def check(input)

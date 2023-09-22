@@ -41,10 +41,8 @@ describe Yarrow::Server do
               pages: :page
             }
           ),
-          output: Yarrow::Config::Output.new(
-            template_dir: "templates",
-            generator: "web"
-          )
+          output: stub_output_fixture,
+          meta: stub_meta_fixture
         ))
       end
 
@@ -86,10 +84,8 @@ describe Yarrow::Server do
               pages: :page
             }
           ),
-          output: Yarrow::Config::Output.new(
-            template_dir: "templates",
-            generator: "web"
-          )
+          output: stub_output_fixture,
+          meta: stub_meta_fixture
         ))
       end
     end
@@ -129,10 +125,8 @@ describe Yarrow::Server do
               pages: :page
             }
           ),
-          output: Yarrow::Config::Output.new(
-            template_dir: "templates",
-            generator: "web"
-          )
+          output: stub_output_fixture,
+          meta: stub_meta_fixture
         ))
       end
     end
@@ -174,10 +168,8 @@ describe Yarrow::Server do
               pages: :page
             }
           ),
-          output: Yarrow::Config::Output.new(
-            template_dir: "templates",
-            generator: "web"
-          )
+          output: stub_output_fixture,
+          meta: stub_meta_fixture
         ))
       end
     end

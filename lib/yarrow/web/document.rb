@@ -1,5 +1,26 @@
-  module Yarrow
+module Yarrow
   module Web
+    class Document
+      attr_reader :content_node
+
+      def initialize(node, manifest)
+        @content_node = node
+        #manifest.add_document(self)
+        @manifest = manifest
+      end
+
+      def resource
+        content_node.props[:resource]
+      end
+
+      def url
+        @url ||= URL.generate(resource)
+      end
+    end
+  end
+
+  # Deprecated
+  module LegacyWeb
     class BaseDocument
       def resource
         @resource

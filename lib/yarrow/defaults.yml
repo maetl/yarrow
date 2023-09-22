@@ -11,8 +11,21 @@ content:
     pages:
       expansion: tree
 output:
-  generator: web
-  template_dir: templates
+  - target: web
+    generator:
+      engine: __PENDING_LIBRARY_DECISION__
+      template_dir: templates
+      options:
+        error_mode: strict
+    reconcile:
+      match: collection
+      manifest:
+        collection:
+          layout: collection
+          scheme: /{ancestor_path}
+        resource:
+          layout: resource
+          scheme: /{ancestor_path}/{name}
 assets:
   input_dir: assets
   output_dir: public/assets

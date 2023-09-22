@@ -1,3 +1,5 @@
+require "spec_helper"
+
 describe Yarrow::Schema::Types do
   describe Yarrow::Schema::Types::TypeClass do
     specify :unit do
@@ -232,6 +234,11 @@ describe Yarrow::Schema::Types do
     specify :dynamic_cast do
       expect(dynamic_list_type.cast([0.4, 0.3, 0.7])).to eq([0.4, 0.3, 0.7])
       expect(dynamic_list_type.cast(["aaa", "bbb"])).to eq(["aaa", "bbb"])
+    end
+
+    specify :bad_container do
+      expect{ list_type.cast(100) }.to raise_error("Integer is not an instance of Array")
+      expect{ dynamic_list_type.cast("abcd") }.to raise_error("String is not an instance of Array")
     end
   end
 

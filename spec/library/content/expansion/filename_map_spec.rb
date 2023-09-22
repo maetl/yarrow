@@ -95,4 +95,48 @@ describe Yarrow::Content::Expansion::FilenameMap do
       expect(collection_nodes.last[:collection].name).to eq("children")
     end
   end
+
+  
+  describe "sources/notebooks" do
+    let :graph do
+      Yarrow::Content::Source.collect(fixture_path(self.class.description))
+    end
+
+    it "expands nested files with separate container definition" do
+      policy = Yarrow::Content::Policy.from_spec(:root, {
+        container: :content_container,
+        collection: :content_pages
+      })
+      traversal = Yarrow::Content::Expansion::Traversal.new(graph, policy)
+      traversal.expand
+
+      container_node, *collection_nodes = graph.nodes(:collection)
+      expect(container_node[:collection]).to be_a(ContentContainer)
+      expect(container_node[:collection].name).to eq("notebooks")
+      
+      collection_names = collection_nodes.map { |node| node[:collection].name }
+      expect(collection_names.include?("notebook-a")).to be true
+      expect(collection_names.include?("notebook-b")).to be true
+
+      collections = collection_nodes.reduce({}) do |table, node|
+        table[node[:collection].name] = node
+        table
+      end
+
+      expect(collections["notebook-a"][:collection]).to be_a(ContentPages)
+      expect(collections["notebook-b"][:collection]).to be_a(ContentPages)
+
+      notebook_a = collections["notebook-a"].outgoing(:resource)
+      notebook_a_names = notebook_a.map { |node| node[:resource].name }
+      expect(notebook_a_names.count).to eq(2)
+      expect(notebook_a_names.include?("a1")).to be true
+      expect(notebook_a_names.include?("a2")).to be true
+
+      notebook_b = collections["notebook-b"].outgoing(:resource)
+      notebook_b_names = notebook_b.map { |node| node[:resource].name }
+      expect(notebook_b_names.count).to eq(2)
+      expect(notebook_b_names.include?("b1")).to be true
+      expect(notebook_b_names.include?("b2")).to be true
+    end
+  end
 end

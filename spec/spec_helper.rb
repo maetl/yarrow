@@ -34,6 +34,33 @@ module TestContentGraph
   end
 end
 
+def stub_output_fixture
+  [Yarrow::Config::Output.new({
+    target: "web",
+    generator: {
+      engine: "__UNUSED__",
+      template_dir: "unused",
+      options: {}
+    },
+    reconcile: {
+      match: "collection",
+      manifest: {
+        collection: {
+          layout: "unused",
+          scheme: "/unused"
+        }
+      }
+    }
+  })]
+end
+
+def stub_meta_fixture
+  Yarrow::Config::Meta.new(
+    title: "Test Fixture",
+    author: "fixture@example.com"
+  )
+end
+
 def load_config_fixture(input_dir, source_map={pages: :page})
   Yarrow::Config::Instance.new(
     source_dir: Pathname.new("#{__dir__}/fixtures/sources/#{input_dir}"),
@@ -42,10 +69,8 @@ def load_config_fixture(input_dir, source_map={pages: :page})
       module: "TestContentGraph",
       source_map: source_map
     }),
-    output: Yarrow::Config::Output.new({
-      generator: "web",
-      template_dir: "templates"
-    })
+    output: stub_output_fixture,
+    meta: stub_meta_fixture
   )
 end
 
@@ -57,10 +82,8 @@ def load_example_fixture(input_dir, module_prefix, source_map)
       module: module_prefix,
       source_map: source_map
     }),
-    output: Yarrow::Config::Output.new({
-      generator: "web",
-      template_dir: "templates"
-    })
+    output: stub_output_fixture,
+    meta: stub_meta_fixture
   )
 end
 
