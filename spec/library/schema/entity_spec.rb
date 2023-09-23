@@ -107,6 +107,35 @@ describe Yarrow::Schema::Entity do
     expect(pub3.url.scheme).to eq(:http)
   end
 
+  it "converts instances with list attributes to hash" do
+    Yarrow::Schema::Definitions.register(
+      :alphabet,
+      Yarrow::Schema::Types::List.of(Symbol)
+    )
+
+    class SyntaxFragment < Yarrow::Schema::Entity
+      attribute :name, :string
+      attribute :symbols, :alphabet
+      #attribute :expr, :array
+    end
+
+    fragment = SyntaxFragment.new(
+      name: "fragment-1",
+      symbols: [:a, :b, :c, :d]
+      #expr: [[:a, "A"], 100, :b, "tail"]
+    )
+
+    converted = fragment.to_h
+    expect(converted[:name]).to eq("fragment-1")
+    expect(converted[:symbols].first).to eq(:a)
+    expect(converted[:symbols].last).to eq(:d)
+    # TODO: fix interactions with Any type and entity
+    # expect(converted[:expr].first.last).to eq("A")
+    # expect(converted[:expr][1]).to eq(100)
+    # expect(converted[:expr][1]).to eq(:b)
+    # expect(converted[:expr].last).to eq("tail")
+  end
+
   it "registers type definition automatically from class const" do
     class WidgetPart < Yarrow::Schema::Entity
       attribute :label, :string
