@@ -23,7 +23,7 @@ module Yarrow
         @attrs_spec.keys
       end
 
-      def cast(input)
+      def cast(input, context=nil)
         missing_attrs = @attrs_spec.keys.difference(input.keys)
 
         if missing_attrs.any?
@@ -38,7 +38,7 @@ module Yarrow
         raise "attribute #{mismatching_attrs} does not exist" if mismatching_attrs.any?
 
         input.reduce({}) do |converted, (name, value)|
-          converted[name] = @attrs_spec[name].cast(value)
+          converted[name] = @attrs_spec[name].cast(value, context)
           converted
         end
       end

@@ -50,18 +50,40 @@ module Yarrow
         end
 
         def should_coerce?(input)
-
           accepts.key?(input.class)
         end
 
-        def coerce(input)
+        # Coerce input into the defined format based on configured
+        # accept rules.
+        #
+        # Will use the unit type’s constructor by default unless
+        # an alternative factory method and constructor arguments are
+        # provided in the accept rule or passed in via context.
+        #
+        # Most object coercions use the defaults, but the context
+        # and options enable specific customisations, such as passing
+        # in an assigned attribute name or the hash key that the input
+        # is a value of.
+        # 
+        # @param [Object] input
+        # @param [nil, Hash] context
+        #
+        # @return [Object] instance of unit type represented by this wrapper
+        def coerce(input, context=nil)
           constructor, options = accepts[input.class]
 
-          # TODO: should we clone all input so copy is stored rather than ref?
-          if options.nil?
+          context_args = if context.nil?
+            options.clone
+          elsif options.nil?
+            context.clone
+          else
+            options.merge(context)
+          end
+
+          if context_args.nil?
             unit.send(constructor, input)
           else
-            unit.send(constructor, input, options.clone)
+            unit.send(constructor, input, context_args)
           end
         end
 
@@ -89,14 +111,14 @@ module Yarrow
           end
         end
 
-        def cast(input)
-          return coerce(input) if should_coerce?(input)
+        def cast(input, context=nil)
+          return coerce(input, context) if should_coerce?(input)
           check(input)
         end
       end
 
       class Any < TypeClass
-        def cast(input)
+        def cast(input, context=nil)
           input
         end
       end
@@ -200,20 +222,21 @@ module Yarrow
           super(value_type)
         end
 
-        def accept_elements(accept_type)
-          value_type.accept(accept_type)
+        def accept_elements(accept_type, constructor=:new, options=nil)
+          value_type.accept(accept_type, constructor, options)
           self
         end
 
         def check(input)
-          keys = input.keys.map do |key|
-            key_type.cast(key)
-          end
-          values = input.values.map do |value|
-            value_type.cast(value)
+          result = {}
+
+          input.each_pair do |key, value|
+            checked_key = key_type.cast(key)
+            checked_value = value_type.cast(value, { key: checked_key })
+            result[checked_key] = checked_value
           end
 
-          [keys, values].transpose.to_h
+          result
         end
       end
 

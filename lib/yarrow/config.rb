@@ -69,12 +69,39 @@ module Yarrow
     class OutputManifest < Yarrow::Schema::Entity
       attribute :layout, :string
       attribute :scheme, :string
+
+      DEFAULT_URL_SCHEME = "/{ancestors*}"
+
+      def self.from_spec(input, context)
+        attrs = {}
+
+        if input.is_a?(TrueClass)
+          attrs[:layout] = context[:key].to_s
+        elsif input.is_a?(FalseClass)
+          raise "Reconciliation for content type #{context[:key]} cannot be skipped (yet)"
+        elsif input.is_a?(Symbol)
+          attrs[:layout] = input.to_s
+        elsif input.is_a?(String)
+          attrs[:layout] = context[:key].to_s
+          attrs[:scheme] = input
+        elsif input.is_a?(Hash)
+          attrs = input
+        else
+          raise "Invalid data for output manifest: #{input.class}"
+        end
+
+        unless attrs.key?(:scheme)
+          attrs[:scheme] = DEFAULT_URL_SCHEME
+        end
+       
+        new(attrs)
+      end
     end
 
     # Define output document map type
     Yarrow::Schema::Definitions.register(
       :yarrow_config_output_manifest_spec,
-      Yarrow::Schema::Types::Map.of(Symbol => OutputManifest).accept_elements(Hash)
+      Yarrow::Schema::Types::Map.of(Symbol => OutputManifest).accept_elements(Hash).accept_elements(TrueClass, :from_spec)
     )
 
     # Manifest reconciliation configuration block

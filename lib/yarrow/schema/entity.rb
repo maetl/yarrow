@@ -33,7 +33,7 @@ module Yarrow
         end
       end
 
-      def initialize(config)
+      def initialize(config, context=nil)
         converted = dictionary.cast(config)
 
         converted.each_pair do |key, value|
