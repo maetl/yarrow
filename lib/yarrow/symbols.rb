@@ -28,7 +28,7 @@ module Yarrow
         const_obj.name
       else
         const_obj.to_s
-      end
+      end.gsub("::", "") # TODO: module separator behaviour should be confirmed
 
       Strings::Case.underscore(const_lookup).to_sym
     end

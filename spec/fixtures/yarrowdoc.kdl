@@ -1,0 +1,19 @@
+//project_dir "."
+//content_dir "." 
+
+// Container
+// Collection
+// Entry
+
+content {
+  directory "~/Documents/Projects"
+  //module null
+  //module false
+  //module ""
+  module "Project::Model"
+  expansions {
+    file_map container="pages" extensions=".md"
+    file_map container="notebooks" collection="notebook" entry="note"
+    file_map collection="blog" entry="post"
+  }
+}
