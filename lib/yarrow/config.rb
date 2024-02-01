@@ -101,7 +101,11 @@ module Yarrow
     # Define output document map type
     Yarrow::Schema::Definitions.register(
       :yarrow_config_output_manifest_spec,
-      Yarrow::Schema::Types::Map.of(Symbol => OutputManifest).accept_elements(Hash).accept_elements(TrueClass, :from_spec)
+      Yarrow::Schema::Types::Map.of(Symbol => OutputManifest).accept_elements(Hash)
+                                                             .accept_elements(TrueClass, :from_spec)
+                                                             .accept_elements(FalseClass, :from_spec)
+                                                             .accept_elements(Symbol, :from_spec)
+                                                             .accept_elements(String, :from_spec)
     )
 
     # Manifest reconciliation configuration block
