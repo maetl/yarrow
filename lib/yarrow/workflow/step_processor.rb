@@ -1,5 +1,5 @@
 module Yarrow
-  module Process
+  module Workflow
     class StepProcessor
       attr_reader :source
 

@@ -1,6 +1,6 @@
-require_relative "configuration/instance"
-require_relative "configuration/content"
-require_relative "configuration/expansion_policy"
+require "yarrow/configuration/instance"
+require "yarrow/configuration/content"
+require "yarrow/configuration/expansion_policy"
 
 module Yarrow
   module Configuration

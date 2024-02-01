@@ -2,7 +2,7 @@ require 'date'
 
 describe Yarrow::Process do
   specify 'connect compatible pipes' do
-    class Step1 < Yarrow::Process::StepProcessor
+    class Step1 < Yarrow::Workflow::StepProcessor
       accepts DateTime
       provides String
 
@@ -11,7 +11,7 @@ describe Yarrow::Process do
       end
     end
 
-    class Step2 < Yarrow::Process::StepProcessor
+    class Step2 < Yarrow::Workflow::StepProcessor
       accepts String
       provides Hash
 
@@ -25,7 +25,7 @@ describe Yarrow::Process do
       end
     end
 
-    flow = Yarrow::Process::Workflow.new(DateTime.new(2021, 2, 13))
+    flow = Yarrow::Workflow::Pipeline.new(DateTime.new(2021, 2, 13))
     flow.connect(Step1.new)
     flow.connect(Step2.new)
     flow.process do |result|
@@ -36,18 +36,18 @@ describe Yarrow::Process do
   end
 
   describe 'incompatible pipe errors' do
-    class StrToInt < Yarrow::Process::StepProcessor
+    class StrToInt < Yarrow::Workflow::StepProcessor
       accepts String
       provides Integer
     end
 
-    class StrAcceptor < Yarrow::Process::StepProcessor
+    class StrAcceptor < Yarrow::Workflow::StepProcessor
       accepts String
       provides String
     end
 
     it '`StrAcceptor` accepts `String` but was connected to `Integer`' do |spec|
-      flow = Yarrow::Process::Workflow.new("SOURCE")
+      flow = Yarrow::Workflow::Pipeline.new("SOURCE")
       flow.connect(StrToInt.new)
       expect {
         flow.connect(StrAcceptor.new)
@@ -55,7 +55,7 @@ describe Yarrow::Process do
     end
 
     it '`StrToInt` accepts `String` but was connected to `Hash`' do |spec|
-      flow = Yarrow::Process::Workflow.new(Hash.new)
+      flow = Yarrow::Workflow::Pipeline.new(Hash.new)
       expect {
         flow.connect(StrToInt.new)
       }.to raise_error(ArgumentError, spec.description)

@@ -1,6 +1,6 @@
 module Yarrow
-  module Process
-    class Workflow
+  module Workflow
+    class Pipeline
       def initialize(input)
         @input = input
         @processors = []

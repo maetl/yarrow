@@ -1,0 +1,5 @@
+require "yarrow/web/manifest"
+require "yarrow/web/url"
+require "yarrow/web/document"
+require "yarrow/web/generator"
+require "yarrow/web/template"

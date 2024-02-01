@@ -1,51 +1,26 @@
+require "yarrow/workflow/pipeline"
+require "yarrow/workflow/step_processor"
+require "yarrow/process/scan_source"
+require "yarrow/process/expand_model"
+require "yarrow/process/flatten_manifest"
+#require "yarrow/process/build_output"
+
 module Yarrow
-  class ScanSource < Process::StepProcessor
-    accepts Config::Instance
-    provides Content::Graph
-
-    def step(config)
-      Yarrow::Content::Graph.from_source(config)
-    end
-  end
-
-  class ExpandCollections < Process::StepProcessor
-    accepts Content::Graph
-    provides Content::Graph
-
-    def step(content)
-      model = Content::Model.new(content.config.content)
-      model.expand(content.graph)
-      content
-    end
-  end
-
-  class FlattenManifest < Process::StepProcessor
-    accepts Content::Graph
-    provides Web::Manifest
-
-    def step(content)
-      Web::Manifest.build(content.graph)
-    end
-  end
-
-  # class BuildOutput < Process::StepProcessor
-  #   accepts Output::Manifest
-  #   provides Output::Result
-  # end
-
   # Generates documentation from a model.
   class Generator
+    attr_reader :config, :pipeline
+
     def initialize(config)
       @config = config
-      @workflow = Process::Workflow.new(config)
+      @pipeline = Workflow::Pipeline.new(config)
     end
 
     def process(&block)
-      workflow.connect(ScanSource.new)
-      workflow.connect(ExpandCollections.new)
-      workflow.connect(FlattenManifest.new)
+      pipeline.connect(Process::ScanSource.new)
+      pipeline.connect(Process::ExpandModel.new)
+      pipeline.connect(Process::FlattenManifest.new)
 
-      workflow.process do |result|
+      pipeline.process do |result|
         block.call(result)
       end
     end
@@ -57,10 +32,6 @@ module Yarrow
         end
       end
     end
-
-    #private
-
-    attr_reader :config, :workflow
 
     def generators
       [Web::Generator.new(config)]
