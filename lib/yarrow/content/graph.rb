@@ -7,7 +7,7 @@ module Yarrow
       #
       # @return [Yarrow::Content::Graph]
       def self.from_source(config)
-        new(Source.collect(config.source_dir), config)
+        new(Source.collect(config.content.directory), config)
       end
 
       attr_reader :graph, :config

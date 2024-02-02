@@ -2,26 +2,25 @@ module Yarrow
   module Content
     class Model
       def initialize(content_config)
-        @policies = {}
-        content_config.source_map.each_entry do |policy_label, policy_spec|
-          @policies[policy_label] = Policy.from_spec(
-            policy_label,
-            policy_spec,
-            content_config.module
-          )
+        @expansion_policies = content_config.expansions.map do |policy|
+          policy.prepare(content_config)
         end
       end
 
       def expand(graph)
-        @policies.each_value do |policy|
-          #strategy = policy.expansion_strategy.new(graph)
+        @expansion_policies.each do |policy|
           traversal = Expansion::Traversal.new(graph, policy)
           traversal.expand
         end
       end
 
-      def policy_for(policy_label)
-        @policies[policy_label]
+      def aggregator_const(policy)
+        case policy.expansion_strategy
+        when :filename_map then Expansion::FilenameMap
+        when :directory_merge then Expansion::DirectoryMerge
+        else
+          raise "No match strategy exists for :#{expansion}"
+        end
       end
     end
   end

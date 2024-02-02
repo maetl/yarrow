@@ -79,10 +79,10 @@ module Yarrow
 
       def self.collection_context(collection)
         # TODO: debug log
-        # puts "collection_context"
-        # p collection.props[:resource].title
-        # p collection
-        IndexDocument.new(collection, nil, true)
+        puts "collection_context"
+        p collection.props[:collection]
+        #Yarrow::LegacyWeb::IndexDocument.new(collection, nil, true)
+        Document.new(collection, false)
       end
 
       def self.collection_index_context(collection, entity)
@@ -90,7 +90,8 @@ module Yarrow
         # puts "collection_index_context"
         # p collection.props[:resource].title
         # p entity.props[:resource].title
-        IndexDocument.new(collection, entity, false)
+        #Yarrow::LegacyWeb::IndexDocument.new(collection, entity, false)
+        Document.new(entity, false)
       end
 
       def self.entity_context(entity)

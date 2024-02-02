@@ -30,7 +30,7 @@ module Yarrow
         end
 
         # Construct full path to file in output dir
-        path = @config.output_dir.join(url.delete_prefix("/")).sub_ext('.html')
+        path = @config.output.directory.join(url.delete_prefix("/")).sub_ext('.html')
 
         # Create directory path if it doesn’t exist
         FileUtils.mkdir_p(path.dirname)

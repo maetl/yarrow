@@ -8,7 +8,8 @@ module Yarrow
           document.type
         end
 
-        @template_dir = config.output.template_dir
+        @template_dir = "."
+        #@template_dir = config.output.template_dir
         #@template_dir = "./spec/fixtures/templates/doctest"
         @template_ext = ".html"
 

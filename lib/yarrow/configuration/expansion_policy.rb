@@ -4,9 +4,11 @@ module Yarrow
       DEFAULT_CONTAINER = :container
       DEFAULT_COLLECTION = :collection
       DEFAULT_ENTRY = :entry
+      DEFAULT_AGGREGATOR = :filename_map
+      MODULE_SEPARATOR = "::"
 
       def self.defaults
-        new({ container: DEFAULT_CONTAINER, collection: DEFAULT_COLLECTION, entry: DEFAULT_ENTRY })
+        new(DEFAULT_AGGREGATOR, { container: DEFAULT_CONTAINER, collection: DEFAULT_COLLECTION, entry: DEFAULT_ENTRY })
       end
 
       def self.from_node(expansion_node)
@@ -55,20 +57,63 @@ module Yarrow
         end
 
         # Arrange constructor props
-        new({
-          container: container.to_sym,
-          collection: collection.to_sym,
-          entry: entry.to_sym
-        })
+        new(
+          DEFAULT_AGGREGATOR,
+          {
+            container: container.to_sym,
+            collection: collection.to_sym,
+            entry: entry.to_sym
+          }
+        )
       end
 
-      attr_reader :container, :collection, :entry
+      attr_reader :aggregator, :container, :collection, :entry, :extensions
 
-      def initialize(props)
+      def initialize(aggregator, props)
+        @aggregator = aggregator
         @container = props[:container] || DEFAULT_CONTAINER
         @collection = props[:collection] || DEFAULT_COLLECTION
         @entry = props[:entry] || DEFAULT_ENTRY
+        @extensions = [".md"]
       end
+
+      def source_path
+        "."
+      end
+
+      def prepare(content_config)
+        @module_prefix_parts = content_config.module.split(MODULE_SEPARATOR)
+        self
+      end
+
+      def container_const
+        @container_const ||= Yarrow::Symbols.to_module_const([*module_prefix_parts, container])
+      end
+
+      def collection_const
+        @collection_const ||= Yarrow::Symbols.to_module_const([*module_prefix_parts, collection])
+      end
+
+      def entry_const
+        @entry_const ||= Yarrow::Symbols.to_module_const([*module_prefix_parts, entry])
+      end
+
+      def aggregator_const
+        case aggregator
+        when :filename_map then Yarrow::Content::Expansion::FilenameMap
+        when :directory_merge then Yarrow::Content::Expansion::DirectoryMerge
+        else
+          raise "No aggregation strategy exists for :#{aggregator}"
+        end
+      end
+
+      def match_by_extension(candidate)
+        extensions.include?(candidate)
+      end
+
+      private
+
+      attr_reader :module_prefix_parts
     end
   end
 end

@@ -29,7 +29,7 @@ module Yarrow
       attr_reader :directory, :module, :expansions
 
       def initialize(props, expansions)
-        @directory = props[:directory] || DEFAULT_DIRECTORY
+        @directory = Pathname.new(props[:directory] || DEFAULT_DIRECTORY).expand_path
         @module = props[:module] || DEFAULT_MODULE
         @expansions = expansions
       end

@@ -15,7 +15,7 @@ module Yarrow
         def expand_file(entity, policy)
           if policy.match_by_extension(entity.props[:ext])
             parent_path = entity.incoming(:directory).first.props[:path]
-            create_resource(entity, parent_path, policy.entity, policy.entity_const)
+            create_resource(entity, parent_path, policy.entry, policy.entry_const)
           end
         end
       end

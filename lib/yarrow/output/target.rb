@@ -1,6 +1,6 @@
 module Yarrow
   module Output
-    class Build
+    class Target
       attr_reader :graph, :output_config
       
       def initialize(graph, output_config)

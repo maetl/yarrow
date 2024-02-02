@@ -1,6 +1,7 @@
 require "yarrow/configuration/instance"
 require "yarrow/configuration/content"
 require "yarrow/configuration/expansion_policy"
+require "yarrow/configuration/output"
 
 module Yarrow
   module Configuration
