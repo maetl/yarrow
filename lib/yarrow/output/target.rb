@@ -8,6 +8,18 @@ module Yarrow
         @output_config = output_config
       end
 
+      def reconcile_with_entries
+        case output_config.reconcile.match
+        # when "container" then traverse_by_undefined
+        # when "container/entry" then traverse_by_undefined
+        # when "container/collection/entry" then traverse_by_undefined
+        # when "container/collection" then traverse_by_undefined
+        when "collection/entry" then traverse_by_path(:collection, :entry)
+        when "collection" then traverse_by_label(:collection)
+        when "entry" then traverse_by_label(:entry)
+        end
+      end
+
       def reconcile
         case output_config.reconcile.match
         when "collection/resource" then traverse_by_path(:collection, :resource)
