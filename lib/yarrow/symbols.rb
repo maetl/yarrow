@@ -30,7 +30,8 @@ module Yarrow
         const_obj.to_s
       end
 
-      Strings::Case.underscore(const_lookup).to_sym
+      # TODO: Find out if this behaviour changed in Ruby symbol to string or in the Strings::Case library
+      Strings::Case.underscore(const_lookup).gsub('::', '').to_sym
     end
 
     # @param [Symbol, String] atom
