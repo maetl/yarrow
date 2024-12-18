@@ -1,3 +1,4 @@
+# Dependencies
 require "pathname"
 require "yaml"
 require "kramdown"
@@ -6,8 +7,10 @@ require "mustache"
 require "parallel"
 require "addressable/template"
 
+# Gem extensions
 require "extensions/mementus"
 
+# Core library
 require "yarrow/version"
 require "yarrow/symbols"
 require "yarrow/logging"
