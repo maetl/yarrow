@@ -46,7 +46,7 @@ describe Yarrow::Process do
       provides String
     end
 
-    it '`StrAcceptor` accepts `String` but was connected to `Integer`' do |spec|
+    it '`StrAcceptor` accepts `String` but was provided `Integer`' do |spec|
       flow = Yarrow::Process::Workflow.new("SOURCE")
       flow.connect(StrToInt.new)
       expect {
@@ -54,7 +54,7 @@ describe Yarrow::Process do
       }.to raise_error(ArgumentError, spec.description)
     end
 
-    it '`StrToInt` accepts `String` but was connected to `Hash`' do |spec|
+    it '`StrToInt` accepts `String` but was provided `Hash`' do |spec|
       flow = Yarrow::Process::Workflow.new(Hash.new)
       expect {
         flow.connect(StrToInt.new)

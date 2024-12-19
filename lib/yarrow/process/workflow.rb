@@ -17,7 +17,7 @@ module Yarrow
           @processors << processor
         else
           raise ArgumentError.new(
-            "`#{processor.class}` accepts `#{processor.accepts}` but was connected to `#{provided_input}`"
+            "`#{processor.class}` accepts `#{processor.accepts}` but was provided `#{provided_input}`"
           )
         end
       end
