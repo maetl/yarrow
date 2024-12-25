@@ -95,34 +95,34 @@ describe Yarrow::Process do
     end
   end
 
+  class StrToUpper < Yarrow::Process::Task
+    accepts String
+    provides String
+
+    def step(input)
+      input.upcase
+    end
+  end
+
+  class StrDup < Yarrow::Process::Task
+    accepts String
+    provides String
+
+    def step(input)
+      input + input
+    end
+  end
+
+  class StrRev < Yarrow::Process::Task
+    accepts String
+    provides String
+
+    def step(input)
+      input.reverse
+    end
+  end
+
   describe 'split conduits' do
-    class StrToUpper < Yarrow::Process::Task
-      accepts String
-      provides String
-
-      def step(input)
-        input.upcase
-      end
-    end
-
-    class StrDup < Yarrow::Process::Task
-      accepts String
-      provides String
-
-      def step(input)
-        input + input
-      end
-    end
-
-    class StrRev < Yarrow::Process::Task
-      accepts String
-      provides String
-
-      def step(input)
-        input.reverse
-      end
-    end
-
     it 'can split from single pipe' do
       flow = Yarrow::Process::Workflow.new(String)
       flow.connect(StrToUpper.new)
@@ -182,7 +182,7 @@ describe Yarrow::Process do
       end
     end
 
-    it 'connect cannot be used after split' do
+    specify 'connect cannot be used after split' do
       flow = Yarrow::Process::Workflow.new(String)
       flow.connect(StrToUpper.new)
 
@@ -192,6 +192,60 @@ describe Yarrow::Process do
         end
 
         flow2.on_complete do |result2|
+          return
+        end
+      end
+
+      expect {
+        flow.connect(StrToInt.new)
+      }.to raise_error(ArgumentError, 'Cannot connect tasks at this level after workflow is split')
+    end
+  end
+
+  describe 'manifold conduits' do
+    it 'branches into multiple output flows at a manifold' do
+      flow = Yarrow::Process::Workflow.new(String)
+      flow.connect(StrToUpper.new)
+
+      flow.manifold(3) do |flows|
+        flows[0].connect(StrDup.new)
+        flows[0].on_complete do |result|
+          expect(result).to eq('IJKIJK')
+        end
+
+        flows[1].connect(StrRev.new)
+        flows[1].on_complete do |result|
+          expect(result).to eq('KJI')
+        end
+
+        flows[2].connect(StrRev.new)
+        flows[2].connect(StrDup.new)
+        flows[2].on_complete do |result|
+          expect(result).to eq('KJIKJI')
+        end
+      end
+
+      flow.run('ijk')
+    end
+
+    specify 'connect cannot be used after manifold' do
+      flow = Yarrow::Process::Workflow.new(String)
+      flow.connect(StrToUpper.new)
+
+      flow.manifold(4) do |flows|
+        flows[0].on_complete do |result1|
+          return
+        end
+
+        flows[1].on_complete do |result2|
+          return
+        end
+
+        flows[2].on_complete do |result2|
+          return
+        end
+
+        flows[3].on_complete do |result2|
           return
         end
       end

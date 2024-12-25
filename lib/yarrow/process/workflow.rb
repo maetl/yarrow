@@ -52,10 +52,12 @@ module Yarrow
       def manifold(outlet_count, &block)
         conduits = []
         outlet_count.times do
-          conduit = new(provided_input)
+          conduits << self.class.new(provided_input)
         end
 
-        #&block.call(conduits)
+        connect(BranchingTask[provided_input].new(*conduits))
+
+        block.call(conduits)
       end
 
       def tee(&block)
