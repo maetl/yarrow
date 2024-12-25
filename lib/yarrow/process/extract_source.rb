@@ -1,6 +1,6 @@
 module Yarrow
   module Process
-    class ExtractSource < StepProcessor
+    class ExtractSource < Task
       accepts String
       provides String
 

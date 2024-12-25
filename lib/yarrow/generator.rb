@@ -1,5 +1,5 @@
 module Yarrow
-  class ScanSource < Process::StepProcessor
+  class ScanSource < Process::Task
     accepts Config::Instance
     provides Content::Graph
 
@@ -8,7 +8,7 @@ module Yarrow
     end
   end
 
-  class ExpandCollections < Process::StepProcessor
+  class ExpandCollections < Process::Task
     accepts Content::Graph
     provides Content::Graph
 
@@ -19,12 +19,13 @@ module Yarrow
     end
   end
 
-  class FlattenManifest < Process::StepProcessor
+  class FlattenManifest < Process::Task
     accepts Content::Graph
     provides Web::Manifest
 
     def step(content)
-      Web::Manifest.build(content.graph)
+      puts content.config
+      Web::Manifest.build(content)
     end
   end
 
@@ -37,7 +38,7 @@ module Yarrow
   class Generator
     def initialize(config)
       @config = config
-      @workflow = Process::Workflow.new(config)
+      @workflow = Process::Workflow.new(config.class)
     end
 
     def process(&block)
@@ -45,7 +46,16 @@ module Yarrow
       workflow.connect(ExpandCollections.new)
       workflow.connect(FlattenManifest.new)
 
-      workflow.process do |result|
+      workflow.split(outputs.size) do |branched_workflows|
+
+        outputs.each_with_index do |output, index|
+          branched_workflows[index].connect(output.reconcile_step)
+          branched_workflows[index].connect(output.generate_step)
+        end
+
+      end
+
+      workflow.process(@config) do |result|
         block.call(result)
       end
     end
@@ -62,6 +72,13 @@ module Yarrow
 
     attr_reader :config, :workflow
 
+    def output_targets
+      [Web::Generator.new(config)]
+    end
+
+    # pre_process_generators
+    # post_process_generators
+    # output_generators
     def generators
       [Web::Generator.new(config)]
     end

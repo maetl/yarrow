@@ -1,6 +1,6 @@
 module Yarrow
   module Process
-    class ExpandContent < StepProcessor
+    class ExpandContent < Task
       accepts String
       provides String
 

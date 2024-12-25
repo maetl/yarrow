@@ -1,6 +1,6 @@
 module Yarrow
   module Process
-    class StepProcessor
+    class Task
       attr_reader :source
 
       class << self
@@ -12,6 +12,11 @@ module Yarrow
 
         def provides(output_const)
           @provided_output = output_const.to_s
+        end
+
+        def [](generic_type)
+          @accepted_input = generic_type.to_s
+          self
         end
       end
 
@@ -27,6 +32,10 @@ module Yarrow
         self.class.provided_output
       end
 
+      def can_connect?
+        true
+      end
+
       def can_accept?(provided)
         accepts == provided
       end
@@ -37,6 +46,24 @@ module Yarrow
         # log.info("<Result source=#{result}>")
         # rescue
         result
+      end
+    end
+
+    class BranchingTask < Task
+      def initialize(*branches)
+        @branches = branches
+      end
+
+      def can_connect?
+        false
+      end
+
+      def process(source)
+        @branches.each do |conduit|
+          conduit.run(source)
+        end
+
+        nil
       end
     end
   end

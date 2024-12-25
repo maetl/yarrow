@@ -1,6 +1,6 @@
 module Yarrow
   module Process
-    class ProjectManifest < StepProcessor
+    class ProjectManifest < Task
       accepts String
       provides String
 

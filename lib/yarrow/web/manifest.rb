@@ -23,7 +23,16 @@ module Yarrow
     end
 
     class Manifest
-      def self.build(graph)
+      def self.build(content)
+        manifest = new
+        manifest.set_graph(content.graph)
+      
+        p content.config.output
+
+        manifest
+      end
+
+      def self.original_build(graph)
         manifest = new
         manifest.set_graph(graph)
 
