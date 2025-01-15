@@ -1,7 +1,7 @@
 module Yarrow
   module Process
     class Task
-      attr_reader :source
+      #attr_reader :source
 
       class << self
         attr_reader :accepted_input, :provided_output
@@ -14,14 +14,16 @@ module Yarrow
           @provided_output = output_const.to_s
         end
 
-        def [](generic_type)
-          @accepted_input = generic_type.to_s
-          self
+        def [](generic_accept_type, generic_provided_type=nil)
+          Class.new(self) do
+            accepts(generic_accept_type)
+            provides(generic_provided_type)
+          end
         end
       end
 
-      def initialize
-        @source = nil
+      def initialize(*branches)
+        @branches = branches
       end
 
       def accepts
@@ -33,7 +35,7 @@ module Yarrow
       end
 
       def can_connect?
-        true
+        !provides.nil?
       end
 
       def can_accept?(provided)
@@ -41,29 +43,20 @@ module Yarrow
       end
 
       def process(source)
-        # begin
-        result = step(source)
-        # log.info("<Result source=#{result}>")
-        # rescue
-        result
-      end
-    end
+        if @branches.empty?
+          # begin
+          result = step(source)
+          # log.info("<Result source=#{result}>")
+          # rescue
+        else
+          @branches.each do |conduit|
+            conduit.run(source)
+          end
 
-    class BranchingTask < Task
-      def initialize(*branches)
-        @branches = branches
-      end
-
-      def can_connect?
-        false
-      end
-
-      def process(source)
-        @branches.each do |conduit|
-          conduit.run(source)
+          result = provides.empty? ? nil : source
         end
 
-        nil
+        result
       end
     end
   end

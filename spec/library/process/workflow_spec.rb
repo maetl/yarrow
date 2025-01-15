@@ -255,4 +255,49 @@ describe Yarrow::Process do
       }.to raise_error(ArgumentError, 'Cannot connect tasks at this level after workflow is split')
     end
   end
+
+  describe 'tee junction' do
+    it 'branches with a single outlet and rejoins the main conduit' do
+      flow = Yarrow::Process::Workflow.new(String)
+      flow.connect(StrToUpper.new)
+      flow.connect(StrRev.new)
+
+      strcon = Yarrow::Process::Task[String, Symbol]
+
+      i_strcon = strcon.new
+      puts i_strcon.accepts
+      puts i_strcon.provides
+
+      class TestOne < Yarrow::Process::Task
+        accepts Integer
+        provides DateTime
+      end
+
+      i_testone = TestOne.new
+      puts i_testone.accepts
+      puts i_testone.provides
+
+      i_branch = Yarrow::Process::Task[Struct].new
+
+      puts i_branch.accepts
+      puts i_branch.provides
+
+      # flow.tee do |flow1|
+      #   flow1.connect(StrDup.new)
+      #   flow1.on_complete do |result|
+      #     expect(result).to eq('ZYXZYX')
+      #   end
+      # end
+
+      # p flow
+
+      # flow.connect(StrRev.new)
+
+      # flow.on_complete do |result|
+      #   expect(result).to eq("XYZ")
+      # end
+
+      # flow.run('xyz')
+    end
+  end
 end

@@ -2,7 +2,7 @@ module Yarrow
   module Process
     class Workflow
       def initialize(source_type)
-        @processors = []
+        @pipeline = []
         @source_type = source_type.to_s
         @callbacks = {
           complete: nil,
@@ -10,17 +10,17 @@ module Yarrow
         }
       end
 
-      def provided_input
-        if @processors.any?
-          @processors.last.provides
+      def provides_type
+        if @pipeline.any?
+          @pipeline.last.provides
         else
           @source_type
         end
       end
 
       def can_connect?
-        if @processors.any?
-          @processors.last.can_connect?
+        if @pipeline.any?
+          @pipeline.last.can_connect?
         else
           true
         end
@@ -31,20 +31,20 @@ module Yarrow
           raise ArgumentError.new("Cannot connect tasks at this level after workflow is split")
         end
 
-        if processor.can_accept?(provided_input)
-          @processors << processor
+        if processor.can_accept?(provides_type)
+          @pipeline << processor
         else
           raise ArgumentError.new(
-            "`#{processor.class}` accepts `#{processor.accepts}` but was provided `#{provided_input}`"
+            "`#{processor.class}` accepts `#{processor.accepts}` but was provided `#{provides_type}`"
           )
         end
       end
 
       def split(&block)
-        conduit1 = self.class.new(provided_input)
-        conduit2 = self.class.new(provided_input)
+        conduit1 = self.class.new(provides_type)
+        conduit2 = self.class.new(provides_type)
 
-        connect(BranchingTask[provided_input].new(conduit1, conduit2))
+        connect(Task[provides_type].new(conduit1, conduit2))
 
         block.call(conduit1, conduit2)
       end
@@ -52,16 +52,24 @@ module Yarrow
       def manifold(outlet_count, &block)
         conduits = []
         outlet_count.times do
-          conduits << self.class.new(provided_input)
+          conduits << self.class.new(provides_type)
         end
 
-        connect(BranchingTask[provided_input].new(*conduits))
+        connect(Task[provides_type].new(*conduits))
 
         block.call(conduits)
       end
 
       def tee(&block)
+        conduit = self.class.new(provides_type)
 
+        block.call(conduit)
+
+        b = Task[provides_type, provides_type].new(conduit)
+
+        p b
+
+        connect(b)
       end
 
       def on_error(&block)
@@ -79,7 +87,7 @@ module Yarrow
 
         result = source
 
-        @processors.each do |processor|
+        @pipeline.each do |processor|
           result = processor.process(result)
         end
 
