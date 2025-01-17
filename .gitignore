@@ -7,6 +7,7 @@ yarrow-*.gem
 coverage
 bin/scripts
 .DS_Store
+.vscode/
 /www
 /web
 /docs
