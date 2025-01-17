@@ -1,5 +1,62 @@
 module Yarrow
   module Process
+    class Filter
+      attr_reader :accepts, :provides
+    
+      def initialize(accepts_type, provides_type, &block)
+        @accepts = accepts_type
+        @provides = provides_type
+        @post_processor = block
+      end
+    
+      def run(input)
+        @post_processor.call(process(input))
+      end
+    
+      def process(input)
+        input
+      end
+    end
+    
+    class Manifold
+      class << self
+        attr_reader :accepts, :provides
+    
+        def accept(input_const)
+          @accepts = input_const.to_s
+        end
+    
+        def provide(output_const)
+          @provides = output_const.to_s
+        end
+    
+        def [](generic_accept_type, generic_provided_type=nil)
+          Class.new(self) do
+            accept(generic_accept_type)
+            provide(generic_provided_type)
+          end
+        end
+      end
+    
+      def initialize(*pipes)
+        @pipes = pipes
+      end
+    
+      def accepts
+        self.class.accepts
+      end
+    
+      def provides
+        self.class.provides
+      end
+    
+      def run(input)
+        @pipes.each do |pipe|
+          pipe.run(input)
+        end
+      end
+    end
+
     class Task
       #attr_reader :source
 
@@ -23,7 +80,7 @@ module Yarrow
       end
 
       def initialize(*branches)
-        @branches = branches
+        @branches = branches || []
       end
 
       def accepts
@@ -39,11 +96,15 @@ module Yarrow
       end
 
       def can_accept?(provided)
-        accepts == provided
+        accepts == provided.to_s
+      end
+
+      def has_branches?
+        @branches.empty?
       end
 
       def process(source)
-        if @branches.empty?
+        if has_branches?
           # begin
           result = step(source)
           # log.info("<Result source=#{result}>")
