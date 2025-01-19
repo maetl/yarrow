@@ -1,97 +1,84 @@
 module Yarrow
   module Process
-    class Workflow
+    class Pipeline
       def initialize(source_type)
-        @pipeline = []
-        @source_type = source_type.to_s
-        @callbacks = {
-          complete: nil,
-          error: nil
-        }
+        @pipes = []
+        @source_type = source_type.to_s.to_sym
       end
 
-      def provides_type
-        if @pipeline.any?
-          @pipeline.last.provides
+      def current_pipe_provides
+        if @pipes.any?
+          @pipes.last.provides
         else
           @source_type
         end
       end
 
       def can_connect?
-        if @pipeline.any?
-          @pipeline.last.can_connect?
+        if @pipes.any?
+          @pipes.last.can_connect?
         else
           true
         end
       end
 
-      def connect(processor)
+      def connect(pipe)
+        #unless pipe.is_a?()
+        # connect must accept a pipe instance
+
         unless can_connect?
-          raise ArgumentError.new("Cannot connect tasks at this level after workflow is split")
+          raise ArgumentError.new("Cannot connect after split into child pipelines")
         end
 
-        if processor.can_accept?(provides_type)
-          @pipeline << processor
+        if pipe.can_accept?(current_pipe_provides)
+          @pipes << pipe
         else
           raise ArgumentError.new(
-            "`#{processor.class}` accepts `#{processor.accepts}` but was provided `#{provides_type}`"
+            "`#{pipe.class}` accepts `#{pipe.accepts}` but was provided `#{current_pipe_provides}`"
           )
         end
       end
 
+      # Splits the pipeline into two separate child pipelines.
       def split(&block)
-        conduit1 = self.class.new(provides_type)
-        conduit2 = self.class.new(provides_type)
+        first_child = self.class.new(current_pipe_provides)
+        last_child = self.class.new(current_pipe_provides)
 
-        connect(Task[provides_type].new(conduit1, conduit2))
+        connect(Manifold[current_pipe_provides].new(first_child, last_child))
 
-        block.call(conduit1, conduit2)
+        block.call(first_child, last_child)
       end
 
       def manifold(outlet_count, &block)
-        conduits = []
+        pipelines = []
         outlet_count.times do
-          conduits << self.class.new(provides_type)
+          pipelines << self.class.new(current_pipe_provides)
         end
 
-        connect(Task[provides_type].new(*conduits))
+        connect(Manifold[current_pipe_provides].new(*pipelines))
 
-        block.call(conduits)
+        block.call(pipelines)
       end
 
       def tee(&block)
-        conduit = self.class.new(provides_type)
+        pipeline = self.class.new(current_pipe_provides)
 
-        block.call(conduit)
+        connect(Junction[current_pipe_provides, current_pipe_provides].new(pipeline))
 
-        b = Task[provides_type, provides_type].new(conduit)
-
-        p b
-
-        connect(b)
-      end
-
-      def on_error(&block)
-        @callbacks[:error] = block.to_proc
-      end
-
-      def on_complete(&block)
-        @callbacks[:complete] = block.to_proc
+        block.call(pipeline)
       end
 
       def run(source)
-        if source.class.to_s != @source_type
-          raise ArgumentError.new("invalid type passed to workflow.process")
+        buffer = source
+        children = []
+
+        @pipes.each do |pipe|
+          result = pipe.run(buffer)
+          buffer = result.value
+          children.concat(result.children)
         end
 
-        result = source
-
-        @pipeline.each do |processor|
-          result = processor.process(result)
-        end
-
-        @callbacks[:complete].call(result) if @callbacks[:complete]
+        Result.new(buffer, children)
       end
     end
   end

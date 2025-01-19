@@ -2,50 +2,47 @@ require 'spec_helper'
 require 'date'
 
 describe Yarrow::Process do
-  specify 'on_complete callback on empty run' do
-    token = :result
-    flow = Yarrow::Process::Workflow.new(Symbol)
-    flow.on_complete do |result|
-      expect(result).to be(token)
-    end
-
-    flow.run(token)
+  specify 'identity result with no pipes connected' do
+    flow = Yarrow::Process::Pipeline.new(Symbol)
+    
+    result = flow.run(:result)
+    
+    expect(result.value).to eq(:result)
   end
 
-  specify 'on_complete callback on identity filter' do
-    class SymToStr < Yarrow::Process::Task
-      accepts Symbol
-      provides String
+  specify 'filtered result' do
+    class SymToStr < Yarrow::Process::Filter
+      accept Symbol
+      provide String
 
-      def step(result)
-        result.to_s
+      def filter(input)
+        input.to_s
       end
     end
 
-    flow = Yarrow::Process::Workflow.new(Symbol)
+    flow = Yarrow::Process::Pipeline.new(Symbol)
     flow.connect(SymToStr.new)
-    flow.on_complete do |result|
-      expect(result).to eq('result')
-    end
 
-    flow.run(:result)
+    result = flow.run(:result)
+
+    expect(result.value).to eq('result')
   end
 
   specify 'connect filter chain' do
-    class Step1 < Yarrow::Process::Task
-      accepts DateTime
-      provides String
+    class Step1 < Yarrow::Process::Filter
+      accept DateTime
+      provide String
 
-      def step(timestamp)
+      def filter(timestamp)
         timestamp.iso8601
       end
     end
 
-    class Step2 < Yarrow::Process::Task
-      accepts String
-      provides Hash
+    class Step2 < Yarrow::Process::Filter
+      accept String
+      provide Hash
 
-      def step(date)
+      def filter(date)
         _year, _month, _day = date.split("T").first.split("-")
         {
           year: _year,
@@ -55,32 +52,30 @@ describe Yarrow::Process do
       end
     end
 
-    flow = Yarrow::Process::Workflow.new(DateTime)
+    flow = Yarrow::Process::Pipeline.new(DateTime)
     flow.connect(Step1.new)
     flow.connect(Step2.new)
-    
-    flow.on_complete do |result|
-      expect(result[:year]).to eq("2021")
-      expect(result[:month]).to eq("02")
-      expect(result[:day]).to eq("13")
-    end
 
-    flow.run(DateTime.new(2021, 2, 13))
+    result = flow.run(DateTime.new(2021, 2, 13))
+
+    expect(result.value[:year]).to eq("2021")
+    expect(result.value[:month]).to eq("02")
+    expect(result.value[:day]).to eq("13")
   end
 
   describe 'incompatible accept type errors' do
-    class StrToInt < Yarrow::Process::Task
-      accepts String
-      provides Integer
+    class StrToInt < Yarrow::Process::Pipe
+      accept String
+      provide Integer
     end
 
-    class StrAcceptor < Yarrow::Process::Task
-      accepts String
-      provides String
+    class StrAcceptor < Yarrow::Process::Pipe
+      accept String
+      provide String
     end
 
     it '`StrAcceptor` accepts `String` but was provided `Integer`' do |spec|
-      flow = Yarrow::Process::Workflow.new(String)
+      flow = Yarrow::Process::Pipeline.new(String)
       flow.connect(StrToInt.new)
       expect {
         flow.connect(StrAcceptor.new)
@@ -88,216 +83,153 @@ describe Yarrow::Process do
     end
 
     it '`StrToInt` accepts `String` but was provided `Hash`' do |spec|
-      flow = Yarrow::Process::Workflow.new(Hash)
+      flow = Yarrow::Process::Pipeline.new(Hash)
       expect {
         flow.connect(StrToInt.new)
       }.to raise_error(ArgumentError, spec.description)
     end
   end
 
-  class StrToUpper < Yarrow::Process::Task
-    accepts String
-    provides String
+  class StrToUpper < Yarrow::Process::Filter
+    accept String
+    provide String
 
-    def step(input)
+    def filter(input)
       input.upcase
     end
   end
 
-  class StrDup < Yarrow::Process::Task
-    accepts String
-    provides String
+  class StrDup < Yarrow::Process::Filter
+    accept String
+    provide String
 
-    def step(input)
+    def filter(input)
       input + input
     end
   end
 
-  class StrRev < Yarrow::Process::Task
-    accepts String
-    provides String
+  class StrRev < Yarrow::Process::Filter
+    accept String
+    provide String
 
-    def step(input)
+    def filter(input)
       input.reverse
     end
   end
 
   describe 'split conduits' do
     it 'can split from single pipe' do
-      flow = Yarrow::Process::Workflow.new(String)
+      flow = Yarrow::Process::Pipeline.new(String)
       flow.connect(StrToUpper.new)
 
       flow.split do |flow1, flow2|
         flow1.connect(StrDup.new)
-        flow1.on_complete do |result|
-          expect(result).to eq('ABCABC')
-        end
-
         flow2.connect(StrRev.new)
-        flow2.on_complete do |result|
-          expect(result).to eq('CBA')
-        end
       end
 
-      flow.run("abc")
+      result = flow.run("abc")
+
+      expect(result.children.first.value).to eq('ABCABC')
+      expect(result.children.last.value).to eq('CBA')
     end
 
-    it 'on_complete result is undefined after split' do
-      flow = Yarrow::Process::Workflow.new(String)
+    it 'result value is unchanged after split' do
+      flow = Yarrow::Process::Pipeline.new(String)
       flow.connect(StrToUpper.new)
 
       flow.split do |flow1, flow2|
-        flow1.on_complete do |result1|
-          expect(result1).to eq("BBZ")
-        end
-
-        flow2.on_complete do |result2|
-          expect(result2).to eq("BBZ")
-        end
+        flow1.connect(StrRev.new)
+        flow2.connect(StrRev.new)
       end
 
-      flow.on_complete do |result|
-        expect(result).to be(nil)
-      end
+      result = flow.run('bbz')
 
-      flow.run("bbz")
+      expect(result.value).to eq('BBZ')
+      expect(result.children.first.value).to eq('ZBB')
+      expect(result.children.last.value).to eq('ZBB')
     end
 
     specify 'connect cannot be used inside split block' do
-      flow = Yarrow::Process::Workflow.new(String)
+      flow = Yarrow::Process::Pipeline.new(String)
       flow.connect(StrToUpper.new)
 
       flow.split do |flow1, flow2|
-        flow1.on_complete do |result1|
-          return
-        end
-
-        flow2.on_complete do |result2|
-          return
-        end
+        flow1.connect(StrRev.new)
+        flow2.connect(StrDup.new)
 
         expect {
           flow.connect(StrToInt.new)
-        }.to raise_error(ArgumentError, 'Cannot connect tasks at this level after workflow is split')
+        }.to raise_error(ArgumentError, 'Cannot connect after split into child pipelines')
       end
     end
 
     specify 'connect cannot be used after split' do
-      flow = Yarrow::Process::Workflow.new(String)
+      flow = Yarrow::Process::Pipeline.new(String)
       flow.connect(StrToUpper.new)
 
       flow.split do |flow1, flow2|
-        flow1.on_complete do |result1|
-          return
-        end
-
-        flow2.on_complete do |result2|
-          return
-        end
+        flow1.connect(StrRev.new)
+        flow2.connect(StrDup.new)
       end
 
       expect {
         flow.connect(StrToInt.new)
-      }.to raise_error(ArgumentError, 'Cannot connect tasks at this level after workflow is split')
+      }.to raise_error(ArgumentError, 'Cannot connect after split into child pipelines')
     end
   end
 
   describe 'manifold conduits' do
     it 'branches into multiple output flows at a manifold' do
-      flow = Yarrow::Process::Workflow.new(String)
+      flow = Yarrow::Process::Pipeline.new(String)
       flow.connect(StrToUpper.new)
 
       flow.manifold(3) do |flows|
         flows[0].connect(StrDup.new)
-        flows[0].on_complete do |result|
-          expect(result).to eq('IJKIJK')
-        end
-
         flows[1].connect(StrRev.new)
-        flows[1].on_complete do |result|
-          expect(result).to eq('KJI')
-        end
-
         flows[2].connect(StrRev.new)
         flows[2].connect(StrDup.new)
-        flows[2].on_complete do |result|
-          expect(result).to eq('KJIKJI')
-        end
       end
 
-      flow.run('ijk')
+      result = flow.run('ijk')
+
+      expect(result.children[0].value).to eq('IJKIJK')
+      expect(result.children[1].value).to eq('KJI')
+      expect(result.children[2].value).to eq('KJIKJI')
     end
 
     specify 'connect cannot be used after manifold' do
-      flow = Yarrow::Process::Workflow.new(String)
+      flow = Yarrow::Process::Pipeline.new(String)
       flow.connect(StrToUpper.new)
 
       flow.manifold(4) do |flows|
-        flows[0].on_complete do |result1|
-          return
-        end
-
-        flows[1].on_complete do |result2|
-          return
-        end
-
-        flows[2].on_complete do |result2|
-          return
-        end
-
-        flows[3].on_complete do |result2|
-          return
-        end
+        flows[0].connect(StrDup.new)
+        flows[1].connect(StrRev.new)
+        flows[2].connect(StrRev.new)
+        flows[3].connect(StrDup.new)
       end
 
       expect {
         flow.connect(StrToInt.new)
-      }.to raise_error(ArgumentError, 'Cannot connect tasks at this level after workflow is split')
+      }.to raise_error(ArgumentError, 'Cannot connect after split into child pipelines')
     end
   end
 
   describe 'tee junction' do
     it 'branches with a single outlet and rejoins the main conduit' do
-      flow = Yarrow::Process::Workflow.new(String)
+      flow = Yarrow::Process::Pipeline.new(String)
       flow.connect(StrToUpper.new)
-      flow.connect(StrRev.new)
+      
 
-      strcon = Yarrow::Process::Task[String, Symbol]
-
-      i_strcon = strcon.new
-      puts i_strcon.accepts
-      puts i_strcon.provides
-
-      class TestOne < Yarrow::Process::Task
-        accepts Integer
-        provides DateTime
+      flow.tee do |flow1|
+        flow1.connect(StrDup.new)
       end
 
-      i_testone = TestOne.new
-      puts i_testone.accepts
-      puts i_testone.provides
+      flow.connect(StrRev.new)
 
-      i_branch = Yarrow::Process::Task[Struct].new
+      result = flow.run('xyz')
 
-      puts i_branch.accepts
-      puts i_branch.provides
-
-      # flow.tee do |flow1|
-      #   flow1.connect(StrDup.new)
-      #   flow1.on_complete do |result|
-      #     expect(result).to eq('ZYXZYX')
-      #   end
-      # end
-
-      # p flow
-
-      # flow.connect(StrRev.new)
-
-      # flow.on_complete do |result|
-      #   expect(result).to eq("XYZ")
-      # end
-
-      # flow.run('xyz')
+      expect(result.value).to eq('ZYX')
+      expect(result.children.first.value).to eq("XYZXYZ")
     end
   end
 end

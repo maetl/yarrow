@@ -1,44 +1,44 @@
 module Yarrow
-  class ScanSource < Process::Task
-    accepts Config::Instance
-    provides Content::Graph
+  class ScanSource < Process::Filter
+    accept Config::Instance
+    provide Content::Graph
 
-    def step(config)
+    def filter(config)
       Yarrow::Content::Graph.from_source(config)
     end
   end
 
-  class ExpandCollections < Process::Task
-    accepts Content::Graph
-    provides Content::Graph
+  class ExpandCollections < Process::Filter
+    accept Content::Graph
+    provide Content::Graph
 
-    def step(content)
+    def filter(content)
       model = Content::Model.new(content.config.content)
       model.expand(content.graph)
       content
     end
   end
 
-  class FlattenManifest < Process::Task
-    accepts Content::Graph
-    provides Web::Manifest
+  class FlattenManifest < Process::Filter
+    accept Content::Graph
+    provide Web::Manifest
 
-    def step(content)
+    def filter(content)
       puts content.config
       Web::Manifest.build(content)
     end
   end
 
   # class BuildOutput < Process::StepProcessor
-  #   accepts Output::Manifest
-  #   provides Output::Result
+  #   accept Output::Manifest
+  #   provide Output::Result
   # end
 
   # Generates documentation from a model.
   class Generator
     def initialize(config)
       @config = config
-      @workflow = Process::Workflow.new(config.class)
+      @workflow = Process::Pipeline.new(config.class)
     end
 
     def process(&block)
