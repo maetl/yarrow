@@ -46,18 +46,18 @@ module Yarrow
       workflow.connect(ExpandCollections.new)
       workflow.connect(FlattenManifest.new)
 
-      workflow.split(outputs.size) do |branched_workflows|
-
-        outputs.each_with_index do |output, index|
+      workflow.manifold(config.output.size) do |branched_workflows|
+        config.output.each_with_index do |output, index|
+          # FlattenManifest
+          # GenerateOutput
           branched_workflows[index].connect(output.reconcile_step)
           branched_workflows[index].connect(output.generate_step)
         end
-
       end
 
-      workflow.process(@config) do |result|
-        block.call(result)
-      end
+      # workflow.process(@config) do |result|
+      #   block.call(result)
+      # end
     end
 
     def generate
